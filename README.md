@@ -1,0 +1,1 @@
+# clj-diocese-nh-pos-app
