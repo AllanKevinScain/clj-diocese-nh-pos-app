@@ -1,8 +1,10 @@
 "use client";
 
-import { Button, Drawer as MUIDrawer } from "@mui/material";
+import { Button, Drawer as MUIDrawer, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
+import { BiMenu } from "react-icons/bi";
 
 import { DrawerList } from "./list-drawer";
 
@@ -11,9 +13,13 @@ export interface DrawerInterface {
   onClose: () => void;
 }
 
-export const Drawer: React.FC<DrawerInterface> = (props) => {
-  const { isOpen, onClose } = props;
+export const Drawer = () => {
   const navigate = useRouter();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  function toggleDrawer() {
+    setOpenDrawer((s) => !s);
+  }
 
   function handleNavigate(path: string) {
     if (location?.pathname === path) return;
@@ -22,14 +28,30 @@ export const Drawer: React.FC<DrawerInterface> = (props) => {
   }
 
   return (
-    <MUIDrawer open={isOpen} onClose={onClose} sx={{ position: "relative" }}>
-      <DrawerList onClose={onClose} handleNavigate={handleNavigate} />
-      <Button
-        onClick={() => signOut()}
-        sx={{ bottom: "5%", position: "absolute", width: "100%" }}
+    <div>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        color="inherit"
+        onClick={toggleDrawer}
       >
-        Sair
-      </Button>
-    </MUIDrawer>
+        <BiMenu />
+      </IconButton>
+      <MUIDrawer
+        open={openDrawer}
+        onClose={toggleDrawer}
+        sx={{ position: "relative" }}
+      >
+        <DrawerList onClose={toggleDrawer} handleNavigate={handleNavigate} />
+        <Button
+          onClick={() => signOut()}
+          sx={{ bottom: "5%", position: "absolute", width: "100%" }}
+        >
+          Sair
+        </Button>
+      </MUIDrawer>
+    </div>
   );
 };

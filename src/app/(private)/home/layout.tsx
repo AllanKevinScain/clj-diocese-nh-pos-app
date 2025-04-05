@@ -5,19 +5,19 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth-config";
 
 export const metadata: Metadata = {
-  title: "Administração",
-  description: "Página de administradores",
+  title: "Home",
+  description: "Página de apresentação",
 };
 
-export default async function AdminLayout({
+export default async function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
 
-  if (session?.user.loginType !== "admin") {
-    redirect("/home");
+  if (!session) {
+    redirect("/login");
   }
   return children;
 }
