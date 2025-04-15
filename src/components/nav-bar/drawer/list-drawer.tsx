@@ -10,8 +10,10 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
-
-import { drawerItems } from "@/constants";
+import { isEmpty } from "lodash";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
+import { FaCross, FaEdit, FaUserEdit, FaUserFriends } from "react-icons/fa";
 
 import { DrawerInterface } from ".";
 
@@ -21,6 +23,39 @@ interface DrawerListInterface extends Pick<DrawerInterface, "onClose"> {
 
 export const DrawerList: React.FC<DrawerListInterface> = (props) => {
   const { onClose = () => null, handleNavigate = () => null } = props;
+
+  const { data } = useSession();
+
+  const drawerItems = useMemo(() => {
+    const defaultLists = [
+      { id: "courses", content: "Cursos", Icon: FaCross, path: "/courses" },
+    ];
+    if (!isEmpty(data) && data.user.loginType !== "admin") {
+      return defaultLists;
+    }
+
+    return [
+      ...defaultLists,
+      {
+        id: "register-courses",
+        content: "Cadastrar curso",
+        Icon: FaEdit,
+        path: "/register-courses",
+      },
+      {
+        id: "register-users",
+        content: "Cadastrar usuário",
+        Icon: FaUserEdit,
+        path: "/register/users",
+      },
+      {
+        id: "view-users",
+        content: "Visualizar todos os usuários",
+        Icon: FaUserFriends,
+        path: "/view/users",
+      },
+    ];
+  }, [data]);
 
   return (
     <Stack

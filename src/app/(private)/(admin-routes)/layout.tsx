@@ -17,7 +17,7 @@ export default async function AdminLayout({
   const session = await getServerSession(authOptions);
 
   if (session?.user.loginType !== "admin") {
-    redirect("/home");
+    redirect("/courses");
   }
   return children;
 }

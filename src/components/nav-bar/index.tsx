@@ -6,18 +6,23 @@ import React from "react";
 import { Drawer } from "./drawer";
 import { LogoutMenu } from "./menu";
 
-export async function NavBar() {
-  return (
-    <>
-      <AppBar position="static" sx={{ mb: "2%" }}>
-        <Container maxWidth="xl">
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Drawer />
+interface NavBarInterface {
+  showMenu?: boolean;
+  showDrawer?: boolean;
+}
 
-            <LogoutMenu />
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </>
+export function NavBar(props: NavBarInterface) {
+  const { showDrawer = true, showMenu = true } = props;
+
+  return (
+    <AppBar position="static" sx={{ mb: "2%" }}>
+      <Container maxWidth="xl">
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          {showDrawer && <Drawer />}
+
+          {showMenu && <LogoutMenu />}
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }

@@ -1,3 +1,4 @@
+export * from "./accept-modal";
 export * from "./error-component";
 export * from "./field-default";
 export * from "./field-set-checkbox";
@@ -5,4 +6,5 @@ export * from "./field-set-consent-checkbox";
 export * from "./field-set-radio";
 export * from "./field-text-area";
 export * from "./nav-bar";
+export * from "./select-default";
 export * from "./session-form";

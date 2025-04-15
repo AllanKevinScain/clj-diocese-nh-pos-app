@@ -1,12 +1,14 @@
 import { CourseClientPage } from "./client-page";
 
-export default async function Course({
-  params,
-}: {
+interface CoursePageInterface {
   params: Promise<{ courseNumber: string }>;
-}) {
-  const { courseNumber } = await params;
-  console.log("🚀 ~ courseNumber:", courseNumber);
+  searchParams: Promise<{ courseId: string }>;
+}
 
-  return <CourseClientPage />;
+export default async function CoursePage(props: CoursePageInterface) {
+  const { params, searchParams } = props;
+  const { courseNumber } = await params;
+  const { courseId } = await searchParams;
+
+  return <CourseClientPage courseNumber={courseNumber} courseId={courseId} />;
 }

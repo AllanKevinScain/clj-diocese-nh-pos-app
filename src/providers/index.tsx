@@ -3,29 +3,31 @@
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 
 import { theme } from "@/styles/theme";
 
-import { ErrorModalProvider } from "./error-modal";
 import { ModeSwitch } from "./mode-switch";
+
+const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
-      <Toaster />
+      <QueryClientProvider client={queryClient}>
+        <Toaster />
 
-      <AppRouterCacheProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
 
-          <ErrorModalProvider>
             <ModeSwitch />
             {children}
-          </ErrorModalProvider>
-        </ThemeProvider>
-      </AppRouterCacheProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </QueryClientProvider>
     </SessionProvider>
   );
 };

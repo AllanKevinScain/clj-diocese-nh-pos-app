@@ -15,6 +15,10 @@ export default async function PrivateLayout({
     redirect("/login");
   }
 
+  if (session.error) {
+    redirect("/logout");
+  }
+
   return (
     <main>
       <NavBar />

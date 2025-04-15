@@ -1,3 +1,5 @@
-export default function Courses() {
-  return <main>Courses</main>;
+import { CoursesClientPage } from "./client-page";
+
+export default async function Courses() {
+  return <CoursesClientPage />;
 }

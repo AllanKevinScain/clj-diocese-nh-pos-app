@@ -1,35 +1,30 @@
 "use client";
 
-import { Button, Container } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Container } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { BiChevronLeft, BiPlus } from "react-icons/bi";
 
-import { ListRecords } from "./components";
+import { useListRecords } from "@/hooks";
 
-export const CourseClientPage = () => {
-  const navigate = useRouter();
+import { ControlButtons, ListRecords } from "./components";
+
+interface CourseClientPageInterface {
+  courseNumber: string;
+  courseId: string;
+}
+
+export const CourseClientPage = (props: CourseClientPageInterface) => {
+  const { courseNumber, courseId } = props;
+  const { listRecordsByCourseNumber } = useListRecords();
+
+  const {} = useQuery({
+    queryKey: ["fixas", courseNumber],
+    queryFn: () => listRecordsByCourseNumber(courseNumber),
+  });
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{ display: "flex", flexDirection: "column", gap: "8px" }}
-    >
-      <Button
-        variant="outlined"
-        sx={{ width: "fit-content" }}
-        startIcon={<BiChevronLeft />}
-        onClick={() => navigate.back()}
-      >
-        Voltar
-      </Button>
-      <Button
-        variant="contained"
-        startIcon={<BiPlus />}
-        onClick={() => navigate.push(`/public/courses/${1}/create-pos-l`)}
-      >
-        Criar nova ficha
-      </Button>
+    <Container maxWidth="xl" className="flex flex-col gap-[8px]">
+      <ControlButtons courseId={courseId} />
       <ListRecords />
     </Container>
   );

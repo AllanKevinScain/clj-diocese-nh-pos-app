@@ -2,13 +2,16 @@
 
 import {
   Box,
+  Button,
   Container,
   Paper,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import Link from "next/link";
 import { BiSolidChurch } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 import { NavBar } from "@/components";
 
@@ -18,22 +21,18 @@ export default function Root() {
 
   return (
     <main>
-      <NavBar />
+      <NavBar showDrawer={false} showMenu={false} />
 
       <Container maxWidth="md">
         <Paper
           elevation={3}
-          sx={{
-            padding: isMobile ? 2 : 4,
-            my: 4,
-            backgroundColor: theme.palette.grey[50],
-          }}
+          className={twMerge(
+            `my-[16px] bg-[${theme.palette.grey[50]}]`,
+            isMobile ? "p-[8px]" : "p-[16px]"
+          )}
         >
           <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mt={4}
+            className={`flex justify-center items-center mb-[16px]`}
             color="primary.main"
           >
             <BiSolidChurch size={100} />
@@ -41,15 +40,9 @@ export default function Root() {
 
           <Box
             component="img"
-            src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80"
+            src="https://www.rbsdirect.com.br/filestore/8/9/7/2/7/2/4_3ce20a02c96c2ea/4272798_276c5a4d8e99f08.jpg?version=1575255600"
             alt="Juventude em comunhão"
-            sx={{
-              width: "100%",
-              borderRadius: 2,
-              maxHeight: 300,
-              objectFit: "cover",
-              mb: 3,
-            }}
+            className="w-full rounded-[8px] max-h-[300px] object-cover mb-[12px]"
           />
 
           <Typography
@@ -64,7 +57,7 @@ export default function Root() {
           <Typography
             variant={isMobile ? "h6" : "h5"}
             component="h2"
-            color="secondary"
+            color="primary"
             gutterBottom
           >
             Diocese de Novo Hamburgo
@@ -99,6 +92,11 @@ export default function Root() {
             <Typography variant="body1">
               Email: contato@cljdiocesenh.com.br
             </Typography>
+            <Link href="/login" className="flex">
+              <Button variant="contained" className="w-full">
+                Ir para o login
+              </Button>
+            </Link>
           </Box>
         </Paper>
       </Container>

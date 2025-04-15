@@ -1,8 +1,9 @@
 import "next-auth";
+import "next-auth/jwt";
 
 declare module "next-auth" {
   interface User {
-    access_token: string;
+    accessToken: string;
     id: string;
     email: string;
     loginType: "admin" | "manager";
@@ -12,15 +13,19 @@ declare module "next-auth" {
   interface Session {
     user: User;
     accessToken?: string;
+    error?: strings;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    access_token: string;
+    accessToken: string;
     id: string;
     email: string;
     loginType: "admin" | "manager";
     nome: string;
+    iat?: number;
+    exp?: number;
+    error?: string;
   }
 }

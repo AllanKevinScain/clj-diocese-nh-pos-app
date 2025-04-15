@@ -5,15 +5,18 @@ import {
   Box,
   Button,
   Container,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
 import { InferType } from "yup";
 
 import { loginSchema } from "@/yup";
@@ -27,8 +30,28 @@ export const ClientPage = () => {
     formState: { errors },
   } = useForm<LoginSchemaInferType>({
     resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "teste@gmail.com",
+      password: "teste123!",
+    },
   });
   const navigate = useRouter();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   async function onSubmit(values: LoginSchemaInferType) {
     const { email, password } = values;
@@ -42,7 +65,7 @@ export const ClientPage = () => {
       toast.error("Usuário não cadastrado!");
     } else {
       toast.success("Login efetuado com sucesso!");
-      navigate.push("/home");
+      navigate.push("/courses");
     }
   }
 
@@ -103,7 +126,7 @@ export const ClientPage = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              type="password"
+              type={showPassword ? "text" : "password"}
               margin="normal"
               required
               fullWidth
@@ -112,6 +135,27 @@ export const ClientPage = () => {
               autoFocus
               error={!!errors.password}
               helperText={errors.password?.message}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword
+                            ? "hide the password"
+                            : "display the password"
+                        }
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <RiEyeFill /> : <RiEyeCloseFill />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
           )}
         />
