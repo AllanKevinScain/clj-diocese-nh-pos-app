@@ -1,7 +1,6 @@
 "use client";
 
 import { AppBar, Container, Toolbar } from "@mui/material";
-import React from "react";
 
 import { Drawer } from "./drawer";
 import { LogoutMenu } from "./menu";

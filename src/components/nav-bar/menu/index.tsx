@@ -11,13 +11,15 @@ interface LogoutMenuInterface {
 export const LogoutMenu = (props: LogoutMenuInterface) => {
   const { showMenu = true } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+  }
+  function handleClose() {
     setAnchorEl(null);
-  };
+  }
 
   async function onLogout() {
     await signOut({ callbackUrl: "/" });

@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
+  Typography,
 } from "@mui/material";
 import { isEmpty } from "lodash";
 import { useSession } from "next-auth/react";
@@ -40,13 +41,13 @@ export const DrawerList: React.FC<DrawerListInterface> = (props) => {
         id: "register-courses",
         content: "Cadastrar curso",
         Icon: FaEdit,
-        path: "/register-courses",
+        path: "/register/course",
       },
       {
         id: "register-users",
         content: "Cadastrar usuário",
         Icon: FaUserEdit,
-        path: "/register/users",
+        path: "/register/user",
       },
       {
         id: "view-users",
@@ -76,7 +77,11 @@ export const DrawerList: React.FC<DrawerListInterface> = (props) => {
           alignSelf: "center",
         }}
       />
+
+      <Typography className="text-center">Olá, {data?.user?.name}</Typography>
+
       <Divider />
+
       <List>
         {drawerItems.map(({ id, content, Icon, path }) => (
           <ListItem key={id} disablePadding>

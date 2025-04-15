@@ -3,85 +3,89 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { InferType } from "yup";
 
 import { FieldDefault, SelectDefault } from "@/components";
-import { useCourses } from "@/hooks";
-import { courseSchema } from "@/yup";
+import { useUsers } from "@/hooks";
+import { registerUserSchema } from "@/yup/user-schema";
 
-export type CourseInferType = InferType<typeof courseSchema>;
+type RegisterUserSchemaInferType = InferType<typeof registerUserSchema>;
 
-interface EditCourseClientPageInterface {
-  course: CourseInferType;
-}
-
-export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
-  const { course } = props;
+export default function RegisterUserClientPage() {
   const navigate = useRouter();
-  const { updateCourse } = useCourses();
 
-  const { handleSubmit, control } = useForm<CourseInferType>({
-    defaultValues: course,
-    resolver: yupResolver(courseSchema),
+  const { registerUser } = useUsers();
+
+  const { handleSubmit, control } = useForm<RegisterUserSchemaInferType>({
+    resolver: yupResolver(registerUserSchema),
   });
 
-  const onSubmit = async (data: CourseInferType) => {
-    const res = await updateCourse(data);
+  const onSubmit = async (data: RegisterUserSchemaInferType) => {
+    const res = await registerUser(data);
 
     if (!res?.ok) {
       toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
-      navigate.push("/courses");
+      navigate.push("/view/users");
     }
   };
 
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom className="mt-[32px] text-center">
-        Edição do curso {course.courseNumber} | {course.typeOfCourse}
+        Cadastrar usuário
       </Typography>
 
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        noValidate
         className="flex flex-col gap-[20px]"
       >
         <FieldDefault
-          id="startDate"
+          id="name"
           defaultValue=""
           control={control}
-          type="date"
-          customLabel={<Typography>Data de início</Typography>}
+          label="Paróquia/Capela"
         />
 
         <FieldDefault
-          control={control}
+          id="email"
           defaultValue=""
-          id="endDate"
-          type="date"
-          customLabel={<Typography>Data de término</Typography>}
+          control={control}
+          label="Email"
+        />
+
+        <FieldDefault
+          id="password"
+          defaultValue=""
+          control={control}
+          label="Senha"
+          type="password"
         />
 
         <SelectDefault
-          id="typeOfCourse"
+          id="loginType"
           defaultValue=""
           control={control}
-          label="Tipo do curso"
+          label="Tipo de usuário"
           options={[
-            { value: "POSl", label: "Curso de Liderança - Pós 1" },
-            { value: "POSll", label: "Curso de Liderança - Pós 2" },
+            {
+              value: "admin",
+              label: "Administrador - Possui liberdade para qualquer ação",
+            },
+            { value: "manager", label: "Gerente - Pode cadastrar fixas" },
           ]}
         />
 
         <FieldDefault
-          id="courseNumber"
+          id="city"
           defaultValue=""
           control={control}
-          label="Número do curso"
+          label="Cidade"
         />
 
         <Button
@@ -91,9 +95,9 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
           fullWidth
           className="mt-[32px]"
         >
-          Atualizar
+          Cadastrar
         </Button>
       </Box>
     </Container>
   );
-};
+}

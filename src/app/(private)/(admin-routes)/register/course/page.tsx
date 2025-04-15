@@ -18,12 +18,6 @@ export default function RegisterCoursePage() {
   const { registerCourse } = useCourses();
 
   const { handleSubmit, control } = useForm<CourseInferType>({
-    defaultValues: {
-      startDate: "",
-      endDate: "",
-      typeOfCourse: "",
-      courseNumber: 0,
-    },
     resolver: yupResolver(courseSchema),
   });
 
@@ -40,8 +34,8 @@ export default function RegisterCoursePage() {
 
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-        Formulário de Curso
+      <Typography variant="h4" gutterBottom className="mt-[32px] text-center">
+        Cadastrar Curso
       </Typography>
 
       <Box
@@ -89,7 +83,7 @@ export default function RegisterCoursePage() {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 3 }}
+          className="mt-[32px]"
         >
           Cadastrar
         </Button>

@@ -1,4 +1,10 @@
-import { CourseInferType } from "@/app/(private)/(admin-routes)/register/course/page";
+"use client";
+
+import { InferType } from "yup";
+
+import { courseSchema } from "@/yup";
+
+export type CourseInferType = InferType<typeof courseSchema>;
 
 export function useCourses() {
   async function listCourses() {

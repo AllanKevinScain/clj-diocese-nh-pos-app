@@ -44,7 +44,7 @@ export const SelectDefault = <T extends FieldValues>(
           >
             {options.map((item) => (
               <MenuItem key={item.value} value={item.value}>
-                {item.label}
+                <span className="text-wrap">{item.label}</span>
               </MenuItem>
             ))}
           </TextField>

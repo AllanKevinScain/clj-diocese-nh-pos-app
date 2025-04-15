@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Drawer as MUIDrawer, IconButton } from "@mui/material";
+import { Button, Drawer as MuiDrawer, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export const Drawer = () => {
       >
         <BiMenu />
       </IconButton>
-      <MUIDrawer
+      <MuiDrawer
         open={openDrawer}
         onClose={toggleDrawer}
         sx={{ position: "relative" }}
@@ -51,7 +51,7 @@ export const Drawer = () => {
         >
           Sair
         </Button>
-      </MUIDrawer>
+      </MuiDrawer>
     </div>
   );
 };

@@ -24,7 +24,10 @@ export const courseSchema = yup.object().shape({
       "A data de término deve ser posterior à data de início",
       testEndDate
     ),
-  typeOfCourse: yup.string().required("Tipo do curso é obrigatório"),
+  typeOfCourse: yup
+    .mixed<"POSl" | "POSll" | "WORK" | "COUPLE_WORK">()
+    .oneOf(["POSl", "POSll", "WORK", "COUPLE_WORK"])
+    .required("Tipo de login é obrigatório"),
   courseNumber: yup
     .number()
     .positive("Número do curso deve ser positivo")

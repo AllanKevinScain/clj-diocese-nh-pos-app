@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
 
   if (!token?.accessToken) throw new Error("Token com problema");
 
-  const res = await fetch(`${process.env.BASE_API_URL}/course`, {
+  const res = await fetch(`${process.env.BASE_API_URL}/user`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token?.accessToken}`,
