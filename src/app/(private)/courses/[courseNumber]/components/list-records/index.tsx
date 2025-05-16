@@ -1,57 +1,43 @@
 "use client";
 
-import { IconButton, List, ListItem, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { List, ListItem, Typography } from "@mui/material";
 import { FaClipboardList } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
 import { RiEdit2Fill } from "react-icons/ri";
 
-const records = [{ id: "123", label: "Curso de fulano" }];
+import { InfertypePoslSchema } from "../../client-page";
 
-export const ListRecords = () => {
-  const navigate = useRouter();
+interface ListRecordsInterface {
+  records: InfertypePoslSchema[];
+}
+
+export const ListRecords = (props: ListRecordsInterface) => {
+  const { records } = props;
 
   return (
-    <List dense={true}>
+    <List
+      dense={true}
+      subheader={
+        <Typography variant="h2" className="!text-[30px]">
+          Fixas de curso
+        </Typography>
+      }
+    >
       {records.map((record) => (
         <ListItem
+          component="a"
           disablePadding
           key={record.id}
-          sx={{
-            display: "flex",
-            direction: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: "45px",
-          }}
+          className="flex items-center !justify-between w-full py-[10px] border-b last:border-b-0"
+          href={`/record/pos-l/edit`}
         >
-          <Stack direction="row" gap={1} alignItems="center">
+          <div className="flex gap-[8px] items-center">
             <FaClipboardList size={24} color="gray" />
             <Typography color="gray" fontSize={18}>
-              {record.label}
+              {record.candidateName} ({record.nickname})
             </Typography>
-          </Stack>
+          </div>
 
-          <Stack direction="row" gap="8px" alignItems="center">
-            <IconButton
-              edge="end"
-              aria-label="editar"
-              onClick={() =>
-                navigate.push(`/public/courses/${123}/edit-pos-l/${record.id}`)
-              }
-            >
-              <RiEdit2Fill size={24} color="gray" />
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="visualizar"
-              onClick={() =>
-                navigate.push(`/public/courses/${123}/view-pos-l/${record.id}`)
-              }
-            >
-              <FaEye size={24} color="gray" />
-            </IconButton>
-          </Stack>
+          <RiEdit2Fill size={24} color="gray" />
         </ListItem>
       ))}
     </List>

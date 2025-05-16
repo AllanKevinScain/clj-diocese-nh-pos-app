@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { red } from "@mui/material/colors";
 import type { Control, FieldValues, Path, PathValue } from "react-hook-form";
 import { Controller } from "react-hook-form";
@@ -17,18 +10,18 @@ export interface FieldSetRadioInterface<T extends FieldValues> {
   control: Control<T> | undefined;
   label: string;
   options: { id: string; label: string }[];
+  defaultValue: string | boolean | string[];
+  customOnChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FieldSetRadio = <T extends FieldValues>(
-  props: FieldSetRadioInterface<T>
-) => {
-  const { label, options = [], id, control } = props;
+export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterface<T>) => {
+  const { label, options = [], id, control, defaultValue, customOnChange } = props;
 
   return (
     <Controller
       name={id}
       control={control}
-      defaultValue={"" as PathValue<T, Path<T>>}
+      defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
         const hasError = !!formState.errors[id];
         const errorMessage = formState.errors[id]?.message as string;
@@ -36,12 +29,7 @@ export const FieldSetRadio = <T extends FieldValues>(
         return (
           <FormControl component="fieldset" error={hasError}>
             <FormLabel component="legend">{label}</FormLabel>
-            <RadioGroup
-              {...field}
-              row
-              aria-labelledby={`demo-radio-buttons-group-${name}`}
-              defaultValue=""
-            >
+            <RadioGroup {...field} row aria-labelledby={`demo-radio-buttons-group-${name}`} defaultValue="">
               {options.map(({ id, label: optLabel }) => {
                 return (
                   <FormControlLabel
@@ -49,10 +37,13 @@ export const FieldSetRadio = <T extends FieldValues>(
                     value={id}
                     control={
                       <Radio
-                        onClick={() => {
+                        onChange={(e) => {
                           if (field.value === id) {
                             field.onChange("");
+                          } else {
+                            field.onChange(e.target.value);
                           }
+                          if (customOnChange) customOnChange(e);
                         }}
                         sx={
                           hasError

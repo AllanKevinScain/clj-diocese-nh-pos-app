@@ -12,7 +12,7 @@ export async function GET(
   if (!courseNumber) throw new Error("Identificação necessária!");
 
   const res = await fetch(
-    `${process.env.BASE_API_URL}/course/${courseNumber}`,
+    `${process.env.BASE_API_URL}/records-by-number/${courseNumber}`,
     {
       method: "GET",
       headers: {

@@ -17,7 +17,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <Toaster />
+        <Toaster toastOptions={{ duration: 1000 }} />
 
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>

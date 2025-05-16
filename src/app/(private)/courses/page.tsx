@@ -31,7 +31,10 @@ export default function CoursesPage() {
     queryFn: listCourses,
   });
 
-  const isEmptyCourse = data?.length === 0 && !isLoading;
+  const isEmptyCourse = data && data?.length === 0 && !isLoading;
+
+  const poslCourses = data?.filter((curso) => curso.typeOfCourse === "POSl");
+  const posllCourses = data?.filter((curso) => curso.typeOfCourse === "POSll");
 
   if (isLoading) {
     return (
@@ -54,13 +57,52 @@ export default function CoursesPage() {
   return (
     <Container maxWidth="lg" className="pb-[10%]">
       <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Cursos Atuais
+        Cursos
       </Typography>
 
       <Grid container spacing={2}>
+        <Grid size={{ xs: 12 }}>
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+            Pós 1
+          </Typography>
+        </Grid>
         {!isEmptyCourse &&
-          data &&
-          data.map((course) => (
+          poslCourses?.map((course) => (
+            <Grid size={{ xs: 12 }} key={course.id}>
+              <Card>
+                <CardActionArea
+                  onClick={() =>
+                    navigate.push(
+                      `/courses/${course.courseNumber}?courseId=${course.id}`
+                    )
+                  }
+                >
+                  <CardContent className="flex justify-between">
+                    <Typography variant="h5">{course.courseNumber}</Typography>
+
+                    <div className="flex gap-[8px]">
+                      <Typography variant="h5" className="text-nowrap">
+                        {dayjs(new Date(course.startDate)).format("DD/MM/YYYY")}
+                      </Typography>
+                      <span> - </span>
+                      <Typography variant="h5" className="text-nowrap">
+                        {dayjs(new Date(course.endDate)).format("DD/MM/YYYY")}
+                      </Typography>
+                    </div>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+
+        <Grid size={{ xs: 12 }}>
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+            Pós 2
+          </Typography>
+        </Grid>
+
+        {!isEmptyCourse &&
+          posllCourses?.map((course) => (
             <Grid size={{ xs: 12 }} key={course.id}>
               <Card>
                 <CardActionArea

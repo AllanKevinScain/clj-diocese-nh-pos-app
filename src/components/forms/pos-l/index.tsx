@@ -1,22 +1,14 @@
 "use client";
 
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, Controller, FieldErrors, UseFormHandleSubmit, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { BiChevronLeft } from "react-icons/bi";
 import { InferType } from "yup";
 
-import {
-  FieldDefault,
-  FieldSetCheckbox,
-  FieldSetConsentCheckbox,
-  FieldSetRadio,
-  FieldTextarea,
-  SessionForm,
-} from "@/components";
+import { FieldDefault, FieldSetCheckbox, FieldSetConsentCheckbox, FieldSetRadio, FieldTextarea, SessionForm } from "@/components";
 import {
   aboutFatherData,
   aboutMotherData,
@@ -30,51 +22,53 @@ import {
   takesMedicationData,
 } from "@/constants";
 import { formatMobilePhone } from "@/helpers";
-import { pos1Schema } from "@/yup";
+import { poslSchema } from "@/yup";
 
-type Pos1SchemaInfertype = InferType<typeof pos1Schema>;
+type PoslSchemaInfertype = InferType<typeof poslSchema>;
 
-export const Pos1Form: React.FC = () => {
+type PoslSchemaFieldType = keyof PoslSchemaInfertype;
+
+interface ClearFieldParamsInteface {
+  field: PoslSchemaFieldType;
+  value: string | boolean;
+}
+
+interface Pos1FormInterface {
+  onSubmit: (_: PoslSchemaInfertype) => void;
+  errors: FieldErrors<PoslSchemaInfertype>;
+  control: Control<PoslSchemaInfertype>;
+  watch: UseFormWatch<PoslSchemaInfertype>;
+  setValue: UseFormSetValue<PoslSchemaInfertype>;
+  handleSubmit: UseFormHandleSubmit<PoslSchemaInfertype>;
+}
+
+export const Pos1Form = (props: Pos1FormInterface) => {
+  const { control, errors, onSubmit, watch, setValue, handleSubmit } = props;
   const navigate = useRouter();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Pos1SchemaInfertype>({
-    resolver: yupResolver(pos1Schema),
-  });
   const livesWith = watch("livesWith");
   const parentsReligion = watch("parentsReligion");
   const hasDisease = watch("hasDisease");
   const takesMedication = watch("takesMedication");
 
+  const disease = watch("disease");
+  const medication = watch("medication");
+
   const parentsCommentError = !!errors.parentsComment;
 
-  const onSubmit = (data: Pos1SchemaInfertype) => {
-    console.log(data);
-  };
+  function clearField({ field, value }: ClearFieldParamsInteface) {
+    setValue(field, value);
+  }
 
   return (
     <Container maxWidth="md" sx={{ pb: "5%" }}>
-      <Button
-        variant="outlined"
-        sx={{ width: "fit-content" }}
-        startIcon={<BiChevronLeft />}
-        onClick={() => navigate.back()}
-      >
+      <Button variant="outlined" sx={{ width: "fit-content" }} startIcon={<BiChevronLeft />} onClick={() => navigate.back()}>
         Voltar
       </Button>
-      <Stack
-        flexDirection="column"
-        spacing={4}
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <Stack flexDirection="column" spacing={4} component="form" onSubmit={handleSubmit(onSubmit)}>
         <Stack flexDirection="column" pt={4} sx={{ textAlign: "center" }}>
           <Typography component="h1" variant="h4">
-            Curso de Liderança Juvenil - CLJ
+            Curso de Liderança Juvenil - CLJ I
           </Typography>
           <Typography>Secretariado Diocesano de Novo Hamburgo</Typography>
           <Typography variant="h6">FICHA DE CANDIDATO(A) AO CLJ I</Typography>
@@ -83,20 +77,10 @@ export const Pos1Form: React.FC = () => {
         <SessionForm title="Dados da ficha:">
           <Grid container spacing={2}>
             <Grid size={12}>
-              <FieldDefault
-                id="recordNumber"
-                control={control}
-                defaultValue=""
-                label="Número da ficha"
-              />
+              <FieldDefault id="recordNumber" control={control} defaultValue="" label="Número da ficha" />
             </Grid>
             <Grid size={12}>
-              <FieldDefault
-                id="parishAcronym"
-                control={control}
-                defaultValue=""
-                label="Sigla da paróquia/capela"
-              />
+              <FieldDefault id="parishAcronym" control={control} defaultValue="" label="Sigla da paróquia/capela" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -104,71 +88,29 @@ export const Pos1Form: React.FC = () => {
         <SessionForm title="Dados do(a) Candidato(a):">
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="studentName"
-                control={control}
-                defaultValue=""
-                label="Nome Cursista"
-              />
+              <FieldDefault id="candidateName" control={control} defaultValue="" label="Nome Cursista" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="nickname"
-                control={control}
-                defaultValue=""
-                label="Apelido"
-              />
+              <FieldDefault id="nickname" control={control} defaultValue="" label="Apelido" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="studentPhone"
-                control={control}
-                defaultValue=""
-                onChange={(e) => formatMobilePhone(e)}
-                label="Telefone Cursista"
-              />
+              <FieldDefault id="candidatePhone" control={control} defaultValue="" onChange={(e) => formatMobilePhone(e)} label="Telefone Cursista" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="parishPriest"
-                control={control}
-                defaultValue=""
-                label="Pároco"
-              />
+              <FieldDefault id="priest" control={control} defaultValue="" label="Pároco" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="rg"
-                control={control}
-                defaultValue=""
-                label="RG"
-              />
+              <FieldDefault id="document" control={control} defaultValue="" label="RG" />
             </Grid>
             <Grid size={12}>
               <Typography>Data de Nascimento</Typography>
-              <FieldDefault
-                id="birthDate"
-                control={control}
-                defaultValue=""
-                type="date"
-                variant="filled"
-              />
+              <FieldDefault id="birthDate" control={control} defaultValue="" type="date" variant="filled" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="instagram"
-                control={control}
-                defaultValue=""
-                label="Instagram"
-              />
+              <FieldDefault id="instagram" control={control} defaultValue="" label="Instagram" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="parish"
-                control={control}
-                defaultValue=""
-                label="Paróquia/Capela"
-              />
+              <FieldDefault id="parishChapel" control={control} defaultValue="" label="Paróquia/Capela" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -176,73 +118,30 @@ export const Pos1Form: React.FC = () => {
         <SessionForm title="Padrinho: ">
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="godfatherName"
-                control={control}
-                defaultValue=""
-                label="Nome Padrinho"
-              />
+              <FieldDefault id="godfatherName" control={control} defaultValue="" label="Nome Padrinho" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="godfatherPhone"
-                control={control}
-                defaultValue=""
-                onChange={(e) => formatMobilePhone(e)}
-                label="Telefone Padrinho"
-              />
+              <FieldDefault id="godfatherPhone" control={control} defaultValue="" onChange={(e) => formatMobilePhone(e)} label="Telefone Padrinho" />
             </Grid>
             <Grid size={12}>
-              <FieldDefault
-                id="godfatherEmail"
-                control={control}
-                defaultValue=""
-                label="Email Padrinho"
-              />
+              <FieldDefault id="godfatherEmail" control={control} defaultValue="" label="Email Padrinho" />
             </Grid>
             <Grid size={12}>
-              <FieldDefault
-                id="intimacyTime"
-                control={control}
-                defaultValue=""
-                label="A quanto tempo conhece o afilhado(a)?"
-              />
+              <FieldDefault id="affinityWithGodfather" control={control} defaultValue="" label="A quanto tempo conhece o afilhado(a)?" />
+            </Grid>
+            <Grid size={12}>
+              <Typography>Comunicou ao candidato sobre as atitudes que deverá ter na participação do curso?</Typography>
+              <FieldDefault id="attitudeCommunication" control={control} defaultValue="" label="-" />
             </Grid>
             <Grid size={12}>
               <Typography>
-                Comunicou ao candidato sobre as atitudes que deverá ter na
-                participação do curso?
+                Comunicou ao candidato que aceitar participar do curso significa aceitar integralmente a Doutrina da Igreja Católica?
               </Typography>
-              <FieldDefault
-                id="participationTerms"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
+              <FieldDefault id="doctrineCommunication" control={control} defaultValue="" label="-" />
             </Grid>
             <Grid size={12}>
-              <Typography>
-                Comunicou ao candidato que aceitar participar do curso significa
-                aceitar integralmente a Doutrina da Igreja Católica?
-              </Typography>
-              <FieldDefault
-                id="doctrineTerms"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
-            </Grid>
-            <Grid size={12}>
-              <Typography>
-                O padrinho sabe que não pode ocultar nada importante nesta
-                ficha?
-              </Typography>
-              <FieldDefault
-                id="godfatherResponsibility"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
+              <Typography>O padrinho sabe que não pode ocultar nada importante nesta ficha?</Typography>
+              <FieldDefault id="godfatherResponsibility" control={control} defaultValue="" label="-" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -250,83 +149,34 @@ export const Pos1Form: React.FC = () => {
         <SessionForm title="Informações Pessoais:">
           <Grid container spacing={2}>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="mood"
-                label="Ânimo"
-                options={moodData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="candidateSpirit" label="Ânimo" options={moodData} />
             </Grid>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="disposition"
-                label="Disposição"
-                options={dispositionData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="candidateDisposition" label="Disposição" options={dispositionData} />
             </Grid>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="participation"
-                label="Participação"
-                options={participationData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="candidateParticipation" label="Participação" options={participationData} />
             </Grid>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="aboutFather"
-                label="Quanto ao Pai"
-                options={aboutFatherData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="fatherSituation" label="Quanto ao Pai" options={aboutFatherData} />
             </Grid>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="aboutMother"
-                label="Quanto à Mãe"
-                options={aboutMotherData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="motherSituation" label="Quanto à Mãe" options={aboutMotherData} />
             </Grid>
             <Grid size={12}>
-              <FieldSetCheckbox
-                control={control}
-                id="livesWith"
-                label="Mora com"
-                options={livesWithData}
-              />
+              <FieldSetCheckbox control={control} id="livesWith" label="Mora com" options={livesWithData} />
               {livesWith && livesWith.includes("outro") && (
-                <FieldDefault
-                  id="otherResident"
-                  control={control}
-                  defaultValue=""
-                  label="Quem"
-                  variant="standard"
-                />
+                <FieldDefault id="otherWho" control={control} defaultValue="" label="Quem" variant="standard" />
               )}
             </Grid>
             <Grid size={12}>
-              <FieldSetRadio
-                control={control}
-                id="parentsReligion"
-                label="Religião dos Pais"
-                options={parentsReligionData}
-              />
+              <FieldSetRadio control={control} defaultValue="" id="parentsReligion" label="Religião dos Pais" options={parentsReligionData} />
               {parentsReligion && parentsReligion.includes("outro") && (
-                <FieldDefault
-                  id="otherReligion"
-                  control={control}
-                  defaultValue=""
-                  label="Outra Religião Associada"
-                  variant="standard"
-                />
+                <FieldDefault id="otherReligion" control={control} defaultValue="" label="Outra Religião Associada" variant="standard" />
               )}
             </Grid>
             <Grid size={12}>
-              <Typography color={parentsCommentError ? red[700] : "inherit"}>
-                Comentário dos pais
-              </Typography>
+              <Typography color={parentsCommentError ? red[700] : "inherit"}>Comentário dos pais</Typography>
               <Controller
                 name="parentsComment"
                 control={control}
@@ -351,20 +201,12 @@ export const Pos1Form: React.FC = () => {
         <SessionForm title="Religiosos: ">
           <Grid container>
             <Grid size={12}>
-              <FieldSetCheckbox
-                control={control}
-                id="sacraments"
-                label="Sacramentos"
-                options={sacramentsData}
-              />
+              <FieldSetCheckbox control={control} id="spiritualLife" label="Sacramentos" options={sacramentsData} />
             </Grid>
             <Grid size={12}>
               <Typography fontWeight={700}>
-                OBS: Caso não tenha feito a 1ª Eucaristia, fazê-la antes do
-                Curso, juntamente com Diretor Espiritual Paroquial . Caso
-                pratica ou tenha praticado outra religião ou confissão
-                religiosa, procurar, junto do pároco, antes do curso, a
-                Profissão de Fé.
+                OBS: Caso não tenha feito a 1ª Eucaristia, fazê-la antes do Curso, juntamente com Diretor Espiritual Paroquial . Caso pratica ou tenha
+                praticado outra religião ou confissão religiosa, procurar, junto do pároco, antes do curso, a Profissão de Fé.
               </Typography>
             </Grid>
           </Grid>
@@ -372,21 +214,16 @@ export const Pos1Form: React.FC = () => {
 
         <SessionForm title="Observação:">
           <Grid container spacing={2}>
-            <Grid size={12}>
+            {/* <Grid size={12}>
               <FieldDefault
                 id="preParishCoordinator"
                 control={control}
                 defaultValue=""
                 label="Dep Pré e Cord Paroquial"
               />
-            </Grid>
+            </Grid> */}
             <Grid size={12}>
-              <FieldDefault
-                id="spiritualDirector"
-                control={control}
-                defaultValue=""
-                label="Diretor Espiritual"
-              />
+              <FieldDefault id="observationsDed" control={control} defaultValue="" label="Diretor Espiritual" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -398,16 +235,16 @@ export const Pos1Form: React.FC = () => {
                 control={control}
                 id="hasDisease"
                 label="Tem Doença"
+                defaultValue={disease ? hasDiseaseData[0].id : hasDiseaseData[1].id}
                 options={hasDiseaseData}
+                customOnChange={(e) => {
+                  if (e.target.value === "nao") {
+                    clearField({ field: "disease", value: "" });
+                  }
+                }}
               />
               {hasDisease && hasDisease.includes("sim") && (
-                <FieldDefault
-                  id="disease"
-                  control={control}
-                  defaultValue=""
-                  label="Doença"
-                  variant="standard"
-                />
+                <FieldDefault id="disease" control={control} defaultValue="" label="Doença" variant="standard" />
               )}
             </Grid>
             <Grid size={12}>
@@ -415,26 +252,21 @@ export const Pos1Form: React.FC = () => {
                 control={control}
                 id="takesMedication"
                 label="Toma Medicação"
+                defaultValue={medication ? takesMedicationData[0].id : takesMedicationData[1].id}
                 options={takesMedicationData}
+                customOnChange={(e) => {
+                  if (e.target.value === "nao") {
+                    clearField({ field: "medication", value: "" });
+                  }
+                }}
               />
               {takesMedication && takesMedication.includes("sim") && (
-                <FieldDefault
-                  id="medication"
-                  control={control}
-                  defaultValue=""
-                  label="Medicação"
-                  variant="standard"
-                />
+                <FieldDefault id="medication" control={control} defaultValue="" label="Medicação" variant="standard" />
               )}
             </Grid>
 
             <Grid size={12}>
-              <FieldDefault
-                id="allergy"
-                label="Alergia"
-                control={control}
-                defaultValue=""
-              />
+              <FieldDefault id="allergy" label="Alergia" control={control} defaultValue="" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -449,12 +281,7 @@ export const Pos1Form: React.FC = () => {
           </Grid>
         </SessionForm>
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
           Enviar
         </Button>
       </Stack>
