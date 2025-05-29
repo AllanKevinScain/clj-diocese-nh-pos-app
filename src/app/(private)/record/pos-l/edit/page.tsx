@@ -1,6 +1,5 @@
-// import { InferType } from "yup";
-
-// import { poslSchema } from "@/yup";
+import { EditRecordPoslClientPage } from './client-page';
+import { getRecordById } from './server-call';
 
 interface EditRecordPoslPageInterface {
   params: Promise<{ id: string }>;
@@ -10,7 +9,8 @@ interface EditRecordPoslPageInterface {
 export default async function EditRecordPoslPage(props: EditRecordPoslPageInterface) {
   const { searchParams } = props;
   const { id } = await searchParams;
-  console.log("🚀 ~ EditRecordPoslPage ~ id:", id);
 
-  return <></>;
+  const record = await getRecordById(id);
+
+  return <EditRecordPoslClientPage record={record.data} />;
 }

@@ -1,16 +1,16 @@
-import dayjs from "dayjs";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import dayjs from 'dayjs';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
-import { authOptions } from "@/auth-config";
+import { authOptions } from '@/auth-config';
 
-import { EditCourseClientPage } from "./client-page";
+import { EditCourseClientPage } from './client-page';
 
 async function fullUrl() {
   const headersList = headers();
-  const host = (await headersList).get("host");
-  const protocol = (await headersList).get("x-forwarded-proto") || "http";
+  const host = (await headersList).get('host');
+  const protocol = (await headersList).get('x-forwarded-proto') || 'http';
   return `${protocol}://${host}`;
 }
 
@@ -26,15 +26,15 @@ export default async function EditCoursePage(props: EditCoursePageInterface) {
   if (session && session.accessToken && courseId) {
     const url = await fullUrl();
     const response = await fetch(`${url}/api/course?courseId=${courseId}`, {
-      method: "GET",
+      method: 'GET',
       headers: { authorization: session.accessToken },
     });
     const data = await response.json();
 
     const formatedData = {
       ...data.data,
-      startDate: dayjs(data.data.startDate).format("YYYY-MM-DD"),
-      endDate: dayjs(data.data.endDate).format("YYYY-MM-DD"),
+      startDate: dayjs(data.data.startDate).format('YYYY-MM-DD'),
+      endDate: dayjs(data.data.endDate).format('YYYY-MM-DD'),
     };
 
     if (data.ok) {
@@ -42,5 +42,5 @@ export default async function EditCoursePage(props: EditCoursePageInterface) {
     }
   }
 
-  redirect("/courses");
+  redirect('/courses');
 }

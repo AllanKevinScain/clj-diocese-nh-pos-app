@@ -1,12 +1,6 @@
-"use client";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+'use client';
+import { Button } from '@headlessui/react';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 interface AcceptModalInterface {
   isOpen: boolean;
@@ -25,18 +19,14 @@ export const AcceptModal = (props: AcceptModalInterface) => {
       </DialogContent>
       <DialogActions>
         <Button
-          variant="contained"
           color="primary"
           onClick={() => {
             accept();
             handle();
-          }}
-        >
+          }}>
           Sim
         </Button>
-        <Button variant="outlined" onClick={handle}>
-          Não
-        </Button>
+        <Button onClick={handle}>Não</Button>
       </DialogActions>
     </Dialog>
   );

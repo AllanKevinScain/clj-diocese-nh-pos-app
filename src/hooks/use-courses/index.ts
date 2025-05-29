@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { InferType } from "yup";
+import type { InferType } from 'yup';
 
-import { courseSchema } from "@/yup";
+import type { courseSchema } from '@/yup';
 
 export type CourseInferType = InferType<typeof courseSchema>;
 
 export function useCourses() {
   async function listCourses() {
-    const req = await fetch("/api/course/list", {
-      method: "GET",
+    const req = await fetch('/api/course/list', {
+      method: 'GET',
     });
     const res = await req.json();
 
@@ -17,8 +17,8 @@ export function useCourses() {
   }
 
   async function registerCourse(props: CourseInferType) {
-    const req = await fetch("/api/course", {
-      method: "POST",
+    const req = await fetch('/api/course', {
+      method: 'POST',
       body: JSON.stringify(props),
     });
     const res = await req.json();
@@ -28,7 +28,7 @@ export function useCourses() {
   async function updateCourse(props: CourseInferType) {
     const { id, ...rest } = props;
     const req = await fetch(`/api/course?courseId=${id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(rest),
     });
 
@@ -39,7 +39,7 @@ export function useCourses() {
 
   async function deleteCourse(courseId: string) {
     const req = await fetch(`/api/course?courseId=${courseId}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     const res = await req.json();
     return res;

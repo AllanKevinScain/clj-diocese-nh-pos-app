@@ -1,22 +1,18 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
-import { authOptions } from "@/auth-config";
-import { NavBar } from "@/components";
+import { authOptions } from '@/auth-config';
+import { NavBar } from '@/components';
 
-export default async function PrivateLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/login");
+    redirect('/login');
   }
 
   if (session.error) {
-    redirect("/logout");
+    redirect('/logout');
   }
 
   return (

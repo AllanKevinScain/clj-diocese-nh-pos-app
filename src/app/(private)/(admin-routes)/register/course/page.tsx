@@ -1,15 +1,16 @@
-"use client";
+'use client';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Container, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { InferType } from "yup";
+import { Button } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Container, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import type { InferType } from 'yup';
 
-import { FieldDefault, SelectDefault } from "@/components";
-import { useCourses } from "@/hooks";
-import { courseSchema } from "@/yup";
+import { FieldDefault, SelectDefault } from '@/components';
+import { useCourses } from '@/hooks';
+import { courseSchema } from '@/yup';
 
 export type CourseInferType = InferType<typeof courseSchema>;
 
@@ -28,7 +29,7 @@ export default function RegisterCoursePage() {
       toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
-      navigate.push("/courses");
+      navigate.push('/courses');
     }
   };
 
@@ -42,8 +43,7 @@ export default function RegisterCoursePage() {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="flex flex-col gap-[20px]"
-      >
+        className="flex flex-col gap-[20px]">
         <FieldDefault
           id="startDate"
           defaultValue=""
@@ -66,25 +66,14 @@ export default function RegisterCoursePage() {
           control={control}
           label="Tipo do curso"
           options={[
-            { value: "POSl", label: "Curso de Liderança - Pós 1" },
-            { value: "POSll", label: "Curso de Liderança - Pós 2" },
+            { value: 'POSl', label: 'Curso de Liderança - Pós 1' },
+            { value: 'POSll', label: 'Curso de Liderança - Pós 2' },
           ]}
         />
 
-        <FieldDefault
-          id="courseNumber"
-          defaultValue=""
-          control={control}
-          label="Número do curso"
-        />
+        <FieldDefault id="courseNumber" defaultValue="" control={control} label="Número do curso" />
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          className="mt-[32px]"
-        >
+        <Button type="submit" color="primary" className="mt-[32px] w-full">
           Cadastrar
         </Button>
       </Box>

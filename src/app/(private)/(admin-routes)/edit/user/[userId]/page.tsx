@@ -1,15 +1,15 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
-import { authOptions } from "@/auth-config";
+import { authOptions } from '@/auth-config';
 
-import { EditUserClientPage } from "./client-page";
+import { EditUserClientPage } from './client-page';
 
 async function fullUrl() {
   const headersList = headers();
-  const host = (await headersList).get("host");
-  const protocol = (await headersList).get("x-forwarded-proto") || "http";
+  const host = (await headersList).get('host');
+  const protocol = (await headersList).get('x-forwarded-proto') || 'http';
   return `${protocol}://${host}`;
 }
 
@@ -25,7 +25,7 @@ export default async function EditUserPage(props: EditUserPageInterface) {
   if (session && session.accessToken && userId) {
     const url = await fullUrl();
     const response = await fetch(`${url}/api/user?userId=${userId}`, {
-      method: "GET",
+      method: 'GET',
       headers: { authorization: session.accessToken },
     });
     const data = await response.json();
@@ -35,5 +35,5 @@ export default async function EditUserPage(props: EditUserPageInterface) {
     }
   }
 
-  redirect("/view/users");
+  redirect('/view/users');
 }

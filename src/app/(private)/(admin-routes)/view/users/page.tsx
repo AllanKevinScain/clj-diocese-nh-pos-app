@@ -1,20 +1,12 @@
-"use client";
+'use client';
 
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import { TbLoaderQuarter } from "react-icons/tb";
-import { InferType } from "yup";
+import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { TbLoaderQuarter } from 'react-icons/tb';
+import type { InferType } from 'yup';
 
-import { useCreateQuery, useUsers } from "@/hooks";
-import { userSchema } from "@/yup/user-schema";
+import { useCreateQuery, useUsers } from '@/hooks';
+import type { userSchema } from '@/yup/user-schema';
 
 type UserSchemaInferType = InferType<typeof userSchema>;
 
@@ -23,7 +15,7 @@ export default function UserClientPage() {
   const { listUsers } = useUsers();
 
   const { data, isLoading } = useCreateQuery<UserSchemaInferType[]>({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: listUsers,
   });
 
@@ -31,14 +23,14 @@ export default function UserClientPage() {
 
   if (isLoading) {
     return (
-      <Box className="flex justify-center items-center h-[400px]">
+      <Box className="flex h-[400px] items-center justify-center">
         <TbLoaderQuarter size={30} className="animate-spin" />
       </Box>
     );
   }
   if (isEmptyUsers) {
     return (
-      <Box className="flex flex-col justify-center items-center gap-[8px] h-[400px]">
+      <Box className="flex h-[400px] flex-col items-center justify-center gap-[8px]">
         <Typography variant="h2" className="!text-[30px]">
           Nenhum usuário foi cadastrado!
         </Typography>
@@ -58,9 +50,7 @@ export default function UserClientPage() {
           data.map((user) => (
             <Grid size={{ xs: 12 }} key={user.id}>
               <Card>
-                <CardActionArea
-                  onClick={() => navigate.push(`/edit/user/${user.id}`)}
-                >
+                <CardActionArea onClick={() => navigate.push(`/edit/user/${user.id}`)}>
                   <CardContent className="flex flex-col">
                     <Typography variant="h5" color="primary">
                       {user.name}
@@ -68,11 +58,7 @@ export default function UserClientPage() {
                     <Typography variant="h5" className="text-nowrap">
                       {user.city}
                     </Typography>
-                    <Typography
-                      variant="h5"
-                      className="text-nowrap uppercase"
-                      color="primary"
-                    >
+                    <Typography variant="h5" className="text-nowrap uppercase" color="primary">
                       {user.loginType}
                     </Typography>
                   </CardContent>

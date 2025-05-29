@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Container, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { InferType } from "yup";
+import { Button } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Container, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import type { InferType } from 'yup';
 
-import { AcceptModal, FieldDefault, SelectDefault } from "@/components";
-import { useToggleModal, useUsers } from "@/hooks";
-import { userSchema } from "@/yup/user-schema";
+import { AcceptModal, FieldDefault, SelectDefault } from '@/components';
+import { useToggleModal, useUsers } from '@/hooks';
+import { userSchema } from '@/yup/user-schema';
 
 type UserSchemaInferType = InferType<typeof userSchema>;
 
@@ -37,7 +38,7 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
       toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
-      navigate.push("/view/users");
+      navigate.push('/view/users');
     }
   };
 
@@ -48,7 +49,7 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
       toast.error(response.data.message);
     } else {
       toast.success(response.data.message);
-      navigate.push("/view/users");
+      navigate.push('/view/users');
     }
   }
 
@@ -64,21 +65,10 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-[20px]"
-        >
-          <FieldDefault
-            id="name"
-            defaultValue=""
-            control={control}
-            label="Nome"
-          />
+          className="flex flex-col gap-[20px]">
+          <FieldDefault id="name" defaultValue="" control={control} label="Nome" />
 
-          <FieldDefault
-            id="email"
-            defaultValue=""
-            control={control}
-            label="Email"
-          />
+          <FieldDefault id="email" defaultValue="" control={control} label="Email" />
 
           <SelectDefault
             id="loginType"
@@ -86,36 +76,18 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
             control={control}
             label="Tipo de usuário"
             options={[
-              { value: "admin", label: "Possui liberdade para qualquer ação" },
-              { value: "manager", label: "Pode cadastrar fixas" },
+              { value: 'admin', label: 'Possui liberdade para qualquer ação' },
+              { value: 'manager', label: 'Pode cadastrar fixas' },
             ]}
           />
 
-          <FieldDefault
-            id="city"
-            defaultValue=""
-            control={control}
-            label="Cidade"
-          />
+          <FieldDefault id="city" defaultValue="" control={control} label="Cidade" />
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            className="mt-[32px]"
-          >
+          <Button type="submit" color="primary" className="mt-[32px] w-full">
             Atualizar
           </Button>
 
-          <Button
-            type="button"
-            variant="contained"
-            color="error"
-            fullWidth
-            className="mt-[32px]"
-            onClick={handle}
-          >
+          <Button type="button" color="error" className="mt-[32px] w-full" onClick={handle}>
             Apagar usuário
           </Button>
         </Box>

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@mui/material";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { BiPlus } from "react-icons/bi";
+import { Button } from '@headlessui/react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { BiPlus } from 'react-icons/bi';
 
 export const NewCourse = () => {
   const session = useSession();
 
-  if (session.data?.user.loginType === "admin") {
+  if (session.data?.user.loginType === 'admin') {
     return (
       <Link href="/register/course">
-        <Button endIcon={<BiPlus />} variant="contained">
-          Cadastrar curso
+        <Button>
+          Cadastrar curso <BiPlus />
         </Button>
       </Link>
     );

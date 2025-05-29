@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider } from "next-auth/react";
-import { Toaster } from "react-hot-toast";
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SessionProvider } from 'next-auth/react';
+import { Toaster } from 'react-hot-toast';
 
-import { theme } from "@/styles/theme";
+import { theme } from '@/styles/theme';
 
-import { ModeSwitch } from "./mode-switch";
+import { ModeSwitch } from './mode-switch';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +17,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <Toaster toastOptions={{ duration: 1000 }} />
+        <Toaster toastOptions={{ duration: 5000 }} />
 
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>

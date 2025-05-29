@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Checkbox,
@@ -7,22 +7,21 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
-} from "@mui/material";
-import { red } from "@mui/material/colors";
-import type { Control, FieldValues, Path, PathValue } from "react-hook-form";
-import { Controller } from "react-hook-form";
+} from '@mui/material';
+import { red } from '@mui/material/colors';
+import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 export interface FieldSetCheckboxInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T> | undefined;
   label: string;
   options: { id: string; label: string }[];
+  disabled?: boolean;
 }
 
-export const FieldSetCheckbox = <T extends FieldValues>(
-  props: FieldSetCheckboxInterface<T>
-) => {
-  const { label, options = [], id, control } = props;
+export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxInterface<T>) => {
+  const { label, options = [], id, control, disabled = false } = props;
 
   return (
     <Controller
@@ -35,11 +34,14 @@ export const FieldSetCheckbox = <T extends FieldValues>(
         const errorMessage = formState.errors[id]?.message as string;
 
         return (
-          <FormControl component="fieldset" error={hasError}>
-            <FormLabel component="legend">{label}</FormLabel>
+          <FormControl component="fieldset" error={hasError} disabled={disabled}>
+            <FormLabel component="legend" disabled={disabled}>
+              {label}
+            </FormLabel>
             <FormGroup row>
               {options.map(({ id, label: optLabel }) => (
                 <FormControlLabel
+                  disabled={disabled}
                   key={id}
                   control={
                     <Checkbox
@@ -49,16 +51,14 @@ export const FieldSetCheckbox = <T extends FieldValues>(
                         if (e.target.checked) {
                           field.onChange([...value, id]);
                         } else {
-                          field.onChange(
-                            value.filter((value: string) => value !== id)
-                          );
+                          field.onChange(value.filter((value: string) => value !== id));
                         }
                       }}
                       sx={
                         hasError
                           ? {
                               color: red[800],
-                              "&.Mui-checked": {
+                              '&.Mui-checked': {
                                 color: red[600],
                               },
                             }
@@ -66,7 +66,7 @@ export const FieldSetCheckbox = <T extends FieldValues>(
                       }
                     />
                   }
-                  sx={{ color: hasError ? red[700] : "inherit" }}
+                  sx={{ color: hasError ? red[700] : 'inherit' }}
                   label={optLabel}
                 />
               ))}

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { styled, TextareaAutosize } from "@mui/material";
+import { styled, TextareaAutosize } from '@mui/material';
 
 export const FieldTextarea = styled(TextareaAutosize)(
   () => `
@@ -17,5 +17,5 @@ export const FieldTextarea = styled(TextareaAutosize)(
     &:focus-visible {
       outline: 0;
     }
-  `
+  `,
 );

@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { ErrorComponent, ErrorComponentInterface } from "@/components";
+import type { ErrorComponentInterface } from '@/components';
+import { ErrorComponent } from '@/components';
 
 export default function Error(props: ErrorComponentInterface) {
   const { error, reset } = props;
@@ -9,7 +10,7 @@ export default function Error(props: ErrorComponentInterface) {
     <ErrorComponent
       error={{
         ...error,
-        message: "Aconteceu um imprevisto!",
+        message: 'Aconteceu um imprevisto!',
       }}
       reset={reset}
     />

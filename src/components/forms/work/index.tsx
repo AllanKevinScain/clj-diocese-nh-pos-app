@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { BiChevronLeft } from "react-icons/bi";
-import { InferType } from "yup";
+import { Button } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Container, Grid, Stack, Typography } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { BiChevronLeft } from 'react-icons/bi';
+import type { InferType } from 'yup';
 
 import {
   FieldDefault,
@@ -16,14 +17,10 @@ import {
   FieldSetRadio,
   FieldTextarea,
   SessionForm,
-} from "@/components";
-import {
-  coursesTakenData,
-  instrumentData,
-  workPreferenceData,
-} from "@/constants";
-import { formatMobilePhone } from "@/helpers";
-import { teamWorkSchema } from "@/yup";
+} from '@/components';
+import { coursesTakenData, instrumentData, workPreferenceData } from '@/constants';
+import { formatMobilePhone } from '@/helpers';
+import { teamWorkSchema } from '@/yup';
 
 type WorkSchemaInfertype = InferType<typeof teamWorkSchema>;
 
@@ -38,9 +35,9 @@ export const TeamWorkForm: React.FC = () => {
   } = useForm<WorkSchemaInfertype>({
     resolver: yupResolver(teamWorkSchema),
   });
-  const areConfirmed = watch("areConfirmed");
-  const wouldToBeConfirmed = watch("wouldToBeConfirmed");
-  const playAnyInstrument = watch("playAnyInstrument");
+  const areConfirmed = watch('areConfirmed');
+  const wouldToBeConfirmed = watch('wouldToBeConfirmed');
+  const playAnyInstrument = watch('playAnyInstrument');
   const reasonWorkCourse = !!errors.reasonWorkCourse;
 
   const onSubmit = (data: WorkSchemaInfertype) => {
@@ -48,22 +45,13 @@ export const TeamWorkForm: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ pb: "5%" }}>
-      <Button
-        variant="outlined"
-        sx={{ width: "fit-content" }}
-        startIcon={<BiChevronLeft />}
-        onClick={() => navigate.back()}
-      >
+    <Container maxWidth="md" sx={{ pb: '5%' }}>
+      <Button className="w-fit" onClick={() => navigate.back()}>
+        <BiChevronLeft />
         Voltar
       </Button>
-      <Stack
-        flexDirection="column"
-        spacing={4}
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Stack flexDirection="column" pt={4} sx={{ textAlign: "center" }}>
+      <Stack flexDirection="column" spacing={4} component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Stack flexDirection="column" pt={4} sx={{ textAlign: 'center' }}>
           <Typography component="h1" variant="h4">
             Curso de Liderança Juvenil - CLJ
           </Typography>
@@ -95,20 +83,10 @@ export const TeamWorkForm: React.FC = () => {
         <SessionForm title="Dados do(a) Candidato(a):">
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="studentName"
-                control={control}
-                defaultValue=""
-                label="Nome"
-              />
+              <FieldDefault id="studentName" control={control} defaultValue="" label="Nome" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="nickname"
-                control={control}
-                defaultValue=""
-                label="Apelido"
-              />
+              <FieldDefault id="nickname" control={control} defaultValue="" label="Apelido" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <FieldDefault
@@ -120,20 +98,10 @@ export const TeamWorkForm: React.FC = () => {
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="parishPriest"
-                control={control}
-                defaultValue=""
-                label="Pároco"
-              />
+              <FieldDefault id="parishPriest" control={control} defaultValue="" label="Pároco" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="rg"
-                control={control}
-                defaultValue=""
-                label="RG/CN"
-              />
+              <FieldDefault id="rg" control={control} defaultValue="" label="RG/CN" />
             </Grid>
             <Grid size={12}>
               <Typography>Data de Nascimento</Typography>
@@ -146,20 +114,10 @@ export const TeamWorkForm: React.FC = () => {
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="instagram"
-                control={control}
-                defaultValue=""
-                label="Instagram"
-              />
+              <FieldDefault id="instagram" control={control} defaultValue="" label="Instagram" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <FieldDefault
-                id="parish"
-                control={control}
-                defaultValue=""
-                label="Paróquia/Capela"
-              />
+              <FieldDefault id="parish" control={control} defaultValue="" label="Paróquia/Capela" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -192,8 +150,8 @@ export const TeamWorkForm: React.FC = () => {
             </Grid> */}
             <Grid size={12}>
               <Typography>
-                Você é consciente de que é necessário estar em estado de graça
-                (confessado) para participar da equipe de trabalho?
+                Você é consciente de que é necessário estar em estado de graça (confessado) para
+                participar da equipe de trabalho?
               </Typography>
               <FieldDefault
                 id="termStateGraceConfessed"
@@ -204,15 +162,10 @@ export const TeamWorkForm: React.FC = () => {
             </Grid>
             <Grid size={12}>
               <Typography>
-                Você é consciente de que falsificar informações na ficha de
-                trabalho é prejudicial para sua vida e para o curso?
+                Você é consciente de que falsificar informações na ficha de trabalho é prejudicial
+                para sua vida e para o curso?
               </Typography>
-              <FieldDefault
-                id="termNoFakeData"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
+              <FieldDefault id="termNoFakeData" control={control} defaultValue="" label="-" />
             </Grid>
           </Grid>
         </SessionForm>
@@ -221,15 +174,10 @@ export const TeamWorkForm: React.FC = () => {
           <Grid container spacing={2}>
             <Grid size={12}>
               <Typography>
-                Você é consciente de que o testemunho de vida fora do curso é
-                essencial para o êxito do curso?
+                Você é consciente de que o testemunho de vida fora do curso é essencial para o êxito
+                do curso?
               </Typography>
-              <FieldDefault
-                id="termLifeTestimony"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
+              <FieldDefault id="termLifeTestimony" control={control} defaultValue="" label="-" />
             </Grid>
             <Grid size={12}>
               <FieldDefault
@@ -253,11 +201,7 @@ export const TeamWorkForm: React.FC = () => {
             />
             </Grid> */}
             <Grid size={12}>
-              <FieldSetConsentCheckbox
-                id="areConfirmed"
-                control={control}
-                label="É Crismado?"
-              />
+              <FieldSetConsentCheckbox id="areConfirmed" control={control} label="É Crismado?" />
               {areConfirmed === false && (
                 <FieldSetConsentCheckbox
                   id="wouldToBeConfirmed"
@@ -298,7 +242,7 @@ export const TeamWorkForm: React.FC = () => {
         <SessionForm title="Razões para fazer o curso:">
           <Grid container spacing={2}>
             <Grid size={12}>
-              <Typography color={reasonWorkCourse ? red[700] : "inherit"}>
+              <Typography color={reasonWorkCourse ? red[700] : 'inherit'}>
                 Por que deseja trabalhar neste curso?
               </Typography>
               <Controller
@@ -372,19 +316,14 @@ export const TeamWorkForm: React.FC = () => {
             </Grid>
             <Grid size={12}>
               <Typography fontWeight={700}>
-                Coordenação e pároco: no caso deste jovem não ser exemplo de
-                perseverança no grupo e ausente na missa dominical, não assine a
+                Coordenação e pároco: no caso deste jovem não ser exemplo de perseverança no grupo e
+                ausente na missa dominical, não assine a
               </Typography>
             </Grid>
           </Grid>
         </SessionForm>
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
+        <Button type="submit" className="mt-3 mb-2 w-full">
           Enviar
         </Button>
       </Stack>

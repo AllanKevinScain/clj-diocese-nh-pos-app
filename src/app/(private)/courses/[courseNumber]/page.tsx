@@ -1,14 +1,13 @@
-import { CourseClientPage } from "./client-page";
+import { CourseClientPage } from './client-page';
 
 interface CoursePageInterface {
   params: Promise<{ courseNumber: string }>;
-  searchParams: Promise<{ courseId: string }>;
+  searchParams: Promise<unknown>;
 }
 
 export default async function CoursePage(props: CoursePageInterface) {
-  const { params, searchParams } = props;
+  const { params } = props;
   const { courseNumber } = await params;
-  const { courseId } = await searchParams;
 
-  return <CourseClientPage courseNumber={courseNumber} courseId={courseId} />;
+  return <CourseClientPage courseNumber={courseNumber} />;
 }

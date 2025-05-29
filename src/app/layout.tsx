@@ -1,23 +1,23 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
 
-import { Providers } from "@/providers";
+import { Providers } from '@/providers';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "CLJ Novo Hamburgo",
-  description: "Criado para gerir os cursos CLJ da diocese toda",
+  title: 'CLJ Novo Hamburgo',
+  description: 'Criado para gerir os cursos CLJ da diocese toda',
 };
 
 export default function RootLayout({
@@ -27,9 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

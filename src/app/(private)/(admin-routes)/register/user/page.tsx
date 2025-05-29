@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Container, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { InferType } from "yup";
+import { Button } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Container, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import type { InferType } from 'yup';
 
-import { FieldDefault, SelectDefault } from "@/components";
-import { useUsers } from "@/hooks";
-import { registerUserSchema } from "@/yup/user-schema";
+import { FieldDefault, SelectDefault } from '@/components';
+import { useUsers } from '@/hooks';
+import { registerUserSchema } from '@/yup/user-schema';
 
 type RegisterUserSchemaInferType = InferType<typeof registerUserSchema>;
 
@@ -30,7 +31,7 @@ export default function RegisterUserClientPage() {
       toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
-      navigate.push("/view/users");
+      navigate.push('/view/users');
     }
   };
 
@@ -40,24 +41,10 @@ export default function RegisterUserClientPage() {
         Cadastrar usuário
       </Typography>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-[20px]"
-      >
-        <FieldDefault
-          id="name"
-          defaultValue=""
-          control={control}
-          label="Paróquia/Capela"
-        />
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[20px]">
+        <FieldDefault id="name" defaultValue="" control={control} label="Paróquia/Capela" />
 
-        <FieldDefault
-          id="email"
-          defaultValue=""
-          control={control}
-          label="Email"
-        />
+        <FieldDefault id="email" defaultValue="" control={control} label="Email" />
 
         <FieldDefault
           id="password"
@@ -74,27 +61,16 @@ export default function RegisterUserClientPage() {
           label="Tipo de usuário"
           options={[
             {
-              value: "admin",
-              label: "Administrador - Possui liberdade para qualquer ação",
+              value: 'admin',
+              label: 'Administrador - Possui liberdade para qualquer ação',
             },
-            { value: "manager", label: "Gerente - Pode cadastrar fixas" },
+            { value: 'manager', label: 'Gerente - Pode cadastrar fixas' },
           ]}
         />
 
-        <FieldDefault
-          id="city"
-          defaultValue=""
-          control={control}
-          label="Cidade"
-        />
+        <FieldDefault id="city" defaultValue="" control={control} label="Cidade" />
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          className="mt-[32px]"
-        >
+        <Button type="submit" color="primary" className="mt-[32px] w-full">
           Cadastrar
         </Button>
       </Box>

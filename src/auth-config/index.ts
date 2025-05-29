@@ -1,21 +1,21 @@
-import jwt from "jsonwebtoken";
-import type { NextAuthOptions, User } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import CredentialProvider from "next-auth/providers/credentials";
+import jwt from 'jsonwebtoken';
+import type { NextAuthOptions, User } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import CredentialProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials): Promise<User | null> {
         const res = await fetch(`${process.env.BASE_API_URL}/login`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-type": "application/json",
+            'Content-type': 'application/json',
           },
           body: JSON.stringify({
             email: credentials?.email,
@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
         if (agora > inicioDaSessão) {
           return {
             ...token,
-            error: "TokenExpirou",
+            error: 'TokenExpirou',
           };
         }
       }
@@ -72,8 +72,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
 };

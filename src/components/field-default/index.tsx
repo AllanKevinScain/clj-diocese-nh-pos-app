@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { TextField } from "@mui/material";
-import { TextFieldProps } from "@mui/material";
-import type { Control, FieldValues, Path, PathValue } from "react-hook-form";
-import { Controller } from "react-hook-form";
+import { Description, Field, Label } from '@headlessui/react';
+import type { JSX } from 'react';
+import { memo } from 'react';
+import type { FieldValues, Path, PathValue } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { twMerge } from 'tailwind-merge';
 
-type CutTextfielProps = Pick<TextFieldProps, "type" | "variant" | "label">;
+import { CustomInputDecimal } from './decimal';
+import type { FieldDefaultInterface } from './field-input.type';
+import { CustomInputPadrao } from './padrao';
 
-export interface FieldDefaultInterface<T extends FieldValues>
-  extends CutTextfielProps {
-  id: Path<T>;
-  control: Control<T> | undefined;
-  defaultValue: string | boolean | string[];
-  customLabel?: React.ReactNode;
-  onChange?: (value: string) => string;
-}
+type CustomInputInterfaceWithDisplayInterface = {
+  <T extends FieldValues>(_: FieldDefaultInterface<T>): JSX.Element;
+  displayName: string;
+};
 
 const WithCustomLabel = ({
   customLabel,
@@ -35,10 +36,21 @@ const WithCustomLabel = ({
   return children;
 };
 
-export const FieldDefault = <T extends FieldValues>(
-  props: FieldDefaultInterface<T>
-) => {
-  const { control, id, defaultValue, onChange, customLabel, ...rest } = props;
+export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInterface<T>) => {
+  const {
+    customLabel,
+    control,
+    id,
+    defaultValue,
+    isLoading = false,
+    isDecimal = false,
+    placeholder,
+    sx,
+    disabled,
+    onChangeValue,
+    showCifrao = false,
+    label,
+  } = props;
 
   return (
     <WithCustomLabel customLabel={customLabel}>
@@ -47,23 +59,56 @@ export const FieldDefault = <T extends FieldValues>(
         control={control}
         defaultValue={defaultValue as PathValue<T, Path<T>>}
         render={({ field, formState }) => {
-          const errorMessage = formState.errors[id]?.message as string;
+          const { errors } = formState;
+
+          if (isLoading) {
+            return (
+              <div
+                className={twMerge(
+                  'min-h-[56px] bg-neutral-100',
+                  'rounded-[8px] border-[2px] border-solid border-neutral-400',
+                  'flex items-center justify-center',
+                )}>
+                <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
+              </div>
+            );
+          }
 
           return (
-            <TextField
-              {...field}
-              {...rest}
-              onChange={(e) => {
-                const value = e.target.value;
-                field.onChange(onChange ? onChange(value) : value);
-              }}
-              fullWidth
-              error={!!formState.errors[id]}
-              helperText={errorMessage}
-            />
+            <Field className="w-full">
+              {!!label && (
+                <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
+                  <span className="text-neutral-800">{label}</span>
+                </Label>
+              )}
+              {isDecimal && (
+                <CustomInputDecimal
+                  id={id}
+                  field={field}
+                  placeholder={placeholder}
+                  sx={sx}
+                  disabled={disabled}
+                  onChangeValue={onChangeValue}
+                  showCifrao={showCifrao}
+                />
+              )}
+              {!isDecimal && (
+                <CustomInputPadrao
+                  id={id}
+                  field={field}
+                  placeholder={placeholder}
+                  sx={sx}
+                  disabled={disabled}
+                />
+              )}
+
+              {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            </Field>
           );
         }}
       />
     </WithCustomLabel>
   );
-};
+}) as CustomInputInterfaceWithDisplayInterface;
+
+FieldDefault.displayName = 'FieldDefault';

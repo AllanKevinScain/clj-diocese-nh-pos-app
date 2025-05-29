@@ -1,25 +1,17 @@
-"use client";
+'use client';
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  InputAdornment,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
-import { InferType } from "yup";
+import { Button } from '@headlessui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Container, InputAdornment, Link, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { RiEyeCloseFill, RiEyeFill } from 'react-icons/ri';
+import type { InferType } from 'yup';
 
-import { loginSchema } from "@/yup";
+import { loginSchema } from '@/yup';
 
 type LoginSchemaInferType = InferType<typeof loginSchema>;
 
@@ -31,8 +23,8 @@ export const ClientPage = () => {
   } = useForm<LoginSchemaInferType>({
     resolver: yupResolver(loginSchema),
     defaultValues: {
-      email: "teste@gmail.com",
-      password: "teste123!",
+      email: 'teste@gmail.com',
+      password: 'teste123!',
     },
   });
   const navigate = useRouter();
@@ -41,31 +33,27 @@ export const ClientPage = () => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
   async function onSubmit(values: LoginSchemaInferType) {
     const { email, password } = values;
-    const res = await signIn("credentials", {
+    const res = await signIn('credentials', {
       email: email.toLowerCase().trim(),
       password: password.trim(),
       redirect: false,
     });
 
     if (!res?.ok) {
-      toast.error("Usuário não cadastrado!");
+      toast.error('Usuário não cadastrado!');
     } else {
-      toast.success("Login efetuado com sucesso!");
-      navigate.push("/courses");
+      toast.success('Login efetuado com sucesso!');
+      navigate.push('/courses');
     }
   }
 
@@ -74,27 +62,25 @@ export const ClientPage = () => {
       component="main"
       maxWidth="lg"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-      }}
-    >
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+      }}>
       <img
         src="https://cljdiocesenh.com.br/wp-content/uploads/2020/03/logo-Curso-de-Lideran%C3%A7a.png"
         alt="Logo"
         style={{
-          width: "100%",
-          height: "auto",
+          width: '100%',
+          height: 'auto',
         }}
       />
       <Typography
         component="h1"
         fontWeight="700"
         color="primary"
-        fontSize={{ xs: "38px", sm: "42px", md: "46px", lg: "50px" }}
-      >
+        fontSize={{ xs: '38px', sm: '42px', md: '46px', lg: '50px' }}>
         Login
       </Typography>
 
@@ -126,7 +112,7 @@ export const ClientPage = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               margin="normal"
               required
               fullWidth
@@ -139,19 +125,13 @@ export const ClientPage = () => {
                 input: {
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? "hide the password"
-                            : "display the password"
-                        }
+                      <Button
+                        aria-label={showPassword ? 'hide the password' : 'display the password'}
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
-                        onMouseUp={handleMouseUpPassword}
-                        edge="end"
-                      >
+                        onMouseUp={handleMouseUpPassword}>
                         {showPassword ? <RiEyeFill /> : <RiEyeCloseFill />}
-                      </IconButton>
+                      </Button>
                     </InputAdornment>
                   ),
                 },
@@ -160,7 +140,7 @@ export const ClientPage = () => {
           )}
         />
 
-        <Button type="submit" fullWidth variant="contained">
+        <Button type="submit" className="w-full">
           Entrar
         </Button>
         <Link href="#" variant="body2">

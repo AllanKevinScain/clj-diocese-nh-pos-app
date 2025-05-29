@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { Avatar, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
-import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { Button } from '@headlessui/react';
+import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
+import { signOut } from 'next-auth/react';
+import { useState } from 'react';
 
 interface LogoutMenuInterface {
   showMenu?: boolean;
@@ -22,46 +23,38 @@ export const LogoutMenu = (props: LogoutMenuInterface) => {
   }
 
   async function onLogout() {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ callbackUrl: '/' });
   }
 
-  const options = [{ id: "logout", content: "Sair", onClick: onLogout }];
+  const options = [{ id: 'logout', content: 'Sair', onClick: onLogout }];
 
   if (!showMenu) return null;
 
   return (
     <div>
       <Tooltip title="Menu de perfil">
-        <IconButton
-          size="large"
+        <Button
           aria-label="account of current user"
           color="inherit"
           id="basic-button"
-          aria-controls={open ? "basic-menu" : undefined}
+          aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClick}
-        >
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}>
           <Avatar
             alt="Remy Sharp"
             src="https://cljdiocesenh.com.br/wp-content/uploads/2022/10/screenshot.1698-407x270.jpg"
           />
-        </IconButton>
+        </Button>
       </Tooltip>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
+      <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
         {options.map((item) => (
           <MenuItem
             key={item.id}
             onClick={() => {
               item.onClick();
               handleClose();
-            }}
-          >
+            }}>
             {item.content}
           </MenuItem>
         ))}

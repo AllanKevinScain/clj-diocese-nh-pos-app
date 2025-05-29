@@ -1,19 +1,19 @@
-import { headers } from "next/headers";
-import { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { headers } from 'next/headers';
+import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
 export async function GET(request: NextRequest) {
-  const token = (await headers()).get("authorization");
+  const token = (await headers()).get('authorization');
 
-  if (!token) throw new Error("Token com problema");
+  if (!token) throw new Error('Token com problema');
 
   const searchParams = request.nextUrl.searchParams;
-  const courseId = searchParams.get("courseId");
+  const courseId = searchParams.get('courseId');
 
-  if (!courseId) throw new Error("Identificação necessária!");
+  if (!courseId) throw new Error('Identificação necessária!');
 
   const res = await fetch(`${process.env.BASE_API_URL}/course/${courseId}`, {
-    method: "GET",
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,12 +28,12 @@ export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   const body = await request.json();
 
-  if (!token?.accessToken) throw new Error("Token com problema");
+  if (!token?.accessToken) throw new Error('Token com problema');
 
   const res = await fetch(`${process.env.BASE_API_URL}/course`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token?.accessToken}`,
     },
     body: JSON.stringify(body),
@@ -46,17 +46,17 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   const token = await getToken({ req: request });
-  if (!token?.accessToken) throw new Error("Token com problema");
+  if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = await request.json();
 
-  const courseId = request.nextUrl.searchParams.get("courseId");
-  if (!courseId) throw new Error("Curso não identificado!");
+  const courseId = request.nextUrl.searchParams.get('courseId');
+  if (!courseId) throw new Error('Curso não identificado!');
 
   const res = await fetch(`${process.env.BASE_API_URL}/course/${courseId}`, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token?.accessToken}`,
     },
     body: JSON.stringify(body),
@@ -69,13 +69,13 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   const token = await getToken({ req: request });
-  if (!token?.accessToken) throw new Error("Token com problema");
+  if (!token?.accessToken) throw new Error('Token com problema');
 
-  const courseId = request.nextUrl.searchParams.get("courseId");
-  if (!courseId) throw new Error("Curso nao identificado!");
+  const courseId = request.nextUrl.searchParams.get('courseId');
+  if (!courseId) throw new Error('Curso nao identificado!');
 
   const res = await fetch(`${process.env.BASE_API_URL}/course/${courseId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token?.accessToken}`,
     },

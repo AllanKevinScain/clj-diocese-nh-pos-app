@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
-import { MenuItem, TextField } from "@mui/material";
-import { TextFieldProps } from "@mui/material";
-import type { Control, FieldValues, Path, PathValue } from "react-hook-form";
-import { Controller } from "react-hook-form";
+import type { TextFieldProps } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
+import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
-type CutTextfielProps = Pick<TextFieldProps, "variant" | "label">;
+type CutTextfielProps = Pick<TextFieldProps, 'variant' | 'label'>;
 
-export interface SelectDefaultInterface<T extends FieldValues>
-  extends CutTextfielProps {
+export interface SelectDefaultInterface<T extends FieldValues> extends CutTextfielProps {
   id: Path<T>;
   control: Control<T> | undefined;
   defaultValue: string | boolean | string[];
@@ -16,9 +15,7 @@ export interface SelectDefaultInterface<T extends FieldValues>
   onChange?: (value: string) => string;
 }
 
-export const SelectDefault = <T extends FieldValues>(
-  props: SelectDefaultInterface<T>
-) => {
+export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterface<T>) => {
   const { control, id, defaultValue, onChange, options, ...rest } = props;
 
   return (
@@ -40,8 +37,7 @@ export const SelectDefault = <T extends FieldValues>(
             fullWidth
             select
             error={!!formState.errors[id]}
-            helperText={errorMessage}
-          >
+            helperText={errorMessage}>
             {options.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 <span className="text-wrap">{item.label}</span>
