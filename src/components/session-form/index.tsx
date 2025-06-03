@@ -1,20 +1,15 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react';
-
 export interface SessionFormInterface {
   title: string;
   children: React.ReactNode;
 }
 
-export const SessionForm: React.FC<SessionFormInterface> = (props) => {
-  const { children, title } = props;
+export const SessionForm = (props: SessionFormInterface) => {
+  const { title, children } = props;
 
   return (
-    <Box>
-      <Typography variant="h5" mb={4}>
-        {title}
-      </Typography>
+    <div className="mb-6">
+      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
       {children}
-    </Box>
+    </div>
   );
 };

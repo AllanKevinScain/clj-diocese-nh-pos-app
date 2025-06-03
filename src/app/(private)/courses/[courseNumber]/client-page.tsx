@@ -1,6 +1,5 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { TbLoaderQuarter } from 'react-icons/tb';
@@ -17,8 +16,7 @@ interface CourseClientPageInterface {
   courseNumber: string;
 }
 
-export const CourseClientPage = (props: CourseClientPageInterface) => {
-  const { courseNumber } = props;
+export const CourseClientPage = ({ courseNumber }: CourseClientPageInterface) => {
   const { listRecordsByCourseNumber } = useListRecords();
 
   const { data, isLoading } = useQuery<InfertypePoslSchema[]>({
@@ -26,30 +24,29 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
     queryFn: () => listRecordsByCourseNumber(courseNumber),
   });
 
-  const isEmptyRecords = data && data?.length === 0 && !isLoading;
+  const isEmptyRecords = data && data.length === 0 && !isLoading;
 
   if (isLoading) {
     return (
       <div className="flex h-[400px] items-center justify-center">
-        <TbLoaderQuarter size={30} className="animate-spin" />
+        <TbLoaderQuarter size={30} className="animate-spin text-gray-600" />
       </div>
     );
   }
+
   if (isEmptyRecords) {
     return (
-      <Box className="flex h-[400px] flex-col items-center justify-center gap-[8px]">
-        <Typography variant="h2" className="!text-[30px]">
-          Nenhum curso foi cadastrado!
-        </Typography>
+      <div className="flex h-[400px] flex-col items-center justify-center gap-2 px-4 text-center">
+        <h2 className="text-2xl font-semibold text-gray-800">Nenhum curso foi cadastrado!</h2>
         <Newrecord />
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="xl" className="flex flex-col gap-[32px]">
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-8 px-4">
       <ControlButtons courseId={data ? data[0].id! : ''} courseNumber={courseNumber} />
       <ListRecords records={data!} />
-    </Container>
+    </div>
   );
 };

@@ -1,6 +1,5 @@
 'use client';
 
-import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { TbLoaderQuarter } from 'react-icons/tb';
@@ -23,96 +22,77 @@ export default function CoursesPage() {
     queryFn: listCourses,
   });
 
-  const isEmptyCourse = data && data?.length === 0 && !isLoading;
+  const isEmptyCourse = data && data.length === 0 && !isLoading;
 
   const poslCourses = data?.filter((curso) => curso.typeOfCourse === 'POSl');
   const posllCourses = data?.filter((curso) => curso.typeOfCourse === 'POSll');
 
   if (isLoading) {
     return (
-      <Box className="flex h-[400px] items-center justify-center">
+      <div className="flex h-[400px] items-center justify-center">
         <TbLoaderQuarter size={30} className="animate-spin" />
-      </Box>
+      </div>
     );
   }
+
   if (isEmptyCourse) {
     return (
-      <Box className="flex h-[400px] flex-col items-center justify-center gap-[8px]">
-        <Typography variant="h2" className="!text-[30px]">
-          Nenhum curso foi cadastrado!
-        </Typography>
+      <div className="flex h-[400px] flex-col items-center justify-center gap-2">
+        <h2 className="text-center text-2xl font-semibold">Nenhum curso foi cadastrado!</h2>
         <NewCourse />
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="lg" className="pb-[10%]">
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Cursos
-      </Typography>
+    <div className="mx-auto max-w-screen-lg px-4 pb-[10%]">
+      <h1 className="mt-6 mb-4 text-3xl font-bold">Cursos</h1>
 
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
-            Pós 1
-          </Typography>
-        </Grid>
-        {!isEmptyCourse &&
-          poslCourses?.map((course) => (
-            <Grid size={{ xs: 12 }} key={course.id}>
-              <Card>
-                <CardActionArea onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
-                  <CardContent className="flex justify-between">
-                    <Typography variant="h5">{course.courseNumber}</Typography>
+      <div className="space-y-6">
+        <div>
+          <h2 className="mb-2 text-xl font-semibold">Pós 1</h2>
+          <div className="space-y-4">
+            {poslCourses?.map((course) => (
+              <div
+                key={course.id}
+                className="cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-md"
+                onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
+                <div className="flex flex-col justify-between sm:flex-row">
+                  <span className="text-lg font-medium">{course.courseNumber}</span>
+                  <span className="mt-1 text-sm text-gray-600 sm:mt-0">
+                    {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')} -{' '}
+                    {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                    <div className="flex gap-[8px]">
-                      <Typography variant="h5" className="text-nowrap">
-                        {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')}
-                      </Typography>
-                      <span> - </span>
-                      <Typography variant="h5" className="text-nowrap">
-                        {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}
-                      </Typography>
-                    </div>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
+        <div>
+          <h2 className="mb-2 text-xl font-semibold">Pós 2</h2>
+          <div className="space-y-4">
+            {posllCourses?.map((course) => (
+              <div
+                key={course.id}
+                className="cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-md"
+                onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
+                <div className="flex flex-col justify-between sm:flex-row">
+                  <span className="text-lg font-medium">{course.courseNumber}</span>
+                  <span className="mt-1 text-sm text-gray-600 sm:mt-0">
+                    {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')} -{' '}
+                    {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
-            Pós 2
-          </Typography>
-        </Grid>
-
-        {!isEmptyCourse &&
-          posllCourses?.map((course) => (
-            <Grid size={{ xs: 12 }} key={course.id}>
-              <Card>
-                <CardActionArea onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
-                  <CardContent className="flex justify-between">
-                    <Typography variant="h5">{course.courseNumber}</Typography>
-
-                    <div className="flex gap-[8px]">
-                      <Typography variant="h5" className="text-nowrap">
-                        {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')}
-                      </Typography>
-                      <span> - </span>
-                      <Typography variant="h5" className="text-nowrap">
-                        {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}
-                      </Typography>
-                    </div>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-        <Grid size={{ xs: 12 }} textAlign="center">
+        <div className="pt-4 text-center">
           <NewCourse />
-        </Grid>
-      </Grid>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }

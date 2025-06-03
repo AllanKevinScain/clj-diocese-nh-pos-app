@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CLJ Novo Hamburgo',
-  description: 'Criado para gerir os cursos CLJ da diocese toda',
+  title: 'Login',
+  description: 'Página de autenticação',
 };
 
 export default function RootLayout({

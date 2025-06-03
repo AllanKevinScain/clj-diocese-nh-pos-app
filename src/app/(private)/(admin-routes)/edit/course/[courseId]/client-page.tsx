@@ -1,14 +1,12 @@
 'use client';
 
-import { Button } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { FieldDefault, SelectDefault } from '@/components';
+import { Button, FieldDefault, SelectDefault } from '@/components';
 import { useCourses } from '@/hooks';
 import { courseSchema } from '@/yup';
 
@@ -40,22 +38,20 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom className="mt-[32px] text-center">
+    <div className="mx-auto max-w-md px-4 py-8">
+      <h1 className="mb-8 text-center text-2xl font-semibold">
         Edição do curso {course.courseNumber} | {course.typeOfCourse}
-      </Typography>
+      </h1>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        className="flex flex-col gap-[20px]">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
           id="startDate"
           defaultValue=""
           control={control}
           type="date"
-          customLabel={<Typography>Data de início</Typography>}
+          customLabel={
+            <label className="mb-1 block font-medium text-gray-700">Data de início</label>
+          }
         />
 
         <FieldDefault
@@ -63,7 +59,9 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
           defaultValue=""
           id="endDate"
           type="date"
-          customLabel={<Typography>Data de término</Typography>}
+          customLabel={
+            <label className="mb-1 block font-medium text-gray-700">Data de término</label>
+          }
         />
 
         <SelectDefault
@@ -79,10 +77,8 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
 
         <FieldDefault id="courseNumber" defaultValue="" control={control} label="Número do curso" />
 
-        <Button type="submit" color="primary" className="mt-[32px] w-full">
-          Atualizar
-        </Button>
-      </Box>
-    </Container>
+        <Button type="submit">Atualizar</Button>
+      </form>
+    </div>
   );
 };

@@ -1,16 +1,9 @@
 'use client';
 
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from '@mui/material';
-import { red } from '@mui/material/colors';
+import { Description, Field, Label, Radio, RadioGroup } from '@headlessui/react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 export interface FieldSetRadioInterface<T extends FieldValues> {
   id: Path<T>;
@@ -18,7 +11,7 @@ export interface FieldSetRadioInterface<T extends FieldValues> {
   label: string;
   options: { id: string; label: string }[];
   defaultValue?: string | boolean | string[];
-  customOnChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  customOnChange?: (event: string) => void;
   disabled?: boolean;
 }
 
@@ -39,52 +32,40 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
       control={control}
       defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
-        const hasError = !!formState.errors[id];
-        const errorMessage = formState.errors[id]?.message as string;
+        const { errors } = formState;
+        const { value } = field;
 
         return (
-          <FormControl component="fieldset" error={hasError} disabled={disabled}>
-            <FormLabel component="legend" disabled={disabled}>
-              {label}
-            </FormLabel>
-            <RadioGroup {...field} row defaultValue="">
-              {options.map(({ id, label: optLabel }) => {
+          <Field className="w-full">
+            {!!label && (
+              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
+                <span className="text-neutral-800">{label}</span>
+              </Label>
+            )}
+
+            <RadioGroup
+              {...field}
+              defaultValue=""
+              value={value}
+              onChange={(e) => {
+                if (field.value === id) {
+                  field.onChange('');
+                } else {
+                  field.onChange(e);
+                }
+                if (customOnChange) customOnChange(e);
+              }}>
+              {options.map(({ id: optionId, label: optLabel }) => {
                 return (
-                  <FormControlLabel
-                    key={id}
-                    disabled={disabled}
-                    value={id}
-                    control={
-                      <Radio
-                        disabled={disabled}
-                        onChange={(e) => {
-                          if (field.value === id) {
-                            field.onChange('');
-                          } else {
-                            field.onChange(e.target.value);
-                          }
-                          if (customOnChange) customOnChange(e);
-                        }}
-                        sx={
-                          hasError
-                            ? {
-                                color: red[800],
-                                '&.Mui-checked': {
-                                  color: red[600],
-                                },
-                              }
-                            : {}
-                        }
-                      />
-                    }
-                    sx={{ color: hasError ? red[700] : 'inherit' }}
-                    label={optLabel}
-                  />
+                  <Radio disabled={disabled} value={optionId} key={optionId}>
+                    <span>{optLabel}</span>
+                  </Radio>
                 );
               })}
             </RadioGroup>
-            <FormHelperText>{errorMessage}</FormHelperText>
-          </FormControl>
+
+            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+          </Field>
         );
       }}
     />

@@ -1,14 +1,12 @@
 'use client';
 
-import { Button } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { FieldDefault, SelectDefault } from '@/components';
+import { Button, FieldDefault, SelectDefault } from '@/components';
 import { useCourses } from '@/hooks';
 import { courseSchema } from '@/yup';
 
@@ -34,30 +32,24 @@ export default function RegisterCoursePage() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom className="mt-[32px] text-center">
-        Cadastrar Curso
-      </Typography>
+    <div className="mx-auto w-full max-w-md px-4 py-10">
+      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Cadastrar Curso</h2>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        className="flex flex-col gap-[20px]">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
           id="startDate"
           defaultValue=""
           control={control}
           type="date"
-          customLabel={<Typography>Data de início</Typography>}
+          customLabel={<span className="font-medium text-gray-700">Data de início</span>}
         />
 
         <FieldDefault
-          control={control}
-          defaultValue=""
           id="endDate"
+          defaultValue=""
+          control={control}
           type="date"
-          customLabel={<Typography>Data de término</Typography>}
+          customLabel={<span className="font-medium text-gray-700">Data de término</span>}
         />
 
         <SelectDefault
@@ -73,10 +65,8 @@ export default function RegisterCoursePage() {
 
         <FieldDefault id="courseNumber" defaultValue="" control={control} label="Número do curso" />
 
-        <Button type="submit" color="primary" className="mt-[32px] w-full">
-          Cadastrar
-        </Button>
-      </Box>
-    </Container>
+        <Button type="submit">Cadastrar</Button>
+      </form>
+    </div>
   );
 }

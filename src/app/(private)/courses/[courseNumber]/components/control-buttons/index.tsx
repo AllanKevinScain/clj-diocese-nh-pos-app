@@ -1,8 +1,5 @@
 'use client';
 
-import { Button } from '@headlessui/react';
-import type { ButtonOwnProps } from '@mui/material';
-import { Grid } from '@mui/material';
 import { isEmpty } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -20,12 +17,10 @@ interface ControlButtonsInterface {
   courseNumber: string;
 }
 
-export const ControlButtons = (props: ControlButtonsInterface) => {
-  const { courseId, courseNumber } = props;
+export const ControlButtons = ({ courseId, courseNumber }: ControlButtonsInterface) => {
   const { data } = useSession();
   const navigate = useRouter();
   const { isOpen, handle } = useToggleModal();
-
   const { deleteCourse } = useCourses();
 
   const isAdmin = data?.user.loginType === 'admin';
@@ -33,16 +28,14 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
   const actionForAdmin = [
     {
       label: 'Editar curso',
-      icon: <BiEdit />,
+      icon: <BiEdit className="ml-2" />,
       url: `/edit/course/${courseId}`,
-      color: 'warning',
-      click: () => null,
+      click: () => {},
     },
     {
       label: 'Excluir curso',
-      icon: <BiTrash />,
+      icon: <BiTrash className="ml-2" />,
       url: '',
-      color: 'error',
       click: () => handle(),
     },
   ];
@@ -51,17 +44,15 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
     ...(isAdmin ? actionForAdmin : []),
     {
       label: 'Voltar',
-      icon: <HiArrowUturnLeft />,
+      icon: <HiArrowUturnLeft className="ml-2" />,
       url: '',
-      color: 'primary',
       click: () => navigate.back(),
     },
     {
       label: 'Criar ficha nova',
-      icon: <BiPlus />,
+      icon: <BiPlus className="ml-2" />,
       url: `/record/pos-l/register?courseNumber=${courseNumber}`,
-      color: 'primary',
-      click: () => null,
+      click: () => {},
     },
   ];
 
@@ -80,35 +71,46 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
     <>
       <AcceptModal isOpen={isOpen} handle={handle} accept={deleteCourseById} />
 
-      <Grid container spacing={2}>
-        {actionButtons.map((actionButton) => (
-          <Grid
-            key={actionButton.label}
-            size={{ xs: 6, md: 6, sm: 6, lg: 6 }}
-            className="h-[100px]">
-            {!isEmpty(actionButton.url) && (
-              <Link href={actionButton.url}>
-                <Button
-                  color={actionButton.color as ButtonOwnProps['color']}
-                  className="flex h-full w-full items-center justify-center rounded-[12px]">
-                  {actionButton.label}
-                  {actionButton.icon}
-                </Button>
-              </Link>
-            )}
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        {actionButtons.map((action) => {
+          const baseStyle =
+            'flex h-24 w-full items-center justify-center rounded-xl text-white font-semibold text-center text-sm sm:text-base transition-colors';
 
-            {isEmpty(actionButton.url) && (
-              <Button
-                color={actionButton.color as ButtonOwnProps['color']}
-                onClick={actionButton.click}
-                className="flex h-full w-full items-center justify-center rounded-[12px]">
-                {actionButton.icon}
-                {actionButton.label}
-              </Button>
-            )}
-          </Grid>
-        ))}
-      </Grid>
+          const colorVariants = {
+            primary: 'bg-blue-600 hover:bg-blue-700',
+            warning: 'bg-yellow-500 hover:bg-yellow-600',
+            error: 'bg-red-500 hover:bg-red-600',
+          };
+
+          const colorClass =
+            colorVariants[
+              (action.label.includes('Excluir')
+                ? 'error'
+                : action.label.includes('Editar')
+                  ? 'warning'
+                  : 'primary') as keyof typeof colorVariants
+            ];
+
+          const content = (
+            <button onClick={action.click} className={`${baseStyle} ${colorClass}`} type="button">
+              {action.label}
+              {action.icon}
+            </button>
+          );
+
+          return (
+            <div key={action.label} className="w-full">
+              {!isEmpty(action.url) ? (
+                <Link href={action.url} className="block">
+                  {content}
+                </Link>
+              ) : (
+                content
+              )}
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 };

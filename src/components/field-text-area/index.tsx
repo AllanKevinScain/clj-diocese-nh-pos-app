@@ -1,21 +1,50 @@
 'use client';
 
-import { styled, TextareaAutosize } from '@mui/material';
+import { Description, Field, Label, Textarea } from '@headlessui/react';
+import type { FieldValues, Path, PathValue } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { twMerge } from 'tailwind-merge';
 
-export const FieldTextarea = styled(TextareaAutosize)(
-  () => `
-    box-sizing: border-box;
-    width: 100%;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 8px 12px;
-    border-radius: 8px;
+import type { FieldDefaultInterface } from './field-textarea.type';
 
-    /* firefox */
-    &:focus-visible {
-      outline: 0;
-    }
-  `,
-);
+export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterface<T>) => {
+  const { control, id, defaultValue, isLoading = false, label, ...restProps } = props;
+
+  if (isLoading) {
+    return (
+      <div
+        className={twMerge(
+          'min-h-[56px] bg-neutral-100',
+          'rounded-[8px] border-[2px] border-solid border-neutral-400',
+          'flex items-center justify-center',
+        )}>
+        <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <Controller
+      name={id}
+      control={control}
+      defaultValue={defaultValue as PathValue<T, Path<T>>}
+      render={({ field, formState }) => {
+        const { errors } = formState;
+
+        return (
+          <Field className="w-full">
+            {!!label && (
+              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
+                <span className="text-neutral-800">{label}</span>
+              </Label>
+            )}
+            <Textarea {...restProps} {...field} rows={3} />
+
+            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+          </Field>
+        );
+      }}
+    />
+  );
+};

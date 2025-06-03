@@ -1,36 +1,25 @@
 'use client';
 
-import { Button } from '@headlessui/react';
-import { Container, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
-export default function notFound() {
+export default function NotFound() {
+  const router = useRouter();
+
   return (
-    <Container>
-      <div className="mx-auto flex h-screen w-[50%] flex-col items-center justify-center gap-10">
-        <div className="flex flex-col items-center justify-center">
-          <Typography variant="h1" className="mb-2 !text-[26px] font-semibold" color="primary">
-            Essa página não foi identificada!
-          </Typography>
-          <div className="before:bg-gradient-radial after:bg-gradient-conic after:via-ternary-200 before:dark:to-ternary-700 after:dark:from-ternary-900 after:dark:via-ternary-500 relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:from-sky-200 after:blur-2xl after:content-[''] before:lg:h-[360px] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:opacity-1">
-            <img
-              className="relative border-b-[2px] border-white"
-              src="/page_not_found.png"
-              alt="Next.js Logo"
-            />
-          </div>
-        </div>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-6 text-center">
+      <img src="/page_not_found.png" alt="Página não encontrada" className="mb-6" />
 
-        <Button
-          className="text-fontsColor-200 relative animate-pulse p-4"
-          type="button"
-          onClick={() => {
-            if (typeof window !== 'undefined') {
-              window.location.assign('/login');
-            }
-          }}>
-          Recarregar
-        </Button>
-      </div>
-    </Container>
+      <h1 className="mb-2 text-2xl font-semibold text-gray-800">Página não encontrada</h1>
+
+      <p className="mb-6 text-sm text-gray-600">
+        A página que você está procurando não existe ou foi removida.
+      </p>
+
+      <button
+        onClick={() => router.push('/')}
+        className="rounded-md bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700">
+        Voltar para a Home
+      </button>
+    </div>
   );
 }

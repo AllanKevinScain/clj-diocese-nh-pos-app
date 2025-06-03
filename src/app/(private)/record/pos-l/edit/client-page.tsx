@@ -25,13 +25,7 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   const { id: _, ...restRecordPOSl } = recordPOSl;
   const { editRecord } = useRecords();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<PoslSchemaInfertype>({
+  const { control, handleSubmit, watch, setValue } = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
     defaultValues: {
       ...restRecord,
@@ -56,7 +50,6 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   return (
     <Pos1Form
       control={control}
-      errors={errors}
       onSubmit={onSubmit}
       watch={watch}
       setValue={setValue}

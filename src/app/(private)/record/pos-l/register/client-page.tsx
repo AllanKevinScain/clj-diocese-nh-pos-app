@@ -56,13 +56,7 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
   const { courseNumber } = props;
   const { registerRecord } = useRecords();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<PoslSchemaInfertype>({
+  const { control, handleSubmit, watch, setValue } = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
     defaultValues: { ...valoresPadrao, courseNumber: Number(courseNumber) },
   });
@@ -81,7 +75,6 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
   return (
     <Pos1Form
       control={control}
-      errors={errors}
       onSubmit={onSubmit}
       watch={watch}
       setValue={setValue}

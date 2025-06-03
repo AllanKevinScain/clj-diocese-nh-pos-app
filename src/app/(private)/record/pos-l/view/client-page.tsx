@@ -29,13 +29,5 @@ export const ViewRecordPoslClientPage = (props: ViewRecordPoslClientPageInterfac
     },
   });
 
-  return (
-    <Pos1Form
-      control={control}
-      {...restMethods}
-      errors={restMethods.formState.errors}
-      onSubmit={() => null}
-      isDisabled
-    />
-  );
+  return <Pos1Form control={control} {...restMethods} onSubmit={() => null} isDisabled />;
 };

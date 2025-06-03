@@ -1,8 +1,9 @@
 'use client';
 
-import { Button } from '@headlessui/react';
 import Link from 'next/link';
 import { BiPlus } from 'react-icons/bi';
+
+import { Button } from '@/components';
 
 export const Newrecord = () => {
   return (

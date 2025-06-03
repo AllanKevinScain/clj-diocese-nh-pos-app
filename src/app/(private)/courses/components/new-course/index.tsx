@@ -1,9 +1,10 @@
 'use client';
 
-import { Button } from '@headlessui/react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { BiPlus } from 'react-icons/bi';
+
+import { Button } from '@/components';
 
 export const NewCourse = () => {
   const session = useSession();

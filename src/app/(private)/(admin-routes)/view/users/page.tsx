@@ -1,6 +1,5 @@
 'use client';
 
-import { Box, Card, CardActionArea, CardContent, Container, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { TbLoaderQuarter } from 'react-icons/tb';
 import type { InferType } from 'yup';
@@ -23,50 +22,36 @@ export default function UserClientPage() {
 
   if (isLoading) {
     return (
-      <Box className="flex h-[400px] items-center justify-center">
-        <TbLoaderQuarter size={30} className="animate-spin" />
-      </Box>
+      <div className="flex h-[400px] items-center justify-center">
+        <TbLoaderQuarter size={30} className="animate-spin text-gray-600" />
+      </div>
     );
   }
+
   if (isEmptyUsers) {
     return (
-      <Box className="flex h-[400px] flex-col items-center justify-center gap-[8px]">
-        <Typography variant="h2" className="!text-[30px]">
-          Nenhum usuário foi cadastrado!
-        </Typography>
-      </Box>
+      <div className="flex h-[400px] flex-col items-center justify-center gap-2 px-4 text-center">
+        <h2 className="text-2xl font-semibold text-gray-800">Nenhum usuário foi cadastrado!</h2>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="lg" className="pb-[10%]">
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Usuários
-      </Typography>
+    <div className="mx-auto w-full max-w-screen-lg px-4 pb-[10%]">
+      <h2 className="mt-6 mb-4 text-2xl font-bold text-gray-900">Usuários</h2>
 
-      <Grid container spacing={2}>
-        {!isEmptyUsers &&
-          data &&
-          data.map((user) => (
-            <Grid size={{ xs: 12 }} key={user.id}>
-              <Card>
-                <CardActionArea onClick={() => navigate.push(`/edit/user/${user.id}`)}>
-                  <CardContent className="flex flex-col">
-                    <Typography variant="h5" color="primary">
-                      {user.name}
-                    </Typography>
-                    <Typography variant="h5" className="text-nowrap">
-                      {user.city}
-                    </Typography>
-                    <Typography variant="h5" className="text-nowrap uppercase" color="primary">
-                      {user.loginType}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-      </Grid>
-    </Container>
+      <div className="grid grid-cols-1 gap-4">
+        {data?.map((user) => (
+          <div
+            key={user.id}
+            onClick={() => navigate.push(`/edit/user/${user.id}`)}
+            className="cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-md transition-shadow duration-200 hover:shadow-lg">
+            <h3 className="text-lg font-semibold text-blue-600">{user.name}</h3>
+            <p className="truncate text-gray-700">{user.city}</p>
+            <p className="font-medium text-blue-600 uppercase">{user.loginType}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

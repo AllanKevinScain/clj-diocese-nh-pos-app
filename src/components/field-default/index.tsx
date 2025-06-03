@@ -45,12 +45,25 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
     isLoading = false,
     isDecimal = false,
     placeholder,
-    sx,
     disabled,
     onChangeValue,
     showCifrao = false,
     label,
+    ...restProps
   } = props;
+
+  if (isLoading) {
+    return (
+      <div
+        className={twMerge(
+          'min-h-[56px] bg-neutral-100',
+          'rounded-[8px] border-[2px] border-solid border-neutral-400',
+          'flex items-center justify-center',
+        )}>
+        <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <WithCustomLabel customLabel={customLabel}>
@@ -61,19 +74,6 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
         render={({ field, formState }) => {
           const { errors } = formState;
 
-          if (isLoading) {
-            return (
-              <div
-                className={twMerge(
-                  'min-h-[56px] bg-neutral-100',
-                  'rounded-[8px] border-[2px] border-solid border-neutral-400',
-                  'flex items-center justify-center',
-                )}>
-                <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
-              </div>
-            );
-          }
-
           return (
             <Field className="w-full">
               {!!label && (
@@ -83,10 +83,10 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
               )}
               {isDecimal && (
                 <CustomInputDecimal
+                  {...restProps}
                   id={id}
                   field={field}
                   placeholder={placeholder}
-                  sx={sx}
                   disabled={disabled}
                   onChangeValue={onChangeValue}
                   showCifrao={showCifrao}
@@ -94,10 +94,10 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
               )}
               {!isDecimal && (
                 <CustomInputPadrao
+                  {...restProps}
                   id={id}
                   field={field}
                   placeholder={placeholder}
-                  sx={sx}
                   disabled={disabled}
                 />
               )}

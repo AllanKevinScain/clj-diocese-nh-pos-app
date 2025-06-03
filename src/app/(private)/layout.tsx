@@ -7,13 +7,9 @@ import { NavBar } from '@/components';
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect('/login');
-  }
+  if (!session) redirect('/login');
 
-  if (session.error) {
-    redirect('/logout');
-  }
+  if (session.error) redirect('/logout');
 
   return (
     <main>

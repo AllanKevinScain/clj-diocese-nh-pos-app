@@ -1,16 +1,9 @@
 'use client';
 
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
-} from '@mui/material';
-import { red } from '@mui/material/colors';
+import { Checkbox, Description, Field } from '@headlessui/react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 export interface FieldSetCheckboxInterface<T extends FieldValues> {
   id: Path<T>;
@@ -29,50 +22,38 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
       control={control}
       defaultValue={[] as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
-        const value = field.value as string[];
-        const hasError = !!formState.errors[id];
-        const errorMessage = formState.errors[id]?.message as string;
+        const { errors } = formState;
+        const { value } = field;
 
         return (
-          <FormControl component="fieldset" error={hasError} disabled={disabled}>
-            <FormLabel component="legend" disabled={disabled}>
-              {label}
-            </FormLabel>
-            <FormGroup row>
-              {options.map(({ id, label: optLabel }) => (
-                <FormControlLabel
+          <Field className="w-full">
+            {!!label && (
+              <span
+                className={twMerge('flex gap-[4px]', 'text-[16px] font-[500] text-neutral-800')}>
+                {label}
+              </span>
+            )}
+
+            {options.map(({ id: optionId, label: optLabel }) => (
+              <div key={optionId} className="flex items-center gap-[18px]">
+                <Checkbox
+                  {...field}
                   disabled={disabled}
-                  key={id}
-                  control={
-                    <Checkbox
-                      {...field}
-                      checked={value.includes(id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          field.onChange([...value, id]);
-                        } else {
-                          field.onChange(value.filter((value: string) => value !== id));
-                        }
-                      }}
-                      sx={
-                        hasError
-                          ? {
-                              color: red[800],
-                              '&.Mui-checked': {
-                                color: red[600],
-                              },
-                            }
-                          : {}
-                      }
-                    />
-                  }
-                  sx={{ color: hasError ? red[700] : 'inherit' }}
-                  label={optLabel}
+                  checked={value.includes(optionId)}
+                  onChange={(e) => {
+                    if (e) {
+                      field.onChange([...value, optionId]);
+                    } else {
+                      field.onChange(value.filter((value: string) => value !== optionId));
+                    }
+                  }}
                 />
-              ))}
-            </FormGroup>
-            <FormHelperText>{errorMessage}</FormHelperText>
-          </FormControl>
+                <span>{optLabel}</span>
+              </div>
+            ))}
+
+            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+          </Field>
         );
       }}
     />

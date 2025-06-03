@@ -1,27 +1,21 @@
 'use client';
 
-import { AppBar, Container, Toolbar } from '@mui/material';
+import { NavBarDrawer } from './drawer-nav-bar';
+import { NavBarMenu } from './menu-nav-bar';
 
-import { Drawer } from './drawer';
-import { LogoutMenu } from './menu';
-
-interface NavBarInterface {
-  showMenu?: boolean;
+interface NavBarProps {
   showDrawer?: boolean;
+  showMenu?: boolean;
 }
 
-export function NavBar(props: NavBarInterface) {
-  const { showDrawer = true, showMenu = true } = props;
-
+export function NavBar({ showDrawer = true, showMenu = true }: NavBarProps) {
   return (
-    <AppBar position="static" sx={{ mb: '2%' }}>
-      <Container maxWidth="xl">
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {showDrawer && <Drawer />}
+    <header className="flex items-center justify-between bg-blue-600 px-4 py-3 text-white shadow-md">
+      <NavBarDrawer showDrawer={showDrawer} />
 
-          {showMenu && <LogoutMenu />}
-        </Toolbar>
-      </Container>
-    </AppBar>
+      <span className="text-lg font-bold">CLJ</span>
+
+      <NavBarMenu showMenu={showMenu} />
+    </header>
   );
 }

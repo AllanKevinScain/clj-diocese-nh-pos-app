@@ -17,7 +17,7 @@ type CustomINputDecimalDisplayNameInterface = {
 
 export const CustomInputDecimal = memo(
   <T extends FieldValues>(props: ComumDecimalInputInterface<T>) => {
-    const { placeholder, disabled, onChangeValue, showCifrao = false, field } = props;
+    const { placeholder, disabled, onChangeValue, showCifrao = false, field, ...restProps } = props;
     const { value, onChange, ...restField } = field;
 
     return (
@@ -32,6 +32,7 @@ export const CustomInputDecimal = memo(
           currency="BRL"
           InputElement={
             <Input
+              {...restProps}
               {...restField}
               value={isEmpty(value) ? '' : value}
               disabled={disabled}

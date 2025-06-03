@@ -1,15 +1,13 @@
 'use client';
 
-import { Button } from '@headlessui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { AcceptModal, FieldDefault, SelectDefault } from '@/components';
+import { AcceptModal, Button, FieldDefault, SelectDefault } from '@/components';
 import { useToggleModal, useUsers } from '@/hooks';
 import { userSchema } from '@/yup/user-schema';
 
@@ -57,15 +55,12 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
     <>
       <AcceptModal isOpen={isOpen} handle={handle} accept={deleteUserById} />
 
-      <Container maxWidth="sm">
-        <Typography variant="h4" gutterBottom className="mt-[32px] text-center">
+      <div className="mx-auto max-w-md px-4 py-8">
+        <h1 className="mb-8 text-center text-2xl font-semibold">
           Edição do usuário {user.name} | {user.loginType}
-        </Typography>
+        </h1>
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-[20px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <FieldDefault id="name" defaultValue="" control={control} label="Nome" />
 
           <FieldDefault id="email" defaultValue="" control={control} label="Email" />
@@ -83,15 +78,13 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
 
           <FieldDefault id="city" defaultValue="" control={control} label="Cidade" />
 
-          <Button type="submit" color="primary" className="mt-[32px] w-full">
-            Atualizar
-          </Button>
+          <Button type="submit">Atualizar</Button>
 
-          <Button type="button" color="error" className="mt-[32px] w-full" onClick={handle}>
+          <Button type="button" onClick={handle}>
             Apagar usuário
           </Button>
-        </Box>
-      </Container>
+        </form>
+      </div>
     </>
   );
 };

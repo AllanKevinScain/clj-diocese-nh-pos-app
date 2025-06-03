@@ -1,16 +1,22 @@
 'use client';
 
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText } from '@mui/material';
-import { red } from '@mui/material/colors';
-import type { FieldValues, Path, PathValue } from 'react-hook-form';
+import { Checkbox, Description, Field, Label } from '@headlessui/react';
+import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
-import type { FieldSetCheckboxInterface } from '../field-set-checkbox';
+interface FieldSetCheckboxInterface<T extends FieldValues> {
+  id: Path<T>;
+  control: Control<T> | undefined;
+  label?: string;
+  disabled?: boolean;
+  description: string;
+}
 
 export const FieldSetConsentCheckbox = <T extends FieldValues>(
-  props: Omit<FieldSetCheckboxInterface<T>, 'options'>,
+  props: FieldSetCheckboxInterface<T>,
 ) => {
-  const { label, id, control, disabled = false } = props;
+  const { label, id, control, disabled = false, description } = props;
 
   return (
     <Controller
@@ -18,39 +24,24 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
       control={control}
       defaultValue={false as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
-        const value = field.value as boolean;
-        const hasError = !!formState.errors[id];
-
-        const errorMessage = formState.errors[id]?.message as string;
+        const { errors } = formState;
+        const { value } = field;
 
         return (
-          <FormControl component="fieldset" error={hasError} disabled={disabled}>
-            <FormGroup row>
-              <FormControlLabel
-                disabled={disabled}
-                control={
-                  <Checkbox
-                    {...field}
-                    disabled={disabled}
-                    checked={value}
-                    sx={
-                      hasError
-                        ? {
-                            color: red[800],
-                            '&.Mui-checked': {
-                              color: red[600],
-                            },
-                          }
-                        : {}
-                    }
-                  />
-                }
-                sx={{ color: hasError ? red[700] : 'inherit' }}
-                label={label}
-              />
-            </FormGroup>
-            <FormHelperText>{errorMessage}</FormHelperText>
-          </FormControl>
+          <Field className="w-full">
+            {!!label && (
+              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
+                <span className="text-neutral-800">{label}</span>
+              </Label>
+            )}
+
+            <div className="flex items-center gap-[18px]">
+              <Checkbox {...field} disabled={disabled} checked={value} />
+              <span>{description}</span>
+            </div>
+
+            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+          </Field>
         );
       }}
     />

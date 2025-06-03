@@ -1,6 +1,5 @@
 'use client';
 
-import { List, ListItem, Typography } from '@mui/material';
 import { FaClipboardList } from 'react-icons/fa';
 import { RiEdit2Fill } from 'react-icons/ri';
 
@@ -10,34 +9,28 @@ interface ListRecordsInterface {
   records: InfertypePoslSchema[];
 }
 
-export const ListRecords = (props: ListRecordsInterface) => {
-  const { records } = props;
-
+export const ListRecords = ({ records }: ListRecordsInterface) => {
   return (
-    <List
-      dense={true}
-      subheader={
-        <Typography variant="h2" className="!text-[30px]">
-          Fixas de curso
-        </Typography>
-      }>
-      {records.map((record) => (
-        <ListItem
-          component="a"
-          disablePadding
-          key={record.id}
-          className="flex w-full items-center !justify-between border-b py-[10px] last:border-b-0"
-          href={`/record/pos-l/view?id=${record.id}`}>
-          <div className="flex items-center gap-[8px]">
-            <FaClipboardList size={24} color="gray" />
-            <Typography color="gray" fontSize={18}>
-              {record.candidateName} ({record.nickname})
-            </Typography>
-          </div>
+    <div className="w-full">
+      <h2 className="mb-4 text-2xl font-bold">Fixas de curso</h2>
 
-          <RiEdit2Fill size={24} color="gray" />
-        </ListItem>
-      ))}
-    </List>
+      <ul className="divide-y">
+        {records.map((record) => (
+          <li key={record.id}>
+            <a
+              href={`/record/pos-l/view?id=${record.id}`}
+              className="flex items-center justify-between py-3 transition hover:bg-gray-50">
+              <div className="flex items-center gap-2">
+                <FaClipboardList size={24} className="text-gray-500" />
+                <span className="text-base text-gray-700">
+                  {record.candidateName} ({record.nickname})
+                </span>
+              </div>
+              <RiEdit2Fill size={24} className="text-gray-500" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
