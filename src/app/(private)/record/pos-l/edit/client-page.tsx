@@ -12,6 +12,7 @@ import { useRecords } from '@/hooks';
 import { poslSchema } from '@/yup';
 
 import type { RecordPoslResponseInterface } from './edit.type';
+import { EditRecordBottomBar } from './edit-record-bottom-bar';
 
 type PoslSchemaInfertype = InferType<typeof poslSchema>;
 
@@ -21,7 +22,7 @@ interface EditRecordPoslClientPageInterface {
 
 export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterface) => {
   const { record } = props;
-  const { recordPOSl, ...restRecord } = record;
+  const { id, recordPOSl, ...restRecord } = record;
   const { id: _, ...restRecordPOSl } = recordPOSl;
   const { editRecord } = useRecords();
 
@@ -40,7 +41,8 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
     const res = await editRecord({ typeOfRecord: 'POSl', data: record });
 
     if (!res?.ok) {
-      toast.error(res.data.message);
+      console.log(res);
+      toast.error(JSON.stringify(res.data.message));
     } else {
       toast.success(res.data.message);
       redirect(`/courses/${record.courseNumber}`);
@@ -48,12 +50,15 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   }
 
   return (
-    <Pos1Form
-      control={control}
-      onSubmit={onSubmit}
-      watch={watch}
-      setValue={setValue}
-      handleSubmit={handleSubmit}
-    />
+    <>
+      <Pos1Form
+        control={control}
+        onSubmit={onSubmit}
+        watch={watch}
+        setValue={setValue}
+        handleSubmit={handleSubmit}
+      />
+      <EditRecordBottomBar recordId={id} />
+    </>
   );
 };

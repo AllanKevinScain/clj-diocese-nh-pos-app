@@ -1,6 +1,6 @@
 'use client';
 
-import { Checkbox, Description, Field, Label } from '@headlessui/react';
+import { Description, Field, Label } from '@headlessui/react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -25,7 +25,7 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
       defaultValue={false as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
         const { errors } = formState;
-        const { value } = field;
+        const { value, onChange } = field;
 
         return (
           <Field className="w-full">
@@ -35,9 +35,17 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
               </Label>
             )}
 
-            <div className="flex items-center gap-[18px]">
-              <Checkbox {...field} disabled={disabled} checked={value} />
-              <span>{description}</span>
+            <div className="flex gap-4">
+              <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-800">
+                <input
+                  type="checkbox"
+                  disabled={disabled}
+                  checked={value}
+                  onChange={() => onChange(!value)}
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                {description}
+              </label>
             </div>
 
             {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}

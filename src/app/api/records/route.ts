@@ -38,7 +38,14 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = await request.json();
-  const { takesMedication: _takesMedication, hasDisease: _hasDisease, id, ...resBody } = body;
+  const {
+    id,
+    takesMedication: _takesMedication,
+    hasDisease: _hasDisease,
+    createdAt: _createdAt,
+    updatedAt: _updatedAt,
+    ...resBody
+  } = body;
 
   const formatedBody = {
     ...resBody,

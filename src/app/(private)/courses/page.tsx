@@ -57,8 +57,8 @@ export default function CoursesPage() {
                 key={course.id}
                 className="cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-md"
                 onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
-                <div className="flex flex-col justify-between sm:flex-row">
-                  <span className="text-lg font-medium">{course.courseNumber}</span>
+                <div className="flex justify-between">
+                  <span className="text-lg font-medium">Curso Nº {course.courseNumber}</span>
                   <span className="mt-1 text-sm text-gray-600 sm:mt-0">
                     {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')} -{' '}
                     {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}
@@ -77,8 +77,8 @@ export default function CoursesPage() {
                 key={course.id}
                 className="cursor-pointer rounded-lg border p-4 shadow-sm transition hover:shadow-md"
                 onClick={() => navigate.push(`/courses/${course.courseNumber}`)}>
-                <div className="flex flex-col justify-between sm:flex-row">
-                  <span className="text-lg font-medium">{course.courseNumber}</span>
+                <div className="flex justify-between">
+                  <span className="text-lg font-medium">Curso Nº {course.courseNumber}</span>
                   <span className="mt-1 text-sm text-gray-600 sm:mt-0">
                     {dayjs(new Date(course.startDate)).format('DD/MM/YYYY')} -{' '}
                     {dayjs(new Date(course.endDate)).format('DD/MM/YYYY')}

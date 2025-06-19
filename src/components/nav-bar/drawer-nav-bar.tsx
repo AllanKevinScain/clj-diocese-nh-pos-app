@@ -57,32 +57,18 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
   return (
     <>
       <button onClick={() => setIsOpen(true)} className="text-2xl">
-        <BiMenu />
+        <BiMenu size={40} />
       </button>
 
       <Transition show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={setIsOpen}>
           <Transition show={isOpen}>
-            <TransitionChild
-              as={Fragment}
-              enter="transition-opacity ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition-opacity ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0">
-              <div className="bg-opacity-25 fixed inset-0 bg-black" />
+            <TransitionChild as={Fragment}>
+              <div className="fixed inset-0 bg-black opacity-50" />
             </TransitionChild>
 
             <div className="fixed inset-0 flex">
-              <TransitionChild
-                as={Fragment}
-                enter="transition ease-in-out duration-300 transform"
-                enterFrom="-translate-x-full"
-                enterTo="translate-x-0"
-                leave="transition ease-in-out duration-300 transform"
-                leaveFrom="translate-x-0"
-                leaveTo="-translate-x-full">
+              <TransitionChild as={Fragment}>
                 <DialogPanel className="flex w-72 max-w-full flex-col bg-white p-4 shadow-xl">
                   <div className="flex flex-col items-center gap-2">
                     <img

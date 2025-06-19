@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { signOut } from 'next-auth/react';
+import { useCallback, useEffect } from 'react';
 
 import { Button } from '@/components';
 
@@ -14,6 +15,23 @@ export default function Error({ error, reset }: ErrorPageProps) {
     console.error('Erro capturado:', error);
   }, [error]);
 
+  const conunter = useCallback(() => {
+    if (window.localStorage.getItem('errorCounts')) {
+      const count = Number(window.localStorage.getItem('errorCounts'));
+      if (count >= 3) {
+        window.localStorage.removeItem('errorCounts');
+        return signOut();
+      }
+
+      window.localStorage.setItem('errorCounts', String(count + 1));
+      return reset();
+    }
+
+    window.localStorage.setItem('errorCounts', '1');
+
+    reset();
+  }, [reset]);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-6 text-center">
       <img src="/logo_clj.jpg" alt="Erro" className="mb-6" />
@@ -24,7 +42,9 @@ export default function Error({ error, reset }: ErrorPageProps) {
         {error.message || 'Não conseguimos processar sua solicitação.'}
       </p>
 
-      <Button onClick={reset}>Tentar novamente</Button>
+      <Button onClick={conunter} className="w-1/2 justify-center">
+        Tentar novamente
+      </Button>
     </div>
   );
 }

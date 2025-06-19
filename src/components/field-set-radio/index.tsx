@@ -1,6 +1,6 @@
 'use client';
 
-import { Description, Field, Label, Radio, RadioGroup } from '@headlessui/react';
+import { Description, Field, Label } from '@headlessui/react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -33,7 +33,7 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
       defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
         const { errors } = formState;
-        const { value } = field;
+        const { value, onChange } = field;
 
         return (
           <Field className="w-full">
@@ -43,26 +43,43 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
               </Label>
             )}
 
-            <RadioGroup
-              {...field}
-              defaultValue=""
-              value={value}
-              onChange={(e) => {
-                if (field.value === id) {
-                  field.onChange('');
-                } else {
-                  field.onChange(e);
-                }
-                if (customOnChange) customOnChange(e);
-              }}>
-              {options.map(({ id: optionId, label: optLabel }) => {
+            <div
+              className={twMerge(
+                'flex flex-wrap items-center gap-4',
+                'rounded-md bg-neutral-300 p-2',
+              )}>
+              {options.map((item) => {
+                const { id, label } = item;
                 return (
-                  <Radio disabled={disabled} value={optionId} key={optionId}>
-                    <span>{optLabel}</span>
-                  </Radio>
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-4"
+                    onClick={() => {
+                      if (disabled) return;
+                      onChange(id);
+                      customOnChange?.(id);
+                    }}>
+                    <div
+                      className={twMerge(
+                        'rounded-full border',
+                        'flex items-center justify-center',
+                        'h-[14px] w-[14px] bg-white',
+                        disabled && 'bg-neutral-200',
+                      )}>
+                      <div
+                        className={twMerge(
+                          'rounded-full',
+                          'h-[10px] w-[10px]',
+                          value === id && 'bg-black',
+                          value === id && disabled && 'bg-neutral-500',
+                        )}
+                      />
+                    </div>
+                    <span>{label}</span>
+                  </div>
                 );
               })}
-            </RadioGroup>
+            </div>
 
             {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
           </Field>

@@ -2,6 +2,7 @@
 
 import {
   Combobox,
+  ComboboxButton,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -12,6 +13,7 @@ import {
 import { useMemo, useState } from 'react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { BiCheck, BiChevronDown } from 'react-icons/bi';
 import { twMerge } from 'tailwind-merge';
 
 export interface SelectDefaultInterface<T extends FieldValues> {
@@ -50,22 +52,44 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
                 <span className="text-neutral-800">{label}</span>
               </Label>
             )}
+
             <Combobox
               value={value}
               onChange={(value) => onChange(value)}
               onClose={() => setQuery('')}>
-              <ComboboxInput
-                displayValue={(item) => {
-                  const auxItem = item as { value: string; label: string };
+              <div className="relative">
+                <ComboboxInput
+                  className={twMerge(
+                    'border border-gray-300',
+                    `mb-4 w-full rounded-md px-3 py-2 transition-all`,
+                    'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
+                    'disabled:cursor-not-allowed disabled:bg-gray-100',
+                  )}
+                  displayValue={(item) => {
+                    const auxItem = item as { value: string; label: string };
 
-                  return auxItem.label;
-                }}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <ComboboxOptions anchor="bottom" className="border empty:invisible">
+                    return auxItem.label;
+                  }}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
+                  <BiChevronDown className="size-4" />
+                </ComboboxButton>
+              </div>
+              <ComboboxOptions
+                anchor="bottom"
+                transition
+                className={twMerge(
+                  'w-(--input-width) rounded-xl border bg-white p-1 [--anchor-gap:--spacing(1)] empty:invisible',
+                  'transition duration-100 ease-in data-leave:data-closed:opacity-0',
+                )}>
                 {filteredPeople.map((item) => (
-                  <ComboboxOption key={item.value} value={item.value}>
-                    {item.label}
+                  <ComboboxOption
+                    key={item.value}
+                    value={item}
+                    className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none">
+                    <BiCheck className="invisible size-4 group-data-selected:visible" />
+                    <div className="text-sm/6 text-black">{item.label}</div>
                   </ComboboxOption>
                 ))}
               </ComboboxOptions>

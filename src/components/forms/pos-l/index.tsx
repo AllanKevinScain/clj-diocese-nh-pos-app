@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import type { Control, UseFormHandleSubmit, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { BiChevronLeft } from 'react-icons/bi';
+import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import {
@@ -56,8 +54,6 @@ export const Pos1Form = ({
   handleSubmit,
   isDisabled = false,
 }: Pos1FormInterface) => {
-  const navigate = useRouter();
-
   const livesWith = watch('livesWith');
   const parentsReligion = watch('parentsReligion');
   const hasDisease = watch('hasDisease');
@@ -65,7 +61,6 @@ export const Pos1Form = ({
 
   const disease = watch('disease');
   const medication = watch('medication');
-  const id = watch('id');
 
   function clearField({ field, value }: ClearFieldParamsInteface) {
     setValue(field, value);
@@ -73,12 +68,13 @@ export const Pos1Form = ({
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-20">
-      <button onClick={() => navigate.back()} className="flex items-center gap-1 text-blue-600">
-        <BiChevronLeft className="text-xl" />
-        Voltar
-      </button>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          Object.entries(errors).forEach(([key, value]) => {
+            toast.error(`Campo: ${key}, Erro: ${value?.message}`);
+          });
+        })}
+        className="mt-6 flex flex-col gap-6">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-bold">Curso de Liderança Juvenil - CLJ I</h1>
           <p>Secretariado Diocesano de Novo Hamburgo</p>
@@ -288,22 +284,16 @@ export const Pos1Form = ({
         </SessionForm>
 
         <SessionForm title="Religiosos: ">
-          <div className="grid grid-cols-1">
-            <FieldSetCheckbox
-              disabled={isDisabled}
-              control={control}
-              id="spiritualLife"
-              label="Sacramentos"
-              options={sacramentsData}
-            />
-            <div>
-              <p className="font-[700]">
-                OBS: Caso não tenha feito a 1ª Eucaristia, fazê-la antes do Curso, juntamente com
+          <FieldSetCheckbox
+            disabled={isDisabled}
+            control={control}
+            id="spiritualLife"
+            label="Sacramentos"
+            options={sacramentsData}
+            observation="OBS: Caso não tenha feito a 1ª Eucaristia, fazê-la antes do Curso, juntamente com
                 Diretor Espiritual Paroquial . Caso pratica ou tenha praticado outra religião ou
-                confissão religiosa, procurar, junto do pároco, antes do curso, a Profissão de Fé.
-              </p>
-            </div>
-          </div>
+                confissão religiosa, procurar, junto do pároco, antes do curso, a Profissão de Fé."
+          />
         </SessionForm>
 
         <SessionForm title="Observação:">
@@ -382,15 +372,9 @@ export const Pos1Form = ({
           </div>
         </SessionForm>
 
-        {!isDisabled ? (
-          <Button type="submit" className="mt-3 mb-2 w-full">
-            Enviar
-          </Button>
-        ) : (
-          <Link href={`/record/pos-l/edit?id=${id}`}>
-            <Button type="button">Editar ficha</Button>
-          </Link>
-        )}
+        <Button type="submit" className="mt-3 mb-2 w-full">
+          Enviar
+        </Button>
       </form>
     </div>
   );

@@ -66,7 +66,7 @@ export function ClientPage() {
             showEye
           />
 
-          <Button type="submit" loading={isLoading}>
+          <Button type="submit" isLoading={isLoading}>
             Entrar
           </Button>
         </form>

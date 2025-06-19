@@ -62,8 +62,16 @@ export function useRecords() {
     }
   }
 
+  async function deleteRecordById(recordId: string) {
+    const req = await fetch(`/api/records/delete-posl?recordId=${recordId}`, {
+      method: 'DELETE',
+    });
+    const res = await req.json();
+    return res;
+  }
   return {
     registerRecord,
     editRecord,
+    deleteRecordById,
   };
 }

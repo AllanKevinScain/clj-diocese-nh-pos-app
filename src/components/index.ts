@@ -1,5 +1,6 @@
 export * from './accept-modal';
 export * from './button';
+export * from './control-buttons';
 export * from './field-default';
 export * from './field-set-checkbox';
 export * from './field-set-consent-checkbox';

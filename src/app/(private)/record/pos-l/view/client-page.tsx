@@ -8,6 +8,7 @@ import { Pos1Form } from '@/components/forms';
 import { poslSchema } from '@/yup';
 
 import type { RecordPoslResponseInterface } from './view.type';
+import { ViewRecordBottomBar } from './view-record-bottom-bar';
 
 type PoslSchemaInfertype = InferType<typeof poslSchema>;
 
@@ -29,5 +30,13 @@ export const ViewRecordPoslClientPage = (props: ViewRecordPoslClientPageInterfac
     },
   });
 
-  return <Pos1Form control={control} {...restMethods} onSubmit={() => null} isDisabled />;
+  return (
+    <>
+      <Pos1Form control={control} {...restMethods} onSubmit={() => null} isDisabled />
+      <ViewRecordBottomBar
+        courseNumber={String(restRecord.recordNumber)}
+        recordId={restRecord.id}
+      />
+    </>
+  );
 };

@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import type { FieldDefaultInterface } from './field-textarea.type';
 
 export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterface<T>) => {
-  const { control, id, defaultValue, isLoading = false, label, ...restProps } = props;
+  const { control, id, defaultValue, isLoading = false, label, className, ...restProps } = props;
 
   if (isLoading) {
     return (
@@ -39,7 +39,19 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
                 <span className="text-neutral-800">{label}</span>
               </Label>
             )}
-            <Textarea {...restProps} {...field} rows={3} />
+            <Textarea
+              {...restProps}
+              {...field}
+              className={twMerge(
+                'resize-none',
+                'border border-gray-300',
+                `w-full rounded-md px-3 py-2 transition-all`,
+                'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
+                'disabled:cursor-not-allowed disabled:bg-gray-100',
+                typeof className === 'string' && className,
+              )}
+              rows={3}
+            />
 
             {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
           </Field>

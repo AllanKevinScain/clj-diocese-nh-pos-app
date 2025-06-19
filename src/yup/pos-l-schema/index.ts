@@ -9,7 +9,9 @@ function requiredOtherResident(value: string | undefined, { parent }: yup.AnyObj
   return true;
 }
 
-function requiredOtherReligion(value: string | undefined, { parent }: yup.AnyObject) {
+function requiredOtherReligion(value: string | undefined | null, { parent }: yup.AnyObject) {
+  if (value === null) return true;
+
   if (parent.parentsReligion.includes('outro')) {
     return !!value;
   }
@@ -54,14 +56,11 @@ export const poslSchema = yup.object({
   candidateName: yup.string().required('Campo Obrigatório!'),
   document: yup.string().required('Campo Obrigatório!'),
   nickname: yup.string().required('Campo Obrigatório!'),
-  birthDate: yup
-    .string()
-    .required('Campo Obrigatório!')
-    .test({
-      name: 'test13Years',
-      message: 'Idade inválida! O cursista precisa ter mais de 12 anos!',
-      test: required13year,
-    }),
+  birthDate: yup.string().required('Campo Obrigatório!').test({
+    name: 'test13Years',
+    message: 'Idade inválida! O cursista precisa ter mais de 12 anos!',
+    test: required13year,
+  }),
   candidatePhone: yup
     .string()
     .min(14, 'Mínimo de 14 caracteres!')
@@ -118,16 +117,12 @@ export const poslSchema = yup.object({
     test: requiredOtherResident,
   }),
   parentsReligion: yup.string().required('Campo Obrigatório!'),
-  otherReligion: yup.string().test({
+  otherReligion: yup.string().nullable().test({
     name: 'requiredOtherReligion',
     message: 'Campo obrigatório!',
     test: requiredOtherReligion,
   }),
   parentsComment: yup.string().required('Campo Obrigatório!'),
-
-  // Datas
-  createdAt: yup.date().nullable(),
-  updatedAt: yup.date().nullable(),
 
   // campos de auxlio
   hasDisease: yup.string().required('Campo Obrigatório!'),
