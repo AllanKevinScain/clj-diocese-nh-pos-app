@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
     recordNumber: Number(resBody.recordNumber),
     candidatePhone: resBody.candidatePhone.replace(/[^\d]/g, ''),
     godfatherPhone: resBody.godfatherPhone.replace(/[^\d]/g, ''),
-    photo: '',
   };
 
   const res = await fetch(`${process.env.BASE_API_URL}/records/posl`, {
@@ -53,7 +52,6 @@ export async function PUT(request: NextRequest) {
     recordNumber: Number(resBody.recordNumber),
     candidatePhone: resBody.candidatePhone.replace(/[^\d]/g, ''),
     godfatherPhone: resBody.godfatherPhone.replace(/[^\d]/g, ''),
-    photo: '',
   };
 
   if (isEmpty(id)) throw new Error('Precisa de identificação!');

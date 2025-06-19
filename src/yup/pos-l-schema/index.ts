@@ -54,7 +54,6 @@ export const poslSchema = yup.object({
 
   // Candidato
   candidateName: yup.string().required('Campo Obrigatório!'),
-  document: yup.string().required('Campo Obrigatório!'),
   nickname: yup.string().required('Campo Obrigatório!'),
   birthDate: yup.string().required('Campo Obrigatório!').test({
     name: 'test13Years',

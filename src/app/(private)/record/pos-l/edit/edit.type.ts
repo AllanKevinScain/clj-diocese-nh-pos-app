@@ -6,9 +6,7 @@ export interface RecordPoslResponseInterface {
   courseNumber: number;
   parishAcronym: string;
   recordNumber: number;
-  photo: string;
   candidateName: string;
-  document: string;
   nickname: string;
   birthDate: string;
   candidatePhone: string;

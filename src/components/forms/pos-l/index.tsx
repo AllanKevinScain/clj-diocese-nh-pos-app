@@ -116,7 +116,6 @@ export const Pos1Form = ({
               label="Telefone Cursista"
             />
             <FieldDefault disabled={isDisabled} id="priest" control={control} label="Pároco" />
-            <FieldDefault disabled={isDisabled} id="document" control={control} label="RG" />
             <div>
               <p>Data de Nascimento</p>
               <FieldDefault disabled={isDisabled} id="birthDate" control={control} type="date" />

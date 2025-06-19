@@ -19,7 +19,6 @@ const valoresPadrao = {
   nickname: 'Allazin',
   candidatePhone: '(51) 99536-8765',
   parishChapel: 'Capela Santa Cecília',
-  document: '5118676948',
   birthDate: '2000-05-04',
   instagram: '@allan_scain',
   godfatherName: 'Luiz',
