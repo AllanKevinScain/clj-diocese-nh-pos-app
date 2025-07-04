@@ -1,7 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
 import { PosllForm } from '@/components/forms';
@@ -18,26 +18,18 @@ interface ViewRecordPosllClientPageInterface {
 
 export const ViewRecordPosllClientPage = (props: ViewRecordPosllClientPageInterface) => {
   const { record } = props;
-  console.log('🚀 ~ ViewRecordPosllClientPage ~ record:', record);
-  const { recordPOSll, ...restRecord } = record;
-  const { id: _, ...restRecordPOSll } = recordPOSll;
 
-  const { control, ...restMethods } = useForm<PosllSchemaInfertype>({
+  const methods = useForm<PosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
-    defaultValues: {
-      ...restRecord,
-      ...restRecordPOSll,
-      recordNumber: String(restRecord.recordNumber),
-    },
+    defaultValues: record,
   });
 
   return (
     <>
-      <PosllForm control={control} {...restMethods} onSubmit={() => null} isDisabled />
-      <ViewRecordBottomBar
-        courseNumber={String(restRecord.recordNumber)}
-        recordId={restRecord.id}
-      />
+      <FormProvider {...methods}>
+        <PosllForm onSubmit={() => null} isDisabled />
+      </FormProvider>
+      <ViewRecordBottomBar courseNumber={String(record.recordNumber)} recordId={record.id} />
     </>
   );
 };

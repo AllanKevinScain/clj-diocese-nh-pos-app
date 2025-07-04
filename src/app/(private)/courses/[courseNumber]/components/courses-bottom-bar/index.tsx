@@ -9,14 +9,16 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 import type { ActionButtonTypes } from '@/components';
 import { AcceptModal, ControlButtons } from '@/components';
 import { useCourses, useToggleModal } from '@/hooks';
+import type { RecordType } from '@/types';
 
 interface CoursesBottomBarInterface {
   courseId: string;
   courseNumber: string;
+  recordType: RecordType;
 }
 
 export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
-  const { courseId, courseNumber } = props;
+  const { courseId, courseNumber, recordType } = props;
   const { data } = useSession();
   const navigate = useRouter();
   const { isOpen, handle } = useToggleModal();
@@ -46,7 +48,7 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
     {
       label: 'Criar ficha nova',
       icon: <BiPlus size={40} />,
-      url: `/record/posl/register?courseNumber=${courseNumber}`,
+      url: `/record/${recordType.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`,
       click: () => {},
     },
     {

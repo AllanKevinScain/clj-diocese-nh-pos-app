@@ -27,6 +27,8 @@ function requiredIsNotMakesonfirmation(
 
 const posllSchemaBase = yup.object({
   recordPOSll: yup.object({
+    recordId: yup.string().optional(),
+
     // Consentimento da ficha
     courseOneDone: yup.string().required('Campo obrigatório'),
     motivationToParticipate: yup.string().required('Campo obrigatório'),
@@ -47,14 +49,14 @@ const posllSchemaBase = yup.object({
       message: 'Campo obrigatório!',
       test: requiredIsNotMakesonfirmation,
     }),
-
-    // -------- campos de auxilio - não vao pro back
-    hasConfirmation: yup.boolean().required('Campo obrigatório'),
     doingConfirmation: yup.boolean().nullable().test({
       name: 'requiredDoingConfirmation',
       message: 'Campo obrigatório!',
       test: requiredDoingConfirmation,
     }),
+
+    // -------- campos de auxilio - não vao pro back
+    hasConfirmation: yup.boolean().required('Campo obrigatório'),
   }),
 });
 

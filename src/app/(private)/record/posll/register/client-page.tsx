@@ -2,7 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { redirect } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
@@ -16,7 +16,7 @@ interface RegisterRecordPosllClientPageInterface {
   courseNumber: string;
 }
 
-const valoresPadrao = {
+const valoresPadrao: PosllSchemaInfertype = {
   takesMedication: false,
   hasDisease: false,
   dataConsent: true,
@@ -33,25 +33,28 @@ const valoresPadrao = {
   candidateName: 'Allan',
   recordNumber: '1',
   parishAcronym: 'C.SC',
-  doingConfirmation: null,
-  hasConfirmation: false,
-  parishChapelActivities: 'Catequista, acólito',
-  currentGroupFunction: 'Nada',
-  hideImportantInfo: false,
-  perseveranceInCommunity: 'Sim',
-  commitmentToCLJ: 'Sim',
-  acceptsChurchDoctrine: 'Sim',
-  approachToChrist: 'SIm',
-  reasonForCLJII: 'Por que sinto minha chama se apagar',
-  motivationToParticipate: 'Amar a Deus',
-  courseOneDone: '181',
+  recordPOSll: {
+    doingConfirmation: null,
+    hasConfirmation: false,
+    parishChapelActivities: 'Catequista, acólito',
+    currentGroupFunction: 'Nada',
+    hideImportantInfo: false,
+    perseveranceInCommunity: 'Sim',
+    commitmentToCLJ: 'Sim',
+    acceptsChurchDoctrine: 'Sim',
+    approachToChrist: 'SIm',
+    reasonForCLJII: 'Por que sinto minha chama se apagar',
+    motivationToParticipate: 'Amar a Deus',
+    courseOneDone: '181',
+    notConfirmationBecause: null,
+  },
 };
 
 export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPageInterface) => {
   const { courseNumber } = props;
   const { registerRecord } = useRecords();
 
-  const { control, handleSubmit } = useForm<PosllSchemaInfertype>({
+  const methods = useForm<PosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
     defaultValues: { ...valoresPadrao, courseNumber: Number(courseNumber) },
   });
@@ -67,5 +70,9 @@ export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPa
     }
   }
 
-  return <PosllForm control={control} onSubmit={onSubmit} handleSubmit={handleSubmit} />;
+  return (
+    <FormProvider {...methods}>
+      <PosllForm onSubmit={onSubmit} />
+    </FormProvider>
+  );
 };

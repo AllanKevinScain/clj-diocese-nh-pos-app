@@ -1,15 +1,17 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { FieldDefault } from '@/components/field-default';
 import { FieldSetRadio } from '@/components/field-set-radio';
 
-import type { PosllFormInterface } from '.';
+import type { PosllFormInterface, PosllSchemaInfertype } from '.';
 
-export const ConfirmationFields = (props: Pick<PosllFormInterface, 'control' | 'isDisabled'>) => {
-  const { control, isDisabled } = props;
+export const ConfirmationFields = (props: Pick<PosllFormInterface, 'isDisabled'>) => {
+  const { isDisabled } = props;
+
+  const { control, setValue } = useFormContext<PosllSchemaInfertype>();
 
   const hasConfirmation = useWatch({
     control,
@@ -36,6 +38,10 @@ export const ConfirmationFields = (props: Pick<PosllFormInterface, 'control' | '
           { label: 'Sim', value: true },
           { label: 'Não', value: false },
         ]}
+        customOnChange={(e) => {
+          if (e) setValue('recordPOSll.doingConfirmation', null);
+          if (e) setValue('recordPOSll.notConfirmationBecause', null);
+        }}
       />
       {hasConfirmation === false && (
         <FieldSetRadio
@@ -48,6 +54,9 @@ export const ConfirmationFields = (props: Pick<PosllFormInterface, 'control' | '
             { label: 'Sim', value: true },
             { label: 'Não', value: false },
           ]}
+          customOnChange={(e) => {
+            if (e) setValue('recordPOSll.notConfirmationBecause', null);
+          }}
         />
       )}
       {doingConfirmation === false && (

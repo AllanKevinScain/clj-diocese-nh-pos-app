@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import type { Control, UseFormHandleSubmit } from 'react-hook-form';
+import React, { useCallback } from 'react';
+import { type FieldErrors, useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
@@ -21,25 +21,38 @@ import { ConfirmationFields } from './confirmation';
 import { DiseaseFields } from './disease';
 import { MedicationFields } from './medication';
 
-type PosllSchemaInfertype = InferType<typeof posllSchema>;
+export type PosllSchemaInfertype = InferType<typeof posllSchema>;
 
 export interface PosllFormInterface {
   onSubmit: (_: PosllSchemaInfertype) => void;
-  control: Control<PosllSchemaInfertype>;
-  handleSubmit: UseFormHandleSubmit<PosllSchemaInfertype>;
   isDisabled?: boolean;
 }
 
 export const PosllForm = (props: PosllFormInterface) => {
-  const { control, onSubmit, handleSubmit, isDisabled = false } = props;
+  const { onSubmit, isDisabled = false } = props;
+
+  const { control, handleSubmit } = useFormContext<PosllSchemaInfertype>();
+
+  const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
+    Object.entries(errors).forEach(([key, value]) => {
+      const path = pathPrefix ? `${pathPrefix}.${key}` : key;
+
+      if (value?.message) {
+        toast.error(`Campo: ${path}, Erro: ${value.message}`);
+      } else if (typeof value === 'object') {
+        showErrors(value as FieldErrors, path);
+      }
+    });
+  }, []);
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-20">
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
-          Object.entries(errors).forEach(([key, value]) => {
-            toast.error(`Campo: ${key}, Erro: ${value?.message}`);
-          });
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Erros no onSubmit:', errors);
+            showErrors(errors);
+          }
         })}
         className="mt-6 flex flex-col gap-6">
         <div className="space-y-1 text-center">
@@ -189,7 +202,7 @@ export const PosllForm = (props: PosllFormInterface) => {
         </SessionForm>
 
         <SessionForm title="Crisma:">
-          <ConfirmationFields control={control} isDisabled={isDisabled} />
+          <ConfirmationFields isDisabled={isDisabled} />
         </SessionForm>
 
         <SessionForm title="Observações:">
@@ -211,8 +224,8 @@ export const PosllForm = (props: PosllFormInterface) => {
 
         <SessionForm title="Saúde:">
           <div className="grid grid-cols-1 gap-4">
-            <DiseaseFields control={control} isDisabled={isDisabled} />
-            <MedicationFields control={control} isDisabled={isDisabled} />
+            <DiseaseFields isDisabled={isDisabled} />
+            <MedicationFields isDisabled={isDisabled} />
 
             <FieldDefault
               disabled={isDisabled}

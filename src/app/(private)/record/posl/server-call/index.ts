@@ -22,18 +22,18 @@ export async function getRecordById(
   });
 
   const data = await res.json();
-  const { recordPOSl, ...restRecord } = data;
+  const { recordPOSl, recordNumber, candidatePhone, ...record } = data;
 
   const formatedData = {
-    ...restRecord,
+    ...record,
+    hasDisease: !isEmpty(record.disease),
+    takesMedication: !isEmpty(record.medication),
+    recordNumber: String(recordNumber),
+    candidatePhone: formatMobilePhone(candidatePhone),
     recordPOSl: {
       ...recordPOSl,
       godfatherPhone: formatMobilePhone(recordPOSl.godfatherPhone),
     },
-    hasDisease: !isEmpty(restRecord.disease),
-    takesMedication: !isEmpty(restRecord.medication),
-    recordNumber: String(restRecord.recordNumber),
-    candidatePhone: formatMobilePhone(restRecord.candidatePhone),
   };
 
   if (res.status === 400) return { ok: false, data };

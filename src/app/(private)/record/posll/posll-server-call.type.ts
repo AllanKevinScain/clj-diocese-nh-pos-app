@@ -5,7 +5,7 @@ export interface RecordPosllResponseInterface {
   typeOfRecord: RecordType;
   courseNumber: number;
   parishAcronym: string;
-  recordNumber: number;
+  recordNumber: string;
   candidateName: string;
   nickname: string;
   birthDate: string;
@@ -34,6 +34,7 @@ export interface RecordPosllResponseInterface {
     hideImportantInfo: boolean;
     currentGroupFunction: string;
     parishChapelActivities: string;
+    doingConfirmation: boolean | null;
     notConfirmationBecause: string | null;
     recordId: string;
   };

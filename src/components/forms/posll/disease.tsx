@@ -1,15 +1,17 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { FieldDefault } from '@/components/field-default';
 import { FieldSetRadio } from '@/components/field-set-radio';
 
-import type { PosllFormInterface } from '.';
+import type { PosllFormInterface, PosllSchemaInfertype } from '.';
 
-export const DiseaseFields = (props: Pick<PosllFormInterface, 'control' | 'isDisabled'>) => {
-  const { control, isDisabled } = props;
+export const DiseaseFields = (props: Pick<PosllFormInterface, 'isDisabled'>) => {
+  const { isDisabled } = props;
+
+  const { control, setValue } = useFormContext<PosllSchemaInfertype>();
 
   const hasDisease = useWatch({
     control,
@@ -32,6 +34,9 @@ export const DiseaseFields = (props: Pick<PosllFormInterface, 'control' | 'isDis
           { label: 'Sim', value: true },
           { label: 'Não', value: false },
         ]}
+        customOnChange={(e) => {
+          if (!e) setValue('disease', null);
+        }}
       />
       {hasDisease && (
         <FieldDefault disabled={isDisabled} id="disease" control={control} label="Doença" />
