@@ -22,6 +22,7 @@ function requiredOtherReligion(value: string | undefined | null, { parent }: yup
 
 const poslSchemaBase = yup.object({
   recordPOSl: yup.object({
+    recordId: yup.string().optional(),
     // Padrinho
     godfatherName: yup.string().required('Campo Obrigatório!'),
     godfatherPhone: yup

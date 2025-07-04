@@ -32,11 +32,10 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
     const res = await editRecord({ typeOfRecord: 'POSl', data: record });
 
     if (!res?.ok) {
-      console.log(res);
-      toast.error(JSON.stringify(res.data.message));
+      toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
-      redirect(`/courses/${record.courseNumber}`);
+      redirect(`/courses`);
     }
   }
 
