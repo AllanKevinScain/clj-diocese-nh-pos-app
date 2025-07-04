@@ -37,7 +37,7 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
         'mx-auto flex w-full max-w-screen-xl flex-col gap-8 px-4',
         isLoading && 'h-[80vh] items-center justify-center',
       )}>
-      <CoursesBottomBar courseId={courseId} courseNumber={courseNumber} recordType="POSll" />
+      <CoursesBottomBar courseId={courseId} />
 
       {isLoading && <TbLoaderQuarter size={30} className="animate-spin text-gray-600" />}
       {!isLoading && (
@@ -45,6 +45,7 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
           records={data}
           courseNumber={courseNumber}
           registerUrl={`/record/posll/register?courseNumber=${courseNumber}`}
+          typeOfRecord="POSll"
         />
       )}
     </div>

@@ -3,22 +3,19 @@
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { BiEdit, BiPlus, BiTrash } from 'react-icons/bi';
+import { BiEdit, BiTrash } from 'react-icons/bi';
 import { HiArrowUturnLeft } from 'react-icons/hi2';
 
 import type { ActionButtonTypes } from '@/components';
 import { AcceptModal, ControlButtons } from '@/components';
 import { useCourses, useToggleModal } from '@/hooks';
-import type { RecordType } from '@/types';
 
 interface CoursesBottomBarInterface {
   courseId: string;
-  courseNumber: string;
-  recordType: RecordType;
 }
 
 export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
-  const { courseId, courseNumber, recordType } = props;
+  const { courseId } = props;
   const { data } = useSession();
   const navigate = useRouter();
   const { isOpen, handle } = useToggleModal();
@@ -45,12 +42,6 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
 
   const actionButtons = [
     ...(isAdmin ? actionForAdmin : []),
-    {
-      label: 'Criar ficha nova',
-      icon: <BiPlus size={40} />,
-      url: `/record/${recordType.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`,
-      click: () => {},
-    },
     {
       label: 'Voltar',
       icon: <HiArrowUturnLeft size={40} />,
