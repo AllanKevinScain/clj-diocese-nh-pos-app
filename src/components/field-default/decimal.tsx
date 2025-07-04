@@ -17,8 +17,17 @@ type CustomINputDecimalDisplayNameInterface = {
 
 export const CustomInputDecimal = memo(
   <T extends FieldValues>(props: ComumDecimalInputInterface<T>) => {
-    const { placeholder, disabled, onChangeValue, showCifrao = false, field, ...restProps } = props;
-    const { value, onChange, ...restField } = field;
+    const {
+      placeholder,
+      disabled,
+      onChangeValue,
+      showCifrao = false,
+      field,
+      onChange: _,
+      hasError,
+      ...restProps
+    } = props;
+    const { value, onChange, ref, ...restField } = field;
 
     return (
       <div className="relative w-full">
@@ -34,6 +43,7 @@ export const CustomInputDecimal = memo(
             <Input
               {...restProps}
               {...restField}
+              ref={ref}
               value={isEmpty(value) ? '' : value}
               disabled={disabled}
               placeholder={placeholder ?? 'Digite aqui'}
@@ -42,6 +52,7 @@ export const CustomInputDecimal = memo(
                 `w-full rounded-md px-3 py-2 transition-all`,
                 'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
                 'disabled:cursor-not-allowed disabled:bg-gray-100',
+                hasError && 'border-red-500',
               )}
             />
           }

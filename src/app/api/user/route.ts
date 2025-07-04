@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 export async function GET(request: NextRequest) {
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
   const data = await res.json();
 
-  return Response.json({ ok: true, data });
+  return NextResponse.json({ ok: true, data });
 }
 
 export async function POST(request: NextRequest) {
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
   const data = await res.json();
 
-  return Response.json({ ok: true, data });
+  return NextResponse.json({ ok: true, data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -64,7 +64,7 @@ export async function PUT(request: NextRequest) {
 
   const data = await res.json();
 
-  return Response.json({ ok: true, data });
+  return NextResponse.json({ ok: true, data });
 }
 
 export async function DELETE(request: NextRequest) {
@@ -83,5 +83,5 @@ export async function DELETE(request: NextRequest) {
 
   const data = await res.json();
 
-  return Response.json({ ok: true, data });
+  return NextResponse.json({ ok: true, data });
 }

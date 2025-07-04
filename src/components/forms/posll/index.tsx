@@ -1,0 +1,243 @@
+'use client';
+
+import React from 'react';
+import type { Control, UseFormHandleSubmit } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import type { InferType } from 'yup';
+
+import {
+  Button,
+  FieldDefault,
+  FieldSetCheckbox,
+  FieldSetConsentCheckbox,
+  FieldSetRadio,
+  FieldTextarea,
+  SessionForm,
+} from '@/components';
+import { formatMobilePhone } from '@/helpers';
+import type { posllSchema } from '@/yup';
+
+import { ConfirmationFields } from './confirmation';
+import { DiseaseFields } from './disease';
+import { MedicationFields } from './medication';
+
+type PosllSchemaInfertype = InferType<typeof posllSchema>;
+
+export interface PosllFormInterface {
+  onSubmit: (_: PosllSchemaInfertype) => void;
+  control: Control<PosllSchemaInfertype>;
+  handleSubmit: UseFormHandleSubmit<PosllSchemaInfertype>;
+  isDisabled?: boolean;
+}
+
+export const PosllForm = (props: PosllFormInterface) => {
+  const { control, onSubmit, handleSubmit, isDisabled = false } = props;
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 pb-20">
+      <form
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          Object.entries(errors).forEach(([key, value]) => {
+            toast.error(`Campo: ${key}, Erro: ${value?.message}`);
+          });
+        })}
+        className="mt-6 flex flex-col gap-6">
+        <div className="space-y-1 text-center">
+          <h1 className="text-2xl font-bold">Curso de Liderança Juvenil - CLJ</h1>
+          <p>Secretariado Diocesano de Novo Hamburgo</p>
+          <h2 className="text-lg font-semibold">FICHA DE CANDIDATO(A) AO CLJ II</h2>
+        </div>
+
+        <SessionForm title="Dados da ficha:">
+          <div className="grid grid-cols-1 gap-4">
+            <FieldDefault
+              disabled={isDisabled}
+              id="recordNumber"
+              control={control}
+              label="Número da ficha"
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="parishAcronym"
+              control={control}
+              label="Sigla da paróquia/capela"
+            />
+          </div>
+        </SessionForm>
+
+        <SessionForm title="Dados do(a) Candidato(a):">
+          <div className="grid grid-cols-1 gap-4">
+            <FieldDefault
+              disabled={isDisabled}
+              id="candidateName"
+              control={control}
+              label="Nome Cursista"
+            />
+            <FieldDefault disabled={isDisabled} id="nickname" control={control} label="Apelido" />
+            <FieldDefault
+              disabled={isDisabled}
+              id="candidatePhone"
+              control={control}
+              onChange={(e) => formatMobilePhone(e)}
+              label="Telefone Cursista"
+            />
+            <FieldDefault disabled={isDisabled} id="priest" control={control} label="Pároco" />
+            <div>
+              <p>Data de Nascimento</p>
+              <FieldDefault disabled={isDisabled} id="birthDate" control={control} type="date" />
+            </div>
+            <FieldDefault
+              disabled={isDisabled}
+              id="instagram"
+              control={control}
+              label="Instagram"
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="parishChapel"
+              control={control}
+              label="Paróquia/Capela"
+            />
+          </div>
+        </SessionForm>
+
+        <SessionForm title="Consenso ao âmbito do curso:">
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.courseOneDone"
+            control={control}
+            label="CLJ l que fez"
+          />
+          <FieldTextarea
+            disabled={isDisabled}
+            id="recordPOSll.motivationToParticipate"
+            control={control}
+            label="O que o (a) motiva a participar do Movimento CLJ?"
+          />
+          <FieldTextarea
+            disabled={isDisabled}
+            id="recordPOSll.reasonForCLJII"
+            control={control}
+            label="Por que deseja fazer o CLJ II?"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.approachToChrist"
+            control={control}
+            label="Desde o teu CLJ I, aproximaste pessoas de Cristo e da Igreja?"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.acceptsChurchDoctrine"
+            control={control}
+            label="Você procura entender e aceitar a Doutrina da Igreja Católica, buscando aumentar sua fé?"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.commitmentToCLJ"
+            control={control}
+            label="Você sabe que participar do CLJ é se comprometer com Cristo, com a paróquia e com o grupo?"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.perseveranceInCommunity"
+            control={control}
+            label="Você é consciente de que não deve fazer o curso caso não queira perseverar na sua comunidade e no seu grupo?"
+          />
+          <FieldSetRadio
+            disabled={isDisabled}
+            control={control}
+            id="recordPOSll.hideImportantInfo"
+            label="É consciente de que não deve ocultar nenhuma informação importante nesta ficha?"
+            options={[
+              { label: 'Sim', value: true },
+              { label: 'Não', value: false },
+            ]}
+          />
+        </SessionForm>
+
+        <SessionForm title="Sua função na comunidade hoje:">
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordPOSll.currentGroupFunction"
+            control={control}
+            label="Atual função no grupo"
+          />
+          <FieldTextarea
+            disabled={isDisabled}
+            id="recordPOSll.parishChapelActivities"
+            control={control}
+            label="Exerce ou já exerceu outra atividade na Paróquia/Capela? Qual?"
+          />
+        </SessionForm>
+
+        <SessionForm title="Religiosos:">
+          <FieldSetCheckbox
+            disabled={isDisabled}
+            control={control}
+            id="spiritualLife"
+            label="Vida Espiritual: (Assinale somente as alternativas que praticas com freqüência)"
+            options={[
+              { id: 'oracaoDiaria', label: 'Oração Diária' },
+              { id: 'missaDominicalSemanal', label: 'Missa Dominical Semanal' },
+              { id: 'confissaoFrequente', label: 'Confissão Frequente' },
+              { id: 'visitaAoSacrario', label: 'Visita ao Sacrário Semanal' },
+              { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho Diária' },
+              { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
+            ]}
+          />
+        </SessionForm>
+
+        <SessionForm title="Crisma:">
+          <ConfirmationFields control={control} isDisabled={isDisabled} />
+        </SessionForm>
+
+        <SessionForm title="Observações:">
+          <div className="grid grid-cols-1 gap-4">
+            <FieldDefault
+              disabled={isDisabled}
+              id="observationsCoordinator"
+              control={control}
+              label="Observação do Depto. de Pós e Coordenação paroquial"
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="observationsDed"
+              control={control}
+              label="Observação do Diretor Espiritual Paroquial"
+            />
+          </div>
+        </SessionForm>
+
+        <SessionForm title="Saúde:">
+          <div className="grid grid-cols-1 gap-4">
+            <DiseaseFields control={control} isDisabled={isDisabled} />
+            <MedicationFields control={control} isDisabled={isDisabled} />
+
+            <FieldDefault
+              disabled={isDisabled}
+              id="allergy"
+              label="Tem algum tipo de alergia (medicamentos, alimentos, etc.)?"
+              control={control}
+            />
+          </div>
+        </SessionForm>
+
+        <SessionForm title="Consentimento de dados:">
+          <FieldSetConsentCheckbox
+            description="Declaro estar ciente de que meus dados, presentes nessa ficha, serão utilizados única e exclusivamente para o curso."
+            disabled={isDisabled}
+            id="dataConsent"
+            control={control}
+          />
+        </SessionForm>
+
+        {!isDisabled && (
+          <Button type="submit" className="mt-3 mb-2 w-full">
+            Enviar
+          </Button>
+        )}
+      </form>
+    </div>
+  );
+};

@@ -16,9 +16,11 @@ export default function RegisterCoursePage() {
   const navigate = useRouter();
   const { registerCourse } = useCourses();
 
-  const { handleSubmit, control } = useForm<CourseInferType>({
+  const { handleSubmit, control, watch } = useForm<CourseInferType>({
     resolver: yupResolver(courseSchema),
   });
+
+  console.log('watch', watch());
 
   const onSubmit = async (data: CourseInferType) => {
     const res = await registerCourse(data);

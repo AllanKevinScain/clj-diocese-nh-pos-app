@@ -1,4 +1,4 @@
-import type { NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 export async function GET(
@@ -18,7 +18,11 @@ export async function GET(
     },
   });
 
+  if (res.status === 204) return NextResponse.json({ ok: false, data: [] });
+
   const data = await res.json();
 
-  return Response.json(data);
+  if (res.status !== 200) return NextResponse.json({ ok: false, data });
+
+  return NextResponse.json({ ok: true, data });
 }

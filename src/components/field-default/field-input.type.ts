@@ -9,17 +9,20 @@ interface ComumInputsPropertiesInterface<T extends FieldValues> extends OmitedIn
   field: ControllerRenderProps<T, Path<T>>;
   disabled?: boolean;
   placeholder?: string;
+  onChange?: (value: string) => string;
+  onChangeValue?: (_: string | number) => void;
 }
 
 export interface ComumDefaultInputInterface<T extends FieldValues>
   extends ComumInputsPropertiesInterface<T> {
   showEye?: boolean;
+  hasError?: boolean;
 }
 
 export interface ComumDecimalInputInterface<T extends FieldValues>
   extends ComumInputsPropertiesInterface<T> {
   showCifrao?: boolean;
-  onChangeValue?: (_: string | number) => void;
+  hasError?: boolean;
 }
 
 export interface FieldDefaultInterface<T extends FieldValues>
@@ -29,7 +32,6 @@ export interface FieldDefaultInterface<T extends FieldValues>
   control: Control<T> | undefined;
   label?: string;
   defaultValue?: string | boolean | string[];
-  onChange?: (value: string) => string;
   isLoading?: boolean;
   isDecimal?: boolean;
   customLabel?: React.ReactNode;

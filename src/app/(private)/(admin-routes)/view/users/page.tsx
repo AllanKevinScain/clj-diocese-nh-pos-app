@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { TbLoaderQuarter } from 'react-icons/tb';
 import type { InferType } from 'yup';
 
@@ -16,6 +17,9 @@ export default function UserClientPage() {
   const { data, isLoading } = useCreateQuery<UserSchemaInferType[]>({
     queryKey: ['users'],
     queryFn: listUsers,
+    onError: (error) => {
+      toast.error(String(error.data?.message));
+    },
   });
 
   const isEmptyUsers = data?.length === 0 && !isLoading;

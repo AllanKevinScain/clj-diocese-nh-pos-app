@@ -5,7 +5,7 @@ export function useListRecords() {
     });
     const res = await req.json();
 
-    return res;
+    return res.data;
   }
 
   return {

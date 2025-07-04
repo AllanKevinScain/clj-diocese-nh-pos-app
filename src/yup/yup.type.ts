@@ -1,7 +1,7 @@
 import type * as yup from 'yup';
 
 import type { loginSchema } from './login-schama';
-import type { poslSchema } from './pos-l-schema';
+import type { poslSchema } from './posl-schema';
 import type { teamWorkSchema } from './team-work-schema';
 
 /* LOGIN */

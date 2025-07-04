@@ -42,6 +42,8 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
             <Textarea
               {...restProps}
               {...field}
+              ref={field.ref}
+              placeholder={restProps.placeholder ?? 'Digite aqui'}
               className={twMerge(
                 'resize-none',
                 'border border-gray-300',
@@ -53,7 +55,9 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
               rows={3}
             />
 
-            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            {!!errors[id]?.message && (
+              <Description className="text-xs text-red-500">{`${errors[id]?.message}`}</Description>
+            )}
           </Field>
         );
       }}

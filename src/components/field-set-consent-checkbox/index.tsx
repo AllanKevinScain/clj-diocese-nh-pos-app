@@ -23,14 +23,19 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
       name={id}
       control={control}
       defaultValue={false as PathValue<T, Path<T>>}
-      render={({ field, formState }) => {
-        const { errors } = formState;
-        const { value, onChange } = field;
+      render={({ field, fieldState: { error } }) => {
+        const hasError = !!error?.message;
+        const { value, onChange, ref } = field;
 
         return (
           <Field className="w-full">
             {!!label && (
-              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
+              <Label
+                className={twMerge(
+                  'flex gap-[4px]',
+                  'text-[16px] font-[500]',
+                  hasError && 'text-red-500',
+                )}>
                 <span className="text-neutral-800">{label}</span>
               </Label>
             )}
@@ -38,17 +43,23 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
             <div className="flex gap-4">
               <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-800">
                 <input
+                  ref={ref}
                   type="checkbox"
                   disabled={disabled}
                   checked={value}
                   onChange={() => onChange(!value)}
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className={twMerge(
+                    'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
+                    hasError && 'border-red-500',
+                  )}
                 />
                 {description}
               </label>
             </div>
 
-            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            {hasError && (
+              <Description className="text-xs text-red-500">{error?.message}</Description>
+            )}
           </Field>
         );
       }}

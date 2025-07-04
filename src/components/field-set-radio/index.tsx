@@ -9,9 +9,9 @@ export interface FieldSetRadioInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T> | undefined;
   label: string;
-  options: { id: string; label: string }[];
-  defaultValue?: string | boolean | string[];
-  customOnChange?: (event: string) => void;
+  options: { value: PathValue<T, Path<T>>; label: string }[];
+  defaultValue?: unknown;
+  customOnChange?: (_: unknown) => void;
   disabled?: boolean;
 }
 
@@ -31,15 +31,17 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
       name={id}
       control={control}
       defaultValue={defaultValue as PathValue<T, Path<T>>}
-      render={({ field, formState }) => {
-        const { errors } = formState;
-        const { value, onChange } = field;
+      render={({ field, fieldState: { error } }) => {
+        const hasError = !!error?.message;
+        const { value: controllerValue, onChange, ref } = field;
 
         return (
           <Field className="w-full">
             {!!label && (
               <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
-                <span className="text-neutral-800">{label}</span>
+                <span className={twMerge('text-neutral-800', hasError && 'text-red-500')}>
+                  {label}
+                </span>
               </Label>
             )}
 
@@ -47,31 +49,41 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
               className={twMerge(
                 'flex flex-wrap items-center gap-4',
                 'rounded-md bg-neutral-300 p-2',
+                hasError && 'border border-red-500',
               )}>
               {options.map((item) => {
-                const { id, label } = item;
+                const { value, label } = item;
+                const isMarked = controllerValue === value;
+
                 return (
                   <div
-                    key={id}
+                    key={label}
                     className="flex cursor-pointer items-center gap-4"
                     onClick={() => {
                       if (disabled) return;
-                      onChange(id);
-                      customOnChange?.(id);
+                      if (isMarked) {
+                        onChange(null);
+                        customOnChange?.(null);
+                      } else {
+                        onChange(value);
+                        customOnChange?.(value);
+                      }
                     }}>
+                    <input ref={ref} readOnly className="sr-only" />
                     <div
                       className={twMerge(
-                        'rounded-full border',
+                        'rounded-full border border-gray-800',
                         'flex items-center justify-center',
                         'h-[14px] w-[14px] bg-white',
                         disabled && 'bg-neutral-200',
+                        hasError && 'border-red-500',
                       )}>
                       <div
                         className={twMerge(
                           'rounded-full',
                           'h-[10px] w-[10px]',
-                          value === id && 'bg-black',
-                          value === id && disabled && 'bg-neutral-500',
+                          isMarked && 'bg-gray-800',
+                          isMarked && disabled && 'bg-neutral-400',
                         )}
                       />
                     </div>
@@ -81,7 +93,9 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
               })}
             </div>
 
-            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            {hasError && (
+              <Description className="text-xs text-red-500">{error?.message}</Description>
+            )}
           </Field>
         );
       }}

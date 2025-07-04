@@ -17,8 +17,17 @@ type CustomInputPadraoInterfaceWithDisplayInterface = {
 
 export const CustomInputPadrao = memo(
   <T extends FieldValues>(props: ComumDefaultInputInterface<T>) => {
-    const { field, disabled, placeholder, showEye, ...restProps } = props;
-    const { value, ...restField } = field;
+    const {
+      field,
+      disabled,
+      placeholder,
+      showEye,
+      onChange: changeField,
+      onChangeValue,
+      hasError,
+      ...restProps
+    } = props;
+    const { value, onChange, ref, ...restField } = field;
 
     const [showPassword, setShowPassword] = useState(false);
     const [type, setType] = useState(restProps.type ?? 'text');
@@ -33,10 +42,17 @@ export const CustomInputPadrao = memo(
     };
 
     return (
-      <div className="relative mb-4 flex">
+      <div className="relative flex">
         <Input
           {...restProps}
           {...restField}
+          ref={ref}
+          onChange={(e) => {
+            let formated = e.target.value;
+            if (changeField) formated = changeField(e.target.value);
+            if (onChangeValue) onChangeValue(formated);
+            onChange(formated);
+          }}
           type={type}
           value={isEmpty(value) ? '' : value}
           disabled={disabled}
@@ -46,6 +62,7 @@ export const CustomInputPadrao = memo(
             `w-full rounded-md px-3 py-2 transition-all`,
             'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
             'disabled:cursor-not-allowed disabled:bg-gray-100',
+            hasError && 'border-red-500',
           )}
         />
         {showEye && (

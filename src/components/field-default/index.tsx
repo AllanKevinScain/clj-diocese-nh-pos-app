@@ -71,14 +71,16 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
         name={id}
         control={control}
         defaultValue={defaultValue as PathValue<T, Path<T>>}
-        render={({ field, formState }) => {
-          const { errors } = formState;
+        render={({ field, fieldState: { error } }) => {
+          const hasError = !!error?.message;
 
           return (
             <Field className="w-full">
               {!!label && (
                 <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
-                  <span className="text-neutral-800">{label}</span>
+                  <span className={twMerge('text-neutral-800', hasError && 'text-red-500')}>
+                    {label}
+                  </span>
                 </Label>
               )}
               {isDecimal && (
@@ -90,19 +92,24 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
                   disabled={disabled}
                   onChangeValue={onChangeValue}
                   showCifrao={showCifrao}
+                  hasError={hasError}
                 />
               )}
               {!isDecimal && (
                 <CustomInputPadrao
                   {...restProps}
+                  onChangeValue={onChangeValue}
                   id={id}
                   field={field}
                   placeholder={placeholder}
                   disabled={disabled}
+                  hasError={hasError}
                 />
               )}
 
-              {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+              {hasError && (
+                <Description className="text-xs text-red-500">{error?.message}</Description>
+              )}
             </Field>
           );
         }}

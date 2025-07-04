@@ -12,25 +12,30 @@ export interface FieldSetCheckboxInterface<T extends FieldValues> {
   options: { id: string; label: string }[];
   disabled?: boolean;
   observation?: string;
+  customOnChange?: (_: unknown) => void;
 }
 
 export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxInterface<T>) => {
-  const { label, options = [], id, control, disabled = false, observation } = props;
+  const { label, options = [], id, control, disabled = false, observation, customOnChange } = props;
 
   return (
     <Controller
       name={id}
       control={control}
       defaultValue={[] as PathValue<T, Path<T>>}
-      render={({ field, formState }) => {
-        const { errors } = formState;
-        const { value, onChange } = field;
+      render={({ field, fieldState: { error } }) => {
+        const hasError = !!error?.message;
+        const { value, onChange, ref } = field;
 
         return (
           <Field className={twMerge('flex flex-col gap-4', 'w-full')}>
             {!!label && (
               <span
-                className={twMerge('flex gap-[4px]', 'text-[16px] font-[500] text-neutral-800')}>
+                className={twMerge(
+                  'flex gap-[4px]',
+                  'text-[16px] font-[500] text-neutral-800',
+                  hasError && 'text-red-500',
+                )}>
                 {label}
               </span>
             )}
@@ -41,18 +46,32 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
                   key={option.id}
                   className="flex cursor-pointer items-center gap-2 text-sm text-neutral-800">
                   <input
+                    ref={ref}
                     type="checkbox"
                     disabled={disabled}
                     checked={value.includes(option.id)}
-                    onChange={() => onChange(option.id)}
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    onChange={() => {
+                      if (customOnChange) customOnChange(option.id);
+                      const finded = value.includes(option.id);
+                      if (finded) {
+                        const removes = value.filter((item: string) => item !== option.id);
+                        return onChange(removes);
+                      }
+                      return onChange([...value, option.id]);
+                    }}
+                    className={twMerge(
+                      'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
+                      hasError && 'border-red-500',
+                    )}
                   />
                   {option.label}
                 </label>
               ))}
             </div>
 
-            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            {hasError && (
+              <Description className="text-xs text-red-500">{error?.message}</Description>
+            )}
 
             {observation && <span className="text-xs">{observation}</span>}
           </Field>

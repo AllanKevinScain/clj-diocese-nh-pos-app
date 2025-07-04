@@ -46,7 +46,7 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
     {
       label: 'Criar ficha nova',
       icon: <BiPlus size={40} />,
-      url: `/record/pos-l/register?courseNumber=${courseNumber}`,
+      url: `/record/posl/register?courseNumber=${courseNumber}`,
       click: () => {},
     },
     {

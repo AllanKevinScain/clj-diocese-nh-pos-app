@@ -43,7 +43,7 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
       defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
         const { errors } = formState;
-        const { value, onChange } = field;
+        const { value, onChange, ref } = field;
 
         return (
           <Field>
@@ -58,6 +58,7 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
               onChange={(value) => onChange(value)}
               onClose={() => setQuery('')}>
               <div className="relative">
+                <input ref={ref} readOnly className="sr-only" />
                 <ComboboxInput
                   className={twMerge(
                     'border border-gray-300',
@@ -65,15 +66,15 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
                     'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
                     'disabled:cursor-not-allowed disabled:bg-gray-100',
                   )}
-                  displayValue={(item) => {
-                    const auxItem = item as { value: string; label: string };
-
-                    return auxItem.label;
+                  displayValue={(value) => {
+                    return (
+                      filteredPeople.find((item) => item.value === value)?.label ?? 'Selecione'
+                    );
                   }}
                   onChange={(event) => setQuery(event.target.value)}
                 />
-                <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
-                  <BiChevronDown className="size-4" />
+                <ComboboxButton className="group absolute top-3 right-0 px-2.5">
+                  <BiChevronDown size={20} />
                 </ComboboxButton>
               </div>
               <ComboboxOptions
@@ -86,7 +87,7 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
                 {filteredPeople.map((item) => (
                   <ComboboxOption
                     key={item.value}
-                    value={item}
+                    value={item.value}
                     className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none">
                     <BiCheck className="invisible size-4 group-data-selected:visible" />
                     <div className="text-sm/6 text-black">{item.label}</div>
@@ -95,7 +96,9 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
               </ComboboxOptions>
             </Combobox>
 
-            {!!errors[id]?.message && <Description>{`${errors[id]?.message}`}</Description>}
+            {!!errors[id]?.message && (
+              <Description className="text-xs text-red-500">{`${errors[id]?.message}`}</Description>
+            )}
           </Field>
         );
       }}

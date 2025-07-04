@@ -54,6 +54,15 @@ export const sacramentsData = [
   { id: 'missaDominicalFrequente', label: 'Missa Dominical Frequente' },
 ];
 export const sacraments = sacramentsData.map((i) => i.id);
+export const sacramentsCLJllData = [
+  { id: 'oracaoDiaria', label: 'Oração Diária' },
+  { id: 'missaDominicalSemanal', label: 'Missa Dominical Semanal' },
+  { id: 'confissaoFrequente', label: 'Confissão Frequente' },
+  { id: 'visitaAoSacrario', label: 'Visita ao Sacrário Semanal' },
+  { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho Diária' },
+  { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
+];
+export const sacramentsCLJll = sacramentsData.map((i) => i.id);
 
 export const hasDiseaseData = [
   { id: 'sim', label: 'Sim' },

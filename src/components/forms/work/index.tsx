@@ -16,7 +16,6 @@ import {
   FieldTextarea,
   SessionForm,
 } from '@/components';
-import { coursesTakenData, instrumentData, workPreferenceData } from '@/constants';
 import { formatMobilePhone } from '@/helpers';
 import { teamWorkSchema } from '@/yup';
 
@@ -95,7 +94,11 @@ export const TeamWorkForm: React.FC = () => {
               control={control}
               id="coursesTaken"
               label="Referente a Cursos que fez"
-              options={coursesTakenData}
+              options={[
+                { id: 'CLJI', label: 'CLJ I' },
+                { id: 'CLJII', label: 'CLJ II' },
+                { id: 'CLJIII', label: 'CLJ III' },
+              ]}
             />
             <div>
               <p className="mb-1">
@@ -177,7 +180,11 @@ export const TeamWorkForm: React.FC = () => {
                 control={control}
                 id="instrument"
                 label="Qual Instrumento?"
-                options={instrumentData}
+                options={[
+                  { value: 'violao', label: 'Violão' },
+                  { value: 'teclado', label: 'Teclado' },
+                  { value: 'cajon', label: 'Cajon' },
+                ]}
               />
             )}
           </div>
@@ -195,7 +202,10 @@ export const TeamWorkForm: React.FC = () => {
               control={control}
               id="workPreference"
               label="Preferência de trabalho neste curso"
-              options={workPreferenceData}
+              options={[
+                { value: 'sala', label: 'Sala' },
+                { value: 'cozinha', label: 'Cozinha' },
+              ]}
             />
             <FieldSetConsentCheckbox
               id="anotherRoleIfNecessary"
