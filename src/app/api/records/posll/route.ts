@@ -12,12 +12,21 @@ export async function POST(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PosllSchemaInfertype;
 
-  const { takesMedication: _takesMedication, hasDisease: _hasDisease, ...resBody } = body;
+  const typedBody = posllSchema.omit([
+    'takesMedication',
+    'hasDisease',
+    'createdAt',
+    'updatedAt',
+    'typeOfRecord',
+    'recordId',
+  ]);
+  const parsed = await typedBody.validate(body, { stripUnknown: true });
+  const { dataConsent, recordNumber, candidatePhone, ...resBody } = parsed;
   const formatedBody = {
     ...resBody,
-    dataConsent: Boolean(resBody.dataConsent),
-    recordNumber: Number(resBody.recordNumber),
-    candidatePhone: resBody.candidatePhone.replace(/[^\d]/g, ''),
+    dataConsent: Boolean(dataConsent),
+    recordNumber: Number(recordNumber),
+    candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 
   const res = await fetch(`${process.env.BASE_API_URL}/records/posll`, {
@@ -41,7 +50,14 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PosllSchemaInfertype;
 
-  const typedBody = posllSchema.omit(['takesMedication', 'hasDisease', 'createdAt', 'updatedAt']);
+  const typedBody = posllSchema.omit([
+    'takesMedication',
+    'hasDisease',
+    'createdAt',
+    'updatedAt',
+    'typeOfRecord',
+    'recordId',
+  ]);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
   const { id, dataConsent, recordNumber, candidatePhone, ...resBody } = parsed;
   const formatedBody = {

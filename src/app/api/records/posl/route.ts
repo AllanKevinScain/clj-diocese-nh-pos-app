@@ -11,15 +11,16 @@ export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PoslSchemaInfertype;
-  const {
-    takesMedication: _takesMedication,
-    hasDisease: _hasDisease,
-    recordPOSl,
-    candidatePhone,
-    dataConsent,
-    recordNumber,
-    ...resBody
-  } = body;
+  const typedBody = poslSchema.omit([
+    'takesMedication',
+    'hasDisease',
+    'createdAt',
+    'updatedAt',
+    'typeOfRecord',
+    'recordId',
+  ]);
+  const parsed = await typedBody.validate(body, { stripUnknown: true });
+  const { recordPOSl, candidatePhone, dataConsent, recordNumber, ...resBody } = parsed;
   const { godfatherPhone } = recordPOSl;
   const formatedRecordPOSl = {
     ...recordPOSl,
@@ -54,7 +55,14 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PoslSchemaInfertype;
 
-  const typedBody = poslSchema.omit(['takesMedication', 'hasDisease', 'createdAt', 'updatedAt']);
+  const typedBody = poslSchema.omit([
+    'takesMedication',
+    'hasDisease',
+    'createdAt',
+    'updatedAt',
+    'typeOfRecord',
+    'recordId',
+  ]);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
   const { id, dataConsent, recordNumber, candidatePhone, recordPOSl, ...resBody } = parsed;
   const { godfatherPhone } = recordPOSl;
