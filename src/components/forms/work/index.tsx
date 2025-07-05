@@ -1,10 +1,9 @@
 'use client';
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { BiChevronLeft } from 'react-icons/bi';
+import React, { useCallback } from 'react';
+import type { FieldErrors } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import {
@@ -17,231 +16,265 @@ import {
   SessionForm,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import { teamWorkSchema } from '@/yup';
+import type { workSchema } from '@/yup';
 
-type WorkSchemaInfertype = InferType<typeof teamWorkSchema>;
+import { ConfirmationFields } from './confirmation';
+import { InstrumentFields } from './instrument';
 
-export const TeamWorkForm: React.FC = () => {
-  const navigate = useRouter();
+export type WorkSchemaInfertype = InferType<typeof workSchema>;
 
-  const { control, handleSubmit, watch } = useForm<WorkSchemaInfertype>({
-    resolver: yupResolver(teamWorkSchema),
-  });
-  const areConfirmed = watch('areConfirmed');
-  const wouldToBeConfirmed = watch('wouldToBeConfirmed');
-  const playAnyInstrument = watch('playAnyInstrument');
+export interface WorkFormInterface {
+  onSubmit: (_: WorkSchemaInfertype) => void;
+  isDisabled?: boolean;
+}
 
-  const onSubmit = (data: WorkSchemaInfertype) => {
-    console.log(data);
-  };
+export const WorkForm = (props: WorkFormInterface) => {
+  const { onSubmit, isDisabled } = props;
+
+  const { control, handleSubmit } = useFormContext<WorkSchemaInfertype>();
+
+  const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
+    Object.entries(errors).forEach(([key, value]) => {
+      const path = pathPrefix ? `${pathPrefix}.${key}` : key;
+
+      if (value?.message) {
+        toast.error(`Campo: ${path}, Erro: ${value.message}`);
+      } else if (typeof value === 'object') {
+        showErrors(value as FieldErrors, path);
+      }
+    });
+  }, []);
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-[5%]">
-      <Button className="flex w-fit items-center gap-1" onClick={() => navigate.back()}>
-        <BiChevronLeft />
-        Voltar
-      </Button>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-8">
-        <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Curso de Liderança Juvenil - CLJ</h1>
+      <form
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Erros no onSubmit:', errors);
+            showErrors(errors);
+          }
+        })}
+        className="mt-6 flex flex-col gap-8">
+        <div className="space-y-1 text-center">
+          <h1 className="text-2xl font-bold">Curso de Liderança Juvenil - CLJ</h1>
           <p>Secretariado Diocesano de Novo Hamburgo</p>
-          <h2 className="text-xl font-semibold">FICHA DE CANDIDATO(A) AO CLJ I</h2>
+          <h2 className="text-lg font-semibold">FICHA DE CANDIDATO(A) À EQUIPE DE TRABALHO</h2>
         </div>
 
         <SessionForm title="Dados da ficha:">
           <div className="grid grid-cols-1 gap-4">
             <FieldDefault
               id="recordNumber"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
               label="Número da ficha"
             />
             <FieldDefault
               id="parishAcronym"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
               label="Sigla da paróquia/capela"
             />
           </div>
         </SessionForm>
 
         <SessionForm title="Dados do(a) Candidato(a):">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FieldDefault id="studentName" control={control} defaultValue="" label="Nome" />
-            <FieldDefault id="nickname" control={control} defaultValue="" label="Apelido" />
+          <div className="grid grid-cols-1 gap-4">
             <FieldDefault
-              id="studentPhone"
+              id="parishChapel"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
+              label="Paróquia/Capela"
+            />
+            <FieldDefault id="priest" disabled={isDisabled} control={control} label="Pároco" />
+            <FieldDefault id="candidateName" disabled={isDisabled} control={control} label="Nome" />
+            <FieldDefault id="nickname" disabled={isDisabled} control={control} label="Apelido" />
+            <div>
+              <p>Data de Nascimento</p>
+              <FieldDefault id="birthDate" disabled={isDisabled} control={control} type="date" />
+            </div>
+            <FieldDefault
+              id="instagram"
+              disabled={isDisabled}
+              control={control}
+              label="Instagram"
+            />
+            <FieldDefault
+              id="candidatePhone"
+              disabled={isDisabled}
+              control={control}
               onChange={(e) => formatMobilePhone(e)}
-              label="Telefone"
+              label="Telefone Cursista"
             />
-            <FieldDefault id="parishPriest" control={control} defaultValue="" label="Pároco" />
-            <FieldDefault id="rg" control={control} defaultValue="" label="RG/CN" />
-            <div className="col-span-full">
-              <p className="font-medium">Data de Nascimento</p>
-              <FieldDefault id="birthDate" control={control} defaultValue="" type="date" />
-            </div>
-            <FieldDefault id="instagram" control={control} defaultValue="" label="Instagram" />
-            <FieldDefault id="parish" control={control} defaultValue="" label="Paróquia/Capela" />
           </div>
         </SessionForm>
 
-        <SessionForm title="Outras informações:">
-          <div className="grid grid-cols-1 gap-4">
-            <FieldSetCheckbox
-              control={control}
-              id="coursesTaken"
-              label="Referente a Cursos que fez"
-              options={[
-                { id: 'CLJI', label: 'CLJ I' },
-                { id: 'CLJII', label: 'CLJ II' },
-                { id: 'CLJIII', label: 'CLJ III' },
-              ]}
-            />
-            <div>
-              <p className="mb-1">
-                Você é consciente de que é necessário estar em estado de graça (confessado) para
-                participar da equipe de trabalho?
-              </p>
-              <FieldDefault
-                id="termStateGraceConfessed"
-                control={control}
-                defaultValue=""
-                label="-"
-              />
-            </div>
-            <div>
-              <p className="mb-1">
-                Você é consciente de que falsificar informações na ficha de trabalho é prejudicial
-                para sua vida e para o curso?
-              </p>
-              <FieldDefault id="termNoFakeData" control={control} defaultValue="" label="-" />
-            </div>
-          </div>
-        </SessionForm>
-
-        <SessionForm title="Grupo paroquial:">
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <p className="mb-1">
-                Você é consciente de que o testemunho de vida fora do curso é essencial para o êxito
-                do curso?
-              </p>
-              <FieldDefault id="termLifeTestimony" control={control} defaultValue="" label="-" />
-            </div>
+        <SessionForm title="Outras Informações:">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FieldDefault
-              id="currentRoleParishGroup"
+              id="recordWork.courseOneDone"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
+              label="Curso CLJ I"
+            />
+            <FieldDefault
+              id="recordWork.courseTwoDone"
+              disabled={isDisabled}
+              control={control}
+              label="Curso CLJ II"
+            />
+            <FieldDefault
+              id="recordWork.courseThreeDone"
+              disabled={isDisabled}
+              control={control}
+              label="Curso CLJ III"
+            />
+            <FieldDefault
+              id="recordWork.currentGroupFunction"
+              disabled={isDisabled}
+              control={control}
               label="Atual função no grupo"
             />
+            <FieldDefault
+              id="recordWork.parishActivities"
+              disabled={isDisabled}
+              control={control}
+              label="Exerce ou já exerceu outra atividade na Paróquia/Capela? Qual?"
+            />
           </div>
         </SessionForm>
 
-        <SessionForm title="Vida Espiritual:">
+        <SessionForm title="Tenho consciência dos meus atos:">
           <div className="grid grid-cols-1 gap-4">
-            <FieldSetConsentCheckbox
-              id="areConfirmed"
+            <FieldDefault
+              id="recordWork.graceStateAwareness"
+              disabled={isDisabled}
               control={control}
-              label="É Crismado?"
-              description="É Crismado?"
+              label="Você é consciente de que é necessário estar em estado de graça (confessado) para participar da equipe de trabalho?"
             />
-            {areConfirmed === false && (
-              <FieldSetConsentCheckbox
-                id="wouldToBeConfirmed"
-                control={control}
-                label="Em caso negativo, está fazendo a catequese de Crisma?"
-                description="Em caso negativo, está fazendo a catequese de Crisma?"
-              />
-            )}
-            {wouldToBeConfirmed === false && (
-              <FieldDefault
-                id="notConfirmatedReason"
-                control={control}
-                defaultValue=""
-                label="Não, por quê?"
-              />
-            )}
+            <FieldSetRadio
+              id="recordWork.notFalsifyData"
+              disabled={isDisabled}
+              control={control}
+              label="Você é consciente de que falsificar informações na ficha de trabalho é prejudicial para sua vida e para o curso?"
+              options={[
+                { label: 'Sim', value: true },
+                { label: 'Não', value: false },
+              ]}
+            />
+            <FieldDefault
+              id="recordWork.showLifeTestimony"
+              disabled={isDisabled}
+              control={control}
+              label="Você é consciente de que o testemunho de vida fora do curso é essencial para o êxito do curso?"
+            />
           </div>
+        </SessionForm>
+
+        <SessionForm title="Vida Espiritual (Assinale somente as alternativas que praticas com freqüência):">
+          <FieldSetCheckbox
+            id="spiritualLife"
+            disabled={isDisabled}
+            control={control}
+            label="Vida Espiritual: (Assinale somente as alternativas que praticas com freqüência)"
+            options={[
+              { id: 'oracaoDiaria', label: 'Oração Diária' },
+              { id: 'missaDominicalSemanal', label: 'Missa Dominical Semanal' },
+              { id: 'confissaoFrequente', label: 'Confissão Frequente' },
+              { id: 'visitaAoSacrario', label: 'Visita ao Sacrário Semanal' },
+              { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho Diária' },
+              { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade Semanal' },
+            ]}
+          />
+        </SessionForm>
+
+        <SessionForm title="Crisma:">
+          <ConfirmationFields isDisabled={isDisabled} />
         </SessionForm>
 
         <SessionForm title="Instrumento:">
-          <div className="grid grid-cols-1 gap-4">
-            <FieldSetConsentCheckbox
-              id="playAnyInstrument"
-              control={control}
-              label="Toca algum instrumento?"
-              description="Toca algum instrumento?"
-            />
-            {playAnyInstrument && (
-              <FieldSetRadio
-                control={control}
-                id="instrument"
-                label="Qual Instrumento?"
-                options={[
-                  { value: 'violao', label: 'Violão' },
-                  { value: 'teclado', label: 'Teclado' },
-                  { value: 'cajon', label: 'Cajon' },
-                ]}
-              />
-            )}
-          </div>
+          <InstrumentFields isDisabled={isDisabled} />
         </SessionForm>
 
         <SessionForm title="Razões para fazer o curso:">
           <div className="grid grid-cols-1 gap-4">
             <FieldTextarea
-              id="reasonWorkCourse"
+              id="recordWork.reasonToWork"
+              disabled={isDisabled}
               control={control}
               label="Por que deseja trabalhar neste curso?"
-              placeholder="Digite aqui"
             />
             <FieldSetRadio
+              id="recordWork.workPreference"
               control={control}
-              id="workPreference"
+              disabled={isDisabled}
               label="Preferência de trabalho neste curso"
               options={[
                 { value: 'sala', label: 'Sala' },
                 { value: 'cozinha', label: 'Cozinha' },
               ]}
             />
-            <FieldSetConsentCheckbox
-              id="anotherRoleIfNecessary"
+            <FieldSetRadio
+              id="recordWork.willingToOtherFunction"
+              disabled={isDisabled}
               control={control}
               label="Está disposto a exercer outra função, caso seja  necessário?"
-              description="Está disposto a exercer outra função, caso seja  necessário?"
-            />
-            <FieldSetConsentCheckbox
-              id="dataConsent"
-              control={control}
-              label="Declaro estar ciente de que meus dados, presentes nessa ficha, serão utilizados única e exclusivamente para o curso."
-              description="Declaro estar ciente de que meus dados, presentes nessa ficha, serão utilizados única e exclusivamente para o curso."
+              options={[
+                { label: 'Sim', value: true },
+                { label: 'Não', value: false },
+              ]}
             />
           </div>
         </SessionForm>
 
         <SessionForm title="Coordenação Paroquial:">
           <div className="grid grid-cols-1 gap-4">
-            <FieldDefault
-              id="coordinationObservations"
+            <FieldSetCheckbox
+              id="recordWork.parishIndication"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
-              label="Observações Coordenação"
+              label="Indicações"
+              options={[
+                { id: 'cozinha', label: 'Cozinha' },
+                { id: 'liturgia', label: 'Liturgia' },
+                { id: 'secretaria', label: 'Secretaria' },
+                { id: 'auxSecretaria', label: 'Aux. Secretaria' },
+                { id: 'bar', label: 'Bar' },
+                { id: 'coordFolclore', label: 'Coord. Folclore' },
+                { id: 'monitor', label: 'Monitor' },
+                { id: 'palestrante', label: 'Palestrante' },
+                { id: 'acolito', label: 'Acólito' },
+              ]}
             />
             <FieldDefault
-              id="DEPObservation"
+              id="observationsCoordinator"
+              disabled={isDisabled}
               control={control}
-              defaultValue=""
-              label="Observação do DEP"
+              label="Observação do Depto. de Pós e Coordenação paroquial"
             />
-            <p className="font-bold">
-              Coordenação e pároco: no caso deste jovem não ser exemplo de perseverança no grupo e
-              ausente na missa dominical, não assine a
-            </p>
+            <FieldDefault
+              id="observationsDed"
+              disabled={isDisabled}
+              control={control}
+              label="Observação do Diretor Espiritual Paroquial"
+            />
           </div>
         </SessionForm>
+
+        <SessionForm title="Consentimento de dados:">
+          <FieldSetConsentCheckbox
+            id="dataConsent"
+            disabled={isDisabled}
+            control={control}
+            description="Declaro estar ciente de que meus dados, presentes nessa ficha, serão utilizados única e exclusivamente para o curso."
+          />
+        </SessionForm>
+
+        <span className="rounded-lg border bg-gray-200 p-2">
+          Coordenação e pároco: no caso deste jovem não ser exemplo de perseverança no grupo e
+          ausente na missa dominical, não assine a ficha, afinal, será um contra-testemunho para o
+          Movimento!
+        </span>
 
         <Button type="submit" className="mt-3 mb-2 w-full">
           Enviar

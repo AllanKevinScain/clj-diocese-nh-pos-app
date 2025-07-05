@@ -3,35 +3,28 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import type { InferType } from 'yup';
 
-import { posllSchema } from '@/yup';
+import { workSchema } from '@/yup';
 
-type PosllSchemaInfertype = InferType<typeof posllSchema>;
+type PosllSchemaInfertype = InferType<typeof workSchema>;
 
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PosllSchemaInfertype;
 
-  const typedBody = posllSchema.omit([
-    'takesMedication',
-    'hasDisease',
-    'createdAt',
-    'updatedAt',
-    'typeOfRecord',
-    'recordId',
-  ]);
+  const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { dataConsent, recordNumber, candidatePhone, recordPOSll, ...resBody } = parsed;
-  const { hasConfirmation: _, ...restRecordPOSll } = recordPOSll;
+  const { dataConsent, recordNumber, candidatePhone, recordWork, ...resBody } = parsed;
+  const { hasConfirmation: _hC, playInstrument: _pI, ...restRecordWork } = recordWork;
   const formatedBody = {
     ...resBody,
-    recordPOSll: restRecordPOSll,
+    recordWork: restRecordWork,
     dataConsent: Boolean(dataConsent),
     recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 
-  const res = await fetch(`${process.env.BASE_API_URL}/records/posll`, {
+  const res = await fetch(`${process.env.BASE_API_URL}/records/work`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token?.accessToken}`,
@@ -52,20 +45,13 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
   const body = (await request.json()) as PosllSchemaInfertype;
 
-  const typedBody = posllSchema.omit([
-    'takesMedication',
-    'hasDisease',
-    'createdAt',
-    'updatedAt',
-    'typeOfRecord',
-    'recordId',
-  ]);
+  const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { id, dataConsent, recordNumber, candidatePhone, recordPOSll, ...resRecord } = parsed;
-  const { hasConfirmation: _, ...restRecordPOSll } = recordPOSll;
+  const { id, dataConsent, recordNumber, candidatePhone, recordWork, ...resRecord } = parsed;
+  const { hasConfirmation: _hC, playInstrument: _pI, ...restRecordWork } = recordWork;
   const formatedBody = {
     ...resRecord,
-    recordPOSll: restRecordPOSll,
+    recordWork: restRecordWork,
     dataConsent: Boolean(dataConsent),
     recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
@@ -73,7 +59,7 @@ export async function PUT(request: NextRequest) {
 
   if (isEmpty(id)) throw new Error('Precisa de identificação!');
 
-  const res = await fetch(`${process.env.BASE_API_URL}/records/posll/${id}`, {
+  const res = await fetch(`${process.env.BASE_API_URL}/records/work/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token?.accessToken}`,

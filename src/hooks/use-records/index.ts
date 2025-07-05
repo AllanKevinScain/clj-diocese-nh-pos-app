@@ -3,7 +3,7 @@
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
-import { posllSchema, poslSchema } from '@/yup';
+import { posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type { UseRecordsInterface } from './use-records.type';
 
@@ -28,6 +28,18 @@ export function useRecords() {
         await posllSchema.validate(props.data, { abortEarly: false });
 
         const req = await fetch('/api/records/posll', {
+          method: 'POST',
+          body: JSON.stringify(props.data),
+        });
+
+        const res = await req.json();
+        return res;
+      }
+
+      if (typeOfRecord === 'WORK') {
+        await workSchema.validate(props.data, { abortEarly: false });
+
+        const req = await fetch('/api/records/work', {
           method: 'POST',
           body: JSON.stringify(props.data),
         });
@@ -88,14 +100,11 @@ export function useRecords() {
       throw error;
     }
   }
-
   async function deleteRecordById(
     recordId: string,
     typeOfRecord: 'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK',
   ) {
-    const type = typeOfRecord === 'POSll' ? 'posll' : 'posl';
-
-    const req = await fetch(`/api/records/${type}?recordId=${recordId}`, {
+    const req = await fetch(`/api/records?recordId=${recordId}&typeOfRecord=${typeOfRecord}`, {
       method: 'DELETE',
     });
     const res = await req.json();

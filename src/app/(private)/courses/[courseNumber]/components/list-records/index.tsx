@@ -18,12 +18,11 @@ interface ListRecordsInterface {
     typeOfRecord?: RecordType;
   }[];
   courseNumber: string;
-  registerUrl: string;
   typeOfRecord: RecordType;
 }
 
 export const ListRecords = (props: ListRecordsInterface) => {
-  const { records, courseNumber, registerUrl, typeOfRecord } = props;
+  const { records, courseNumber, typeOfRecord } = props;
 
   const recordsCandidate = useMemo(() => {
     const filtered = records?.filter(
@@ -48,11 +47,12 @@ export const ListRecords = (props: ListRecordsInterface) => {
         <h2 className="text-2xl font-semibold text-gray-800">
           Nenhuma ficha foi cadastrada no {courseNumber}!
         </h2>
-        <Link href={registerUrl}>
-          <Button>
-            <BiPlus />
-            Cadastrar ficha
-          </Button>
+        <Link
+          href={`/record/${typeOfRecord.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`}>
+          <Button className="h-[40px]">Cadastrar ficha de cursista</Button>
+        </Link>
+        <Link href={`/record/work/register?courseNumber=${courseNumber}`}>
+          <Button className="h-[40px]">Cadastrar ficha de equipe de trabalho</Button>
         </Link>
       </div>
     );

@@ -24,6 +24,11 @@ function requiredIsNotMakesonfirmation(
 
   return true;
 }
+function hasConfirmationIsRequired(value: boolean | undefined | null) {
+  if (value === null) return false;
+
+  return true;
+}
 
 const posllSchemaBase = yup.object({
   recordPOSll: yup.object({
@@ -54,9 +59,12 @@ const posllSchemaBase = yup.object({
       message: 'Campo obrigatório!',
       test: requiredDoingConfirmation,
     }),
-
     // -------- campos de auxilio - não vao pro back
-    hasConfirmation: yup.boolean().required('Campo obrigatório'),
+    hasConfirmation: yup.boolean().nullable().test({
+      name: 'hasConfirmationIsRequired',
+      message: 'Campo obrigatório!',
+      test: hasConfirmationIsRequired,
+    }),
   }),
 });
 

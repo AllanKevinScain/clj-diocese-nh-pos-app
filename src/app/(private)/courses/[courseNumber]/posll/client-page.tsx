@@ -41,12 +41,7 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
 
       {isLoading && <TbLoaderQuarter size={30} className="animate-spin text-gray-600" />}
       {!isLoading && (
-        <ListRecords
-          records={data}
-          courseNumber={courseNumber}
-          registerUrl={`/record/posll/register?courseNumber=${courseNumber}`}
-          typeOfRecord="POSll"
-        />
+        <ListRecords records={data} courseNumber={courseNumber} typeOfRecord="POSll" />
       )}
     </div>
   );
