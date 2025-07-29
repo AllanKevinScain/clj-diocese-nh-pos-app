@@ -14,9 +14,18 @@ import type {
 export function useRecords() {
   async function _callRecord(props: CallRecordInterface) {
     const { data, api, method } = props;
-    const req = await fetch(api, { method, body: JSON.stringify(data) });
-    const res = await req.json();
-    return res;
+    try {
+      const req = await fetch(api, { method, body: JSON.stringify(data) });
+      const res = await req.json();
+
+      if (!req.ok) {
+        throw new Error(res?.data?.message || 'Erro na requisição');
+      }
+
+      return res;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async function registerRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
@@ -41,10 +50,11 @@ export function useRecords() {
         const message = error.inner.map((e) => `${e.path}: ${e.message}`).join('\n');
         toast.error(message, { duration: 5000 });
 
-        throw new Error(message);
+        return { ok: false, data: { message } };
       }
 
-      throw error;
+      toast.error('Erro inesperado ao validar os dados');
+      return { ok: false, data: { message: 'Falha no cadastro!' } };
     }
   }
   async function editRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
@@ -69,10 +79,11 @@ export function useRecords() {
         const message = error.inner.map((e) => `${e.path}: ${e.message}`).join('\n');
         toast.error(message, { duration: 5000 });
 
-        throw new Error(message);
+        return { ok: false, data: { message } };
       }
 
-      throw error;
+      toast.error('Erro inesperado ao validar os dados');
+      return { ok: false, data: { message: 'Falha no cadastro!' } };
     }
   }
 

@@ -1,29 +1,12 @@
-import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
+import {
+  fieldNullisRequired,
+  requiredDoingConfirmation,
+  requiredIsNotMakesonfirmation,
+} from '../helpers';
 import { posDefault } from '../pos-default';
 
-function requiredDoingConfirmation(value: boolean | undefined | null, { parent }: yup.AnyObject) {
-  if (parent.hasConfirmation) {
-    if (value !== null) {
-      return true;
-    }
-
-    return false;
-  }
-
-  return true;
-}
-function requiredIsNotMakesonfirmation(
-  value: string | undefined | null,
-  { parent }: yup.AnyObject,
-) {
-  if (parent.hasConfirmation && parent.doingConfirmation) {
-    return isEmpty(value);
-  }
-
-  return true;
-}
 function hasConfirmationIsRequired(value: boolean | undefined | null) {
   if (value === null) return false;
 
@@ -42,7 +25,10 @@ const posllSchemaBase = yup.object({
     acceptsChurchDoctrine: yup.string().required('Campo obrigatório'),
     commitmentToCLJ: yup.string().required('Campo obrigatório'),
     perseveranceInCommunity: yup.string().required('Campo obrigatório'),
-    hideImportantInfo: yup.boolean().required('Campo obrigatório'),
+    hideImportantInfo: yup
+      .boolean()
+      .nullable()
+      .test({ test: fieldNullisRequired, message: 'Campo obrigatório' }),
 
     // função na paroquia e grupo
     currentGroupFunction: yup.string().required('Campo obrigatório'),
@@ -50,14 +36,12 @@ const posllSchemaBase = yup.object({
 
     // Crisma
     notConfirmationBecause: yup.string().nullable().test({
-      name: 'requiredIsNotMakesonfirmation',
-      message: 'Campo obrigatório!',
       test: requiredIsNotMakesonfirmation,
+      message: 'Campo obrigatório!',
     }),
     doingConfirmation: yup.boolean().nullable().test({
-      name: 'requiredDoingConfirmation',
-      message: 'Campo obrigatório!',
       test: requiredDoingConfirmation,
+      message: 'Campo obrigatório!',
     }),
     // -------- campos de auxilio - não vao pro back
     hasConfirmation: yup.boolean().nullable().test({
