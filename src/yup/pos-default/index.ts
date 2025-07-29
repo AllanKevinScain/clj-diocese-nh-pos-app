@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
+import { fieldNullisRequired } from '../helpers';
+
 function requiredDisease(value: string | undefined | null, { parent }: yup.AnyObject) {
   if (parent.hasDisease) return !isEmpty(value);
 
@@ -71,11 +73,20 @@ export const posDefault = yup.object({
   allergy: yup.string().required('Campo Obrigatório!'),
 
   // Consentimento
-  dataConsent: yup.boolean().required('Você deve aceitar o termo!'),
+  dataConsent: yup
+    .boolean()
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Você precisa aceitar o termo!' }),
 
   // -------- campos de auxilio - não vao pro back
-  hasDisease: yup.boolean().required('Campo Obrigatório!'),
-  takesMedication: yup.boolean().required('Campo Obrigatório!'),
+  hasDisease: yup
+    .boolean()
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Campo Obrigatório!' }),
+  takesMedication: yup
+    .boolean()
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Campo Obrigatório!' }),
   createdAt: yup.string().nullable(),
   updatedAt: yup.string().nullable(),
 });
