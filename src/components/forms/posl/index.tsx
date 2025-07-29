@@ -124,10 +124,13 @@ export const PoslForm = (props: PoslFormInterface) => {
               onChange={(e) => e.replace(/[0-9]/g, '')}
               maxLength={50}
             />
-            <div>
-              <p>Data de Nascimento</p>
-              <FieldDefault disabled={isDisabled} id="birthDate" control={control} type="date" />
-            </div>
+            <FieldDefault
+              disabled={isDisabled}
+              id="birthDate"
+              control={control}
+              type="date"
+              label="Data de Nascimento"
+            />
             <FieldDefault
               disabled={isDisabled}
               id="instagram"

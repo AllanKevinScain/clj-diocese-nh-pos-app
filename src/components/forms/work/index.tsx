@@ -38,7 +38,9 @@ export const WorkForm = (props: WorkFormInterface) => {
       const path = pathPrefix ? `${pathPrefix}.${key}` : key;
 
       if (value?.message) {
-        toast.error(`Campo: ${path}, Erro: ${value.message}`);
+        return toast.error(`Campo: ${path}, Erro: ${value.message}`, {
+          duration: 5000,
+        });
       } else if (typeof value === 'object') {
         showErrors(value as FieldErrors, path);
       }
@@ -46,7 +48,7 @@ export const WorkForm = (props: WorkFormInterface) => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 pb-[5%]">
+    <div className="mx-auto max-w-3xl px-4 pb-20">
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
           if (process.env.NODE_ENV === 'development') {
@@ -68,12 +70,16 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Número da ficha"
+              onChange={(e) => e.replace(/\D/g, '')}
+              maxLength={2}
             />
             <FieldDefault
               id="parishAcronym"
               disabled={isDisabled}
               control={control}
               label="Sigla da paróquia/capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={10}
             />
           </div>
         </SessionForm>
@@ -81,23 +87,19 @@ export const WorkForm = (props: WorkFormInterface) => {
         <SessionForm title="Dados do(a) Candidato(a):">
           <div className="grid grid-cols-1 gap-4">
             <FieldDefault
-              id="parishChapel"
+              id="candidateName"
               disabled={isDisabled}
               control={control}
-              label="Paróquia/Capela"
+              label="Nome"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
-            <FieldDefault id="priest" disabled={isDisabled} control={control} label="Pároco" />
-            <FieldDefault id="candidateName" disabled={isDisabled} control={control} label="Nome" />
-            <FieldDefault id="nickname" disabled={isDisabled} control={control} label="Apelido" />
-            <div>
-              <p>Data de Nascimento</p>
-              <FieldDefault id="birthDate" disabled={isDisabled} control={control} type="date" />
-            </div>
             <FieldDefault
-              id="instagram"
+              id="nickname"
               disabled={isDisabled}
               control={control}
-              label="Instagram"
+              label="Apelido"
+              maxLength={50}
             />
             <FieldDefault
               id="candidatePhone"
@@ -105,6 +107,36 @@ export const WorkForm = (props: WorkFormInterface) => {
               control={control}
               onChange={(e) => formatMobilePhone(e)}
               label="Telefone Cursista"
+            />
+            <FieldDefault
+              id="priest"
+              disabled={isDisabled}
+              control={control}
+              label="Pároco"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
+            />
+            <FieldDefault
+              id="birthDate"
+              disabled={isDisabled}
+              control={control}
+              type="date"
+              label="Data de Nascimento"
+            />
+            <FieldDefault
+              id="instagram"
+              disabled={isDisabled}
+              control={control}
+              label="Instagram"
+              maxLength={30}
+            />
+            <FieldDefault
+              id="parishChapel"
+              disabled={isDisabled}
+              control={control}
+              label="Paróquia/Capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
           </div>
         </SessionForm>
@@ -116,30 +148,42 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Curso CLJ I"
+              maxLength={4}
             />
             <FieldDefault
               id="recordWork.courseTwoDone"
               disabled={isDisabled}
               control={control}
               label="Curso CLJ II"
+              maxLength={4}
             />
             <FieldDefault
               id="recordWork.courseThreeDone"
               disabled={isDisabled}
               control={control}
               label="Curso CLJ III"
+              maxLength={4}
             />
             <FieldDefault
               id="recordWork.currentGroupFunction"
               disabled={isDisabled}
               control={control}
               label="Atual função no grupo"
+              maxLength={200}
             />
-            <FieldDefault
+            <FieldTextarea
               id="recordWork.parishActivities"
               disabled={isDisabled}
               control={control}
               label="Exerce ou já exerceu outra atividade na Paróquia/Capela? Qual?"
+              maxLength={200}
+            />
+            <FieldTextarea
+              id="recordWork.workedInWhichCourses"
+              disabled={isDisabled}
+              control={control}
+              label="Referente ao trabalho em Cursos (número do Curso e função exercida): "
+              maxLength={200}
             />
           </div>
         </SessionForm>
@@ -151,6 +195,7 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Você é consciente de que é necessário estar em estado de graça (confessado) para participar da equipe de trabalho?"
+              maxLength={50}
             />
             <FieldSetRadio
               id="recordWork.notFalsifyData"
@@ -167,11 +212,12 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Você é consciente de que o testemunho de vida fora do curso é essencial para o êxito do curso?"
+              maxLength={50}
             />
           </div>
         </SessionForm>
 
-        <SessionForm title="Vida Espiritual (Assinale somente as alternativas que praticas com freqüência):">
+        <SessionForm title="Vida Espiritual (Assinale somente as alternativas que praticas com frequência):">
           <FieldSetCheckbox
             id="spiritualLife"
             disabled={isDisabled}
@@ -203,6 +249,7 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Por que deseja trabalhar neste curso?"
+              maxLength={200}
             />
             <FieldSetRadio
               id="recordWork.workPreference"
@@ -246,17 +293,19 @@ export const WorkForm = (props: WorkFormInterface) => {
                 { id: 'acolito', label: 'Acólito' },
               ]}
             />
-            <FieldDefault
+            <FieldTextarea
               id="observationsCoordinator"
               disabled={isDisabled}
               control={control}
               label="Observação do Depto. de Pós e Coordenação paroquial"
+              maxLength={200}
             />
-            <FieldDefault
+            <FieldTextarea
               id="observationsDed"
               disabled={isDisabled}
               control={control}
               label="Observação do Diretor Espiritual Paroquial"
+              maxLength={200}
             />
           </div>
         </SessionForm>
@@ -270,15 +319,17 @@ export const WorkForm = (props: WorkFormInterface) => {
           />
         </SessionForm>
 
-        <span className="rounded-lg border bg-gray-200 p-2">
+        <span className="mb-3 rounded-lg border bg-gray-200 p-2">
           Coordenação e pároco: no caso deste jovem não ser exemplo de perseverança no grupo e
           ausente na missa dominical, não assine a ficha, afinal, será um contra-testemunho para o
           Movimento!
         </span>
 
-        <Button type="submit" className="mt-3 mb-2 w-full">
-          Enviar
-        </Button>
+        {!isDisabled && (
+          <Button type="submit" className="mt-3 mb-2 w-full">
+            Enviar
+          </Button>
+        )}
       </form>
     </div>
   );

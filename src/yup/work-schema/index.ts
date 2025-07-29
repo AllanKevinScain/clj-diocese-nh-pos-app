@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
+import { fieldNullisRequired } from '../helpers';
 import { posDefault } from '../pos-default';
 
 function requiredDoingConfirmation(value: boolean | undefined | null, { parent }: yup.AnyObject) {
@@ -30,12 +31,6 @@ function requiredIsNotMakesonfirmation(
   return true;
 }
 
-function notNull(value: boolean | undefined | null) {
-  if (value === null) return false;
-
-  return true;
-}
-
 const teamWorkSchema = yup.object().shape({
   recordWork: yup.object({
     recordId: yup.string().optional(),
@@ -48,7 +43,10 @@ const teamWorkSchema = yup.object().shape({
 
     // termos de responsabilidade
     graceStateAwareness: yup.string().required('Campo obrigatório'),
-    notFalsifyData: yup.boolean().required('Campo obrigatório'),
+    notFalsifyData: yup
+      .boolean()
+      .nullable()
+      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
     showLifeTestimony: yup.string().required('Campo obrigatório'),
 
     // função na paroquia
@@ -58,8 +56,11 @@ const teamWorkSchema = yup.object().shape({
     // trabalho
     reasonToWork: yup.string().required('Campo obrigatório'),
     workPreference: yup.string().required('Campo obrigatório'),
-    willingToOtherFunction: yup.boolean().required('Campo obrigatório'),
-    parishIndication: yup.array().of(yup.string().required()).required('Campo obrigatório'),
+    willingToOtherFunction: yup
+      .boolean()
+      .nullable()
+      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+    parishIndication: yup.array().of(yup.string()).min(1, 'Campo Obrigatório!'),
 
     // Crisma
     notConfirmationBecause: yup.string().nullable().test({
@@ -74,22 +75,19 @@ const teamWorkSchema = yup.object().shape({
     }),
     // -------- campo de auxilio - não vai pro back
     hasConfirmation: yup.boolean().nullable().test({
-      name: 'hasConfirmationIsRequired',
+      test: fieldNullisRequired,
       message: 'Campo obrigatório!',
-      test: notNull,
     }),
 
     // Instrumento
     instrument: yup.string().nullable().test({
-      name: 'requiredInstrument',
       message: 'Campo obrigatório!',
       test: requiredInstrument,
     }),
     // -------- campo de auxilio - não vai pro back
     playInstrument: yup.boolean().nullable().test({
-      name: 'playInstrumentIsRequired',
+      test: fieldNullisRequired,
       message: 'Campo obrigatório!',
-      test: notNull,
     }),
   }),
 });

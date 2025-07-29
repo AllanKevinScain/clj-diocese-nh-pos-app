@@ -32,8 +32,7 @@ export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterfac
     const res = await editRecord({ typeOfRecord: 'WORK', data: record });
 
     if (!res?.ok) {
-      console.log(res);
-      toast.error(JSON.stringify(res.data.message));
+      toast.error(res.data.message);
     } else {
       toast.success(res.data.message);
       redirect(`/courses`);

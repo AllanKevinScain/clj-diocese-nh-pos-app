@@ -5,12 +5,12 @@ import type { InferType } from 'yup';
 
 import { workSchema } from '@/yup';
 
-type PosllSchemaInfertype = InferType<typeof workSchema>;
+type WorkSchemaInfertype = InferType<typeof workSchema>;
 
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
-  const body = (await request.json()) as PosllSchemaInfertype;
+  const body = (await request.json()) as WorkSchemaInfertype;
 
   const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
-  const body = (await request.json()) as PosllSchemaInfertype;
+  const body = (await request.json()) as WorkSchemaInfertype;
 
   const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });

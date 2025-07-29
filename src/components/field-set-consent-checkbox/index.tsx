@@ -51,7 +51,7 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
                   type="checkbox"
                   disabled={disabled}
                   checked={value}
-                  onChange={() => onChange(!value)}
+                  onChange={onChange}
                   className={twMerge(
                     'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
                     hasError && 'border-red-500',

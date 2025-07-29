@@ -5,50 +5,37 @@ import { ValidationError } from 'yup';
 
 import { posllSchema, poslSchema, workSchema } from '@/yup';
 
-import type { UseRecordsInterface } from './use-records.type';
+import type {
+  CallRecordInterface,
+  CallRecordReturnInterface,
+  UseRecordsInterface,
+} from './use-records.type';
 
 export function useRecords() {
-  async function registerRecord(props: UseRecordsInterface) {
-    const { typeOfRecord } = props;
+  async function _callRecord(props: CallRecordInterface) {
+    const { data, api, method } = props;
+    const req = await fetch(api, { method, body: JSON.stringify(data) });
+    const res = await req.json();
+    return res;
+  }
+
+  async function registerRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
+    const { typeOfRecord, data } = props;
 
     try {
       if (typeOfRecord === 'POSl') {
-        await poslSchema.validate(props.data, { abortEarly: false });
-
-        const req = await fetch('/api/records/posl', {
-          method: 'POST',
-          body: JSON.stringify(props.data),
-        });
-
-        const res = await req.json();
-        return res;
+        await poslSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data, api: '/api/records/posl', method: 'POST' });
       }
-
       if (typeOfRecord === 'POSll') {
-        await posllSchema.validate(props.data, { abortEarly: false });
-
-        const req = await fetch('/api/records/posll', {
-          method: 'POST',
-          body: JSON.stringify(props.data),
-        });
-
-        const res = await req.json();
-        return res;
+        await posllSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
       }
-
       if (typeOfRecord === 'WORK') {
-        await workSchema.validate(props.data, { abortEarly: false });
-
-        const req = await fetch('/api/records/work', {
-          method: 'POST',
-          body: JSON.stringify(props.data),
-        });
-
-        const res = await req.json();
-        return res;
+        await workSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
       }
-
-      return [];
+      return { ok: false, data: { message: 'Falha no cadastro!' } };
     } catch (error) {
       if (error instanceof ValidationError) {
         const message = error.inner.map((e) => `${e.path}: ${e.message}`).join('\n');
@@ -60,35 +47,23 @@ export function useRecords() {
       throw error;
     }
   }
-  async function editRecord(props: UseRecordsInterface) {
-    const { typeOfRecord } = props;
+  async function editRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
+    const { typeOfRecord, data } = props;
 
     try {
       if (typeOfRecord === 'POSl') {
-        await poslSchema.validate(props.data, { abortEarly: false });
-
-        const req = await fetch('/api/records/posl', {
-          method: 'PUT',
-          body: JSON.stringify(props.data),
-        });
-
-        const res = await req.json();
-        return res;
+        await poslSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data, api: '/api/records/posl', method: 'POST' });
       }
-
       if (typeOfRecord === 'POSll') {
-        await posllSchema.validate(props.data, { abortEarly: false });
-
-        const req = await fetch('/api/records/posll', {
-          method: 'PUT',
-          body: JSON.stringify(props.data),
-        });
-
-        const res = await req.json();
-        return res;
+        await posllSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
       }
-
-      return [];
+      if (typeOfRecord === 'WORK') {
+        await workSchema.validate(data, { abortEarly: false });
+        await _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
+      }
+      return { ok: false, data: { message: 'Falha na atualização!' } };
     } catch (error) {
       if (error instanceof ValidationError) {
         const message = error.inner.map((e) => `${e.path}: ${e.message}`).join('\n');
@@ -100,6 +75,7 @@ export function useRecords() {
       throw error;
     }
   }
+
   async function deleteRecordById(
     recordId: string,
     typeOfRecord: 'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK',
