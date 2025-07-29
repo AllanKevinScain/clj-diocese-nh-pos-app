@@ -25,15 +25,15 @@ export function useRecords() {
     try {
       if (typeOfRecord === 'POSl') {
         await poslSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data, api: '/api/records/posl', method: 'POST' });
+        return _callRecord({ data, api: '/api/records/posl', method: 'POST' });
       }
       if (typeOfRecord === 'POSll') {
         await posllSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
+        return _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
       }
       if (typeOfRecord === 'WORK') {
         await workSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
+        return _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
       }
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     } catch (error) {
@@ -53,15 +53,15 @@ export function useRecords() {
     try {
       if (typeOfRecord === 'POSl') {
         await poslSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data, api: '/api/records/posl', method: 'POST' });
+        return _callRecord({ data, api: '/api/records/posl', method: 'PUT' });
       }
       if (typeOfRecord === 'POSll') {
         await posllSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
+        return _callRecord({ data: data, api: '/api/records/posll', method: 'PUT' });
       }
       if (typeOfRecord === 'WORK') {
         await workSchema.validate(data, { abortEarly: false });
-        await _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
+        return _callRecord({ data: data, api: '/api/records/work', method: 'PUT' });
       }
       return { ok: false, data: { message: 'Falha na atualização!' } };
     } catch (error) {
