@@ -30,7 +30,7 @@ export const posDefault = yup.object({
     .mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>()
     .oneOf(['POSl', 'POSll', 'WORK', 'COUPLE_WORK']),
   courseNumber: yup.number(),
-  parishAcronym: yup.string().max(6, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
+  parishAcronym: yup.string().max(10, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
   recordNumber: yup.string().required('Campo Obrigatório!'),
 
   // Candidato
@@ -51,7 +51,7 @@ export const posDefault = yup.object({
   parishChapel: yup.string().required('Campo Obrigatório!'),
 
   // Vida espiritual
-  spiritualLife: yup.array().of(yup.string().required()).required('Campo Obrigatório!'),
+  spiritualLife: yup.array().of(yup.string()).min(1, 'Campo Obrigatório!'),
 
   // observações
   observationsCoordinator: yup.string().required('Campo Obrigatório!'),
@@ -71,10 +71,7 @@ export const posDefault = yup.object({
   allergy: yup.string().required('Campo Obrigatório!'),
 
   // Consentimento
-  dataConsent: yup
-    .boolean()
-    .oneOf([true], 'Você deve aceitar o termo!')
-    .required('Campo Obrigatório!'),
+  dataConsent: yup.boolean().required('Você deve aceitar o termo!'),
 
   // -------- campos de auxilio - não vao pro back
   hasDisease: yup.boolean().required('Campo Obrigatório!'),

@@ -11,8 +11,6 @@ function requiredOtherResident(value: string | undefined | null, { parent }: yup
 }
 
 function requiredOtherReligion(value: string | undefined | null, { parent }: yup.AnyObject) {
-  if (value === null) return true;
-
   if (parent.parentsReligion.includes('outro')) {
     return !!value;
   }
@@ -40,9 +38,9 @@ const poslSchemaBase = yup.object({
     candidateSpirit: yup.string().required('Campo Obrigatório!'),
     candidateDisposition: yup.string().required('Campo Obrigatório!'),
     candidateParticipation: yup.string().required('Campo Obrigatório!'),
-    fatherSituation: yup.string(),
-    motherSituation: yup.string(),
-    livesWith: yup.array().of(yup.string().required()).required('Campo Obrigatório!'),
+    fatherSituation: yup.string().required('Campo Obrigatório!'),
+    motherSituation: yup.string().required('Campo Obrigatório!'),
+    livesWith: yup.array().of(yup.string()).min(1, 'Campo Obrigatório!'),
     otherWho: yup.string().nullable().test({
       name: 'requiredOtherResident',
       message: 'Campo obrigatório!',

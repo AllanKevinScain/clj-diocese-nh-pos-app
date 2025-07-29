@@ -46,7 +46,9 @@ export const PoslForm = (props: PoslFormInterface) => {
       const path = pathPrefix ? `${pathPrefix}.${key}` : key;
 
       if (value?.message) {
-        toast.error(`Campo: ${path}, Erro: ${value.message}`);
+        return toast.error(`Campo: ${path}, Erro: ${value.message}`, {
+          duration: 5000,
+        });
       } else if (typeof value === 'object') {
         showErrors(value as FieldErrors, path);
       }
@@ -76,12 +78,16 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordNumber"
               control={control}
               label="Número da ficha"
+              onChange={(e) => e.replace(/\D/g, '')}
+              maxLength={2}
             />
             <FieldDefault
               disabled={isDisabled}
               id="parishAcronym"
               control={control}
               label="Sigla da paróquia/capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={10}
             />
           </div>
         </SessionForm>
@@ -93,8 +99,16 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="candidateName"
               control={control}
               label="Nome Cursista"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
-            <FieldDefault disabled={isDisabled} id="nickname" control={control} label="Apelido" />
+            <FieldDefault
+              disabled={isDisabled}
+              id="nickname"
+              control={control}
+              label="Apelido"
+              maxLength={50}
+            />
             <FieldDefault
               disabled={isDisabled}
               id="candidatePhone"
@@ -102,7 +116,14 @@ export const PoslForm = (props: PoslFormInterface) => {
               onChange={(e) => formatMobilePhone(e)}
               label="Telefone Cursista"
             />
-            <FieldDefault disabled={isDisabled} id="priest" control={control} label="Pároco" />
+            <FieldDefault
+              disabled={isDisabled}
+              id="priest"
+              control={control}
+              label="Pároco"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
+            />
             <div>
               <p>Data de Nascimento</p>
               <FieldDefault disabled={isDisabled} id="birthDate" control={control} type="date" />
@@ -112,12 +133,15 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="instagram"
               control={control}
               label="Instagram"
+              maxLength={30}
             />
             <FieldDefault
               disabled={isDisabled}
               id="parishChapel"
               control={control}
               label="Paróquia/Capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
           </div>
         </SessionForm>
@@ -129,6 +153,8 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordPOSl.godfatherName"
               control={control}
               label="Nome Padrinho"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
             <FieldDefault
               disabled={isDisabled}
@@ -148,39 +174,30 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordPOSl.affinityWithGodfather"
               control={control}
               label="A quanto tempo conhece o afilhado(a)?"
+              maxLength={50}
             />
-            <div>
-              <p>
-                Comunicou ao candidato sobre as atitudes que deverá ter na participação do curso?
-              </p>
-              <FieldDefault
-                disabled={isDisabled}
-                id="recordPOSl.attitudeCommunication"
-                control={control}
-                label="-"
-              />
-            </div>
-            <div>
-              <p>
-                Comunicou ao candidato que aceitar participar do curso significa aceitar
-                integralmente a Doutrina da Igreja Católica?
-              </p>
-              <FieldDefault
-                disabled={isDisabled}
-                id="recordPOSl.doctrineCommunication"
-                control={control}
-                label="-"
-              />
-            </div>
-            <div>
-              <p>O padrinho sabe que não pode ocultar nada importante nesta ficha?</p>
-              <FieldDefault
-                disabled={isDisabled}
-                id="recordPOSl.godfatherResponsibility"
-                control={control}
-                label="-"
-              />
-            </div>
+            <FieldDefault
+              disabled={isDisabled}
+              id="recordPOSl.attitudeCommunication"
+              control={control}
+              label="Comunicou ao candidato sobre as atitudes que deverá ter na participação do curso?"
+              maxLength={50}
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="recordPOSl.doctrineCommunication"
+              control={control}
+              label="Comunicou ao candidato que aceitar participar do curso significa aceitar
+                integralmente a Doutrina da Igreja Católica?"
+              maxLength={50}
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="recordPOSl.godfatherResponsibility"
+              control={control}
+              label="O padrinho sabe que não pode ocultar nada importante nesta ficha?"
+              maxLength={50}
+            />
           </div>
         </SessionForm>
 
@@ -225,6 +242,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordPOSl.fatherSituation"
               label="Quanto ao Pai"
               options={[
+                { value: 'presente', label: 'Presente' },
                 { value: 'falecido', label: 'Falecido' },
                 { value: 'separadoDivorciado', label: 'Separado/Divorciado' },
                 { value: 'padrasto', label: 'Padrasto' },
@@ -236,6 +254,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordPOSl.motherSituation"
               label="Quanto à Mãe"
               options={[
+                { value: 'presente', label: 'Presente' },
                 { value: 'falecida', label: 'Falecida' },
                 { value: 'separadaDivorciada', label: 'Separada/Divorciada' },
                 { value: 'madrasta', label: 'Madrasta' },
@@ -251,6 +270,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               disabled={isDisabled}
               placeholder="Comentário dos Pais"
               className="border border-neutral-200"
+              maxLength={200}
             />
           </div>
         </SessionForm>
@@ -276,17 +296,21 @@ export const PoslForm = (props: PoslFormInterface) => {
 
         <SessionForm title="Observações:">
           <div className="grid grid-cols-1 gap-4">
-            <FieldDefault
+            <FieldTextarea
               disabled={isDisabled}
               id="observationsCoordinator"
               control={control}
               label="Observações do coordenador:"
+              placeholder="Observações do coordenador"
+              maxLength={200}
             />
-            <FieldDefault
+            <FieldTextarea
               disabled={isDisabled}
               id="observationsDed"
               control={control}
               label="Diretor Espiritual"
+              placeholder="Observações do Diretor Espiritual"
+              maxLength={200}
             />
           </div>
         </SessionForm>
@@ -299,8 +323,9 @@ export const PoslForm = (props: PoslFormInterface) => {
             <FieldDefault
               disabled={isDisabled}
               id="allergy"
-              label="Tem algum tipo de alergia (medicamentos, alimentos, etc.)?"
+              label="Se tiver algum tipo de alergia, qual? (medicamentos, alimentos, etc.)"
               control={control}
+              maxLength={100}
             />
           </div>
         </SessionForm>

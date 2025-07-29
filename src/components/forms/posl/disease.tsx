@@ -29,7 +29,7 @@ export const DiseaseFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
         control={control}
         id="hasDisease"
         defaultValue={!isEmpty(disease)}
-        label="Tem Doença"
+        label="Possui alguma doença"
         options={[
           { label: 'Sim', value: true },
           { label: 'Não', value: false },

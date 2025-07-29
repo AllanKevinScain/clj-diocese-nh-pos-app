@@ -59,7 +59,7 @@ export const CustomInputPadrao = memo(
           placeholder={placeholder ?? 'Digite aqui'}
           className={twMerge(
             'border border-gray-300',
-            `w-full rounded-md px-3 py-2 transition-all`,
+            'w-full rounded-md px-3 py-2 transition-all',
             'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
             'disabled:cursor-not-allowed disabled:bg-gray-100',
             hasError && 'border-red-500',

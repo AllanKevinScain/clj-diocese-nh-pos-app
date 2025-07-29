@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import type { FieldDefaultInterface } from './field-textarea.type';
 
 export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterface<T>) => {
-  const { control, id, defaultValue, isLoading = false, label, className, ...restProps } = props;
+  const { control, id, defaultValue, isLoading = false, label, ...restProps } = props;
 
   if (isLoading) {
     return (
@@ -29,14 +29,16 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
       name={id}
       control={control}
       defaultValue={defaultValue as PathValue<T, Path<T>>}
-      render={({ field, formState }) => {
-        const { errors } = formState;
+      render={({ field, fieldState: { error } }) => {
+        const hasError = !!error?.message;
 
         return (
           <Field className="w-full">
             {!!label && (
               <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
-                <span className="text-neutral-800">{label}</span>
+                <span className={twMerge('text-neutral-800', hasError && 'text-red-500')}>
+                  {label}
+                </span>
               </Label>
             )}
             <Textarea
@@ -45,18 +47,22 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
               ref={field.ref}
               placeholder={restProps.placeholder ?? 'Digite aqui'}
               className={twMerge(
-                'resize-none',
                 'border border-gray-300',
-                `w-full rounded-md px-3 py-2 transition-all`,
+                'w-full rounded-md px-3 py-2 transition-all',
                 'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
                 'disabled:cursor-not-allowed disabled:bg-gray-100',
-                typeof className === 'string' && className,
+                hasError && 'border-red-500',
               )}
               rows={3}
             />
+            {field.value?.length > 0 && (
+              <Description className="text-xs text-gray-500">
+                {field.value?.length ?? 0} / {restProps.maxLength ?? 200}
+              </Description>
+            )}
 
-            {!!errors[id]?.message && (
-              <Description className="text-xs text-red-500">{`${errors[id]?.message}`}</Description>
+            {hasError && (
+              <Description className="text-xs text-red-500">{error?.message}</Description>
             )}
           </Field>
         );
