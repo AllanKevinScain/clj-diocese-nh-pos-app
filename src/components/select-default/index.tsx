@@ -19,7 +19,7 @@ import { twMerge } from 'tailwind-merge';
 export interface SelectDefaultInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T> | undefined;
-  defaultValue: string | boolean | string[];
+  defaultValue?: string | boolean | string[];
   options: { value: string; label: string }[];
   label?: string;
 }
@@ -40,7 +40,7 @@ export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterfa
     <Controller
       name={id}
       control={control}
-      defaultValue={defaultValue as PathValue<T, Path<T>>}
+      defaultValue={(defaultValue || '') as PathValue<T, Path<T>>}
       render={({ field, formState }) => {
         const { errors } = formState;
         const { value, onChange, ref } = field;

@@ -46,7 +46,6 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
           id="startDate"
-          defaultValue=""
           control={control}
           type="date"
           customLabel={
@@ -56,7 +55,6 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
 
         <FieldDefault
           control={control}
-          defaultValue=""
           id="endDate"
           type="date"
           customLabel={
@@ -66,7 +64,6 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
 
         <SelectDefault
           id="typeOfCourse"
-          defaultValue=""
           control={control}
           label="Tipo do curso"
           options={[
@@ -75,7 +72,7 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
           ]}
         />
 
-        <FieldDefault id="courseNumber" defaultValue="" control={control} label="Número do curso" />
+        <FieldDefault id="courseNumber" control={control} label="Número do curso" />
 
         <Button type="submit">Atualizar</Button>
       </form>
