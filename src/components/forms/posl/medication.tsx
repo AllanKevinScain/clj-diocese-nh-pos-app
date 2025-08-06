@@ -28,7 +28,7 @@ export const MedicationFields = (props: Pick<PoslFormInterface, 'isDisabled'>) =
         disabled={isDisabled}
         control={control}
         id="takesMedication"
-        label="Toma Medicação"
+        label="Precisa tomar alguma medicação"
         defaultValue={!isEmpty(medication)}
         options={[
           { label: 'Sim', value: true },

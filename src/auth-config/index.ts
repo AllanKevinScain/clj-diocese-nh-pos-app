@@ -35,29 +35,63 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const decodedToken = jwt.decode(token.accessToken) as JWT;
-
+      // O user só existe no primeiro login.
       if (user) {
-        token.id = user.id;
-        token.name = user.nome;
-        token.email = user.email;
-        token.loginType = user.loginType;
-        token.accessToken = user.accessToken;
+        const decodedToken = jwt.decode(user.accessToken) as JWT;
+        const expirationTime = decodedToken.exp! * 1000;
+
+        return {
+          ...token,
+          id: user.id,
+          name: user.nome,
+          email: user.email,
+          loginType: user.loginType,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          accessTokenExpires: expirationTime,
+        };
       }
 
-      if (decodedToken) {
-        const inicioDaSessão = new Date(decodedToken.exp! * 1000);
-        const agora = new Date();
+      // Se o token de acesso não expirou.
+      if (Date.now() < token.accessTokenExpires) {
+        return token;
+      }
 
-        if (agora > inicioDaSessão) {
-          return {
-            ...token,
-            error: 'TokenExpirou',
-          };
+      // Se o token de acesso expirou.
+      try {
+        const response = await fetch(`${process.env.BASE_API_URL}/refresh-token`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            refreshToken: token.refreshToken,
+          }),
+        });
+
+        const refreshedTokens = await response.json();
+
+        if (!response.ok) {
+          throw refreshedTokens;
         }
-      }
 
-      return token;
+        const decodedToken = jwt.decode(refreshedTokens.accessToken) as JWT;
+        const expirationTime = decodedToken.exp! * 1000;
+
+        return {
+          ...token,
+          accessToken: refreshedTokens.accessToken,
+          accessTokenExpires: expirationTime,
+          // Retorna o novo refresh token se ele for enviado, se não mantém o antigo.
+          refreshToken: refreshedTokens.refreshToken ?? token.refreshToken,
+        };
+      } catch (error) {
+        console.error('Erro ao atualizar o token de acesso:', error);
+        return {
+          ...token,
+          error: 'RefreshAccessTokenError', // Erro para poder tratar.
+        };
+      }
     },
     async session({ session, token }) {
       if (token) {
@@ -66,7 +100,7 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.loginType = token.loginType;
         session.accessToken = token.accessToken;
-        session.error = token.error;
+        session.error = token.error; // Passa o erro para a sessão.
       }
       return session;
     },

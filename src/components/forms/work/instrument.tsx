@@ -38,6 +38,7 @@ export const InstrumentFields = (props: Pick<WorkFormInterface, 'isDisabled'>) =
           disabled={isDisabled}
           control={control}
           label="Qual?"
+          maxLength={200}
         />
       )}
     </div>

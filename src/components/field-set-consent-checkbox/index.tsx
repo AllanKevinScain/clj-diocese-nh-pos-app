@@ -41,13 +41,17 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
             )}
 
             <div className="flex gap-4">
-              <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-800">
+              <label
+                className={twMerge(
+                  'flex cursor-pointer items-center gap-2 text-sm text-neutral-800',
+                  hasError && 'text-red-500',
+                )}>
                 <input
                   ref={ref}
                   type="checkbox"
                   disabled={disabled}
-                  checked={value}
-                  onChange={() => onChange(!value)}
+                  checked={value || false}
+                  onChange={() => onChange(!value || false)}
                   className={twMerge(
                     'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
                     hasError && 'border-red-500',

@@ -44,7 +44,10 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
               {options.map((option) => (
                 <label
                   key={option.id}
-                  className="flex cursor-pointer items-center gap-2 text-sm text-neutral-800">
+                  className={twMerge(
+                    'flex cursor-pointer items-center gap-2 text-sm text-neutral-800',
+                    hasError && 'text-red-500',
+                  )}>
                   <input
                     ref={ref}
                     type="checkbox"
@@ -59,10 +62,6 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
                       }
                       return onChange([...value, option.id]);
                     }}
-                    className={twMerge(
-                      'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
-                      hasError && 'border-red-500',
-                    )}
                   />
                   {option.label}
                 </label>

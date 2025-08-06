@@ -1,5 +1,7 @@
 'use client';
 
+import { useVerifyToken } from '@/hooks';
+
 import { NavBarDrawer } from './drawer-nav-bar';
 import { NavBarMenu } from './menu-nav-bar';
 
@@ -9,6 +11,8 @@ interface NavBarProps {
 }
 
 export function NavBar({ showDrawer = true, showMenu = true }: NavBarProps) {
+  useVerifyToken();
+
   return (
     <header className="flex items-center justify-between bg-blue-600 px-4 py-4 text-white shadow-md">
       <NavBarDrawer showDrawer={showDrawer} />

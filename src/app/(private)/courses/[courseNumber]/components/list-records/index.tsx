@@ -41,31 +41,15 @@ export const ListRecords = (props: ListRecordsInterface) => {
     return filtered;
   }, [records]);
 
-  if (isEmpty(records) && records) {
-    return (
-      <div className="flex h-[400px] flex-col items-center justify-center gap-2 px-4 text-center">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          Nenhuma ficha foi cadastrada no {courseNumber}!
-        </h2>
-        <Link
-          href={`/record/${typeOfRecord.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`}>
-          <Button className="h-[40px]">Cadastrar ficha de cursista</Button>
-        </Link>
-        <Link href={`/record/work/register?courseNumber=${courseNumber}`}>
-          <Button className="h-[40px]">Cadastrar ficha de equipe de trabalho</Button>
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full">
       <h1 className="mb-4 text-2xl font-bold">Fixas de curso {courseNumber}</h1>
 
-      {!isEmpty(recordsCandidate) && (
-        <div className="mb-4">
-          <h3 className="text-lg font-bold">Cursistas:</h3>
+      {/* Cursistas */}
+      <div className="mb-4">
+        <h3 className="text-lg font-bold">Cursistas:</h3>
 
+        {!isEmpty(recordsCandidate) && (
           <ul className="divide-y">
             {recordsCandidate?.map((record) => (
               <li key={record.id}>
@@ -83,21 +67,21 @@ export const ListRecords = (props: ListRecordsInterface) => {
               </li>
             ))}
           </ul>
+        )}
+        <Link
+          href={`/record/${typeOfRecord.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`}>
+          <Button className="h-[40px]">
+            <BiPlus />
+            Criar ficha para cursista
+          </Button>
+        </Link>
+      </div>
 
-          <Link
-            href={`/record/${typeOfRecord.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`}>
-            <Button className="h-[40px]">
-              <BiPlus />
-              Criar ficha para cursista
-            </Button>
-          </Link>
-        </div>
-      )}
+      {/* Equipde de trabalho */}
+      <div className="mb-4">
+        <h3 className="text-lg font-bold">Equipe de trabalho:</h3>
 
-      {!isEmpty(recordsWork) && (
-        <div className="mb-4">
-          <h3 className="text-lg font-bold">Equipe de trabalho:</h3>
-
+        {!isEmpty(recordsWork) && (
           <ul className="divide-y">
             {recordsWork?.map((record) => (
               <li key={record.id}>
@@ -115,20 +99,20 @@ export const ListRecords = (props: ListRecordsInterface) => {
               </li>
             ))}
           </ul>
+        )}
+        <Link href={`/record/work/register?courseNumber=${courseNumber}`}>
+          <Button className="h-[40px]">
+            <BiPlus />
+            Criar ficha de trabalho
+          </Button>
+        </Link>
+      </div>
 
-          <Link href={`/record/work/register?courseNumber=${courseNumber}`}>
-            <Button className="h-[40px]">
-              <BiPlus />
-              Criar ficha de trabalho
-            </Button>
-          </Link>
-        </div>
-      )}
+      {/* Casal */}
+      <div className="mb-4">
+        <h3 className="mb-4 text-lg font-bold">Casais:</h3>
 
-      {!isEmpty(recordsCouple) && (
-        <div className="mb-4">
-          <h3 className="mb-4 text-lg font-bold">Casais:</h3>
-
+        {!isEmpty(recordsCouple) && (
           <ul className="divide-y">
             {recordsCouple?.map((record) => (
               <li key={record.id}>
@@ -146,15 +130,15 @@ export const ListRecords = (props: ListRecordsInterface) => {
               </li>
             ))}
           </ul>
+        )}
 
-          <Link href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
-            <Button className="h-[40px]">
-              <BiPlus />
-              Criar ficha para casal
-            </Button>
-          </Link>
-        </div>
-      )}
+        <Link href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
+          <Button className="h-[40px]">
+            <BiPlus />
+            Criar ficha para casal
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

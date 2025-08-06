@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
+import { fieldNullisRequired } from '../helpers';
+
 function requiredDisease(value: string | undefined | null, { parent }: yup.AnyObject) {
   if (parent.hasDisease) return !isEmpty(value);
 
@@ -30,7 +32,7 @@ export const posDefault = yup.object({
     .mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>()
     .oneOf(['POSl', 'POSll', 'WORK', 'COUPLE_WORK']),
   courseNumber: yup.number(),
-  parishAcronym: yup.string().max(6, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
+  parishAcronym: yup.string().max(10, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
   recordNumber: yup.string().required('Campo Obrigatório!'),
 
   // Candidato
@@ -51,7 +53,7 @@ export const posDefault = yup.object({
   parishChapel: yup.string().required('Campo Obrigatório!'),
 
   // Vida espiritual
-  spiritualLife: yup.array().of(yup.string().required()).required('Campo Obrigatório!'),
+  spiritualLife: yup.array().of(yup.string()).min(1, 'Campo Obrigatório!'),
 
   // observações
   observationsCoordinator: yup.string().required('Campo Obrigatório!'),
@@ -73,12 +75,18 @@ export const posDefault = yup.object({
   // Consentimento
   dataConsent: yup
     .boolean()
-    .oneOf([true], 'Você deve aceitar o termo!')
-    .required('Campo Obrigatório!'),
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Você precisa aceitar o termo!' }),
 
   // -------- campos de auxilio - não vao pro back
-  hasDisease: yup.boolean().required('Campo Obrigatório!'),
-  takesMedication: yup.boolean().required('Campo Obrigatório!'),
+  hasDisease: yup
+    .boolean()
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Campo Obrigatório!' }),
+  takesMedication: yup
+    .boolean()
+    .nullable()
+    .test({ test: fieldNullisRequired, message: 'Campo Obrigatório!' }),
   createdAt: yup.string().nullable(),
   updatedAt: yup.string().nullable(),
 });

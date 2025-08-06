@@ -38,7 +38,9 @@ export const PosllForm = (props: PosllFormInterface) => {
       const path = pathPrefix ? `${pathPrefix}.${key}` : key;
 
       if (value?.message) {
-        toast.error(`Campo: ${path}, Erro: ${value.message}`);
+        return toast.error(`Campo: ${path}, Erro: ${value.message}`, {
+          duration: 5000,
+        });
       } else if (typeof value === 'object') {
         showErrors(value as FieldErrors, path);
       }
@@ -68,12 +70,16 @@ export const PosllForm = (props: PosllFormInterface) => {
               id="recordNumber"
               control={control}
               label="Número da ficha"
+              onChange={(e) => e.replace(/\D/g, '')}
+              maxLength={2}
             />
             <FieldDefault
               disabled={isDisabled}
               id="parishAcronym"
               control={control}
               label="Sigla da paróquia/capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={10}
             />
           </div>
         </SessionForm>
@@ -85,8 +91,16 @@ export const PosllForm = (props: PosllFormInterface) => {
               id="candidateName"
               control={control}
               label="Nome Cursista"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
-            <FieldDefault disabled={isDisabled} id="nickname" control={control} label="Apelido" />
+            <FieldDefault
+              disabled={isDisabled}
+              id="nickname"
+              control={control}
+              label="Apelido"
+              maxLength={50}
+            />
             <FieldDefault
               disabled={isDisabled}
               id="candidatePhone"
@@ -94,22 +108,35 @@ export const PosllForm = (props: PosllFormInterface) => {
               onChange={(e) => formatMobilePhone(e)}
               label="Telefone Cursista"
             />
-            <FieldDefault disabled={isDisabled} id="priest" control={control} label="Pároco" />
-            <div>
-              <p>Data de Nascimento</p>
-              <FieldDefault disabled={isDisabled} id="birthDate" control={control} type="date" />
-            </div>
+            <FieldDefault
+              disabled={isDisabled}
+              id="priest"
+              control={control}
+              label="Pároco"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
+            />
+            <FieldDefault
+              disabled={isDisabled}
+              id="birthDate"
+              control={control}
+              type="date"
+              label="Data de Nascimento"
+            />
             <FieldDefault
               disabled={isDisabled}
               id="instagram"
               control={control}
               label="Instagram"
+              maxLength={30}
             />
             <FieldDefault
               disabled={isDisabled}
               id="parishChapel"
               control={control}
               label="Paróquia/Capela"
+              onChange={(e) => e.replace(/[0-9]/g, '')}
+              maxLength={50}
             />
           </div>
         </SessionForm>
@@ -120,42 +147,50 @@ export const PosllForm = (props: PosllFormInterface) => {
             id="recordPOSll.courseOneDone"
             control={control}
             label="CLJ l que fez"
+            onChange={(e) => e.replace(/\D/g, '')}
+            maxLength={4}
           />
           <FieldTextarea
             disabled={isDisabled}
             id="recordPOSll.motivationToParticipate"
             control={control}
             label="O que o (a) motiva a participar do Movimento CLJ?"
+            maxLength={200}
           />
           <FieldTextarea
             disabled={isDisabled}
             id="recordPOSll.reasonForCLJII"
             control={control}
             label="Por que deseja fazer o CLJ II?"
+            maxLength={200}
           />
-          <FieldDefault
+          <FieldTextarea
             disabled={isDisabled}
             id="recordPOSll.approachToChrist"
             control={control}
             label="Desde o teu CLJ I, aproximaste pessoas de Cristo e da Igreja?"
+            maxLength={100}
           />
-          <FieldDefault
+          <FieldTextarea
             disabled={isDisabled}
             id="recordPOSll.acceptsChurchDoctrine"
             control={control}
             label="Você procura entender e aceitar a Doutrina da Igreja Católica, buscando aumentar sua fé?"
+            maxLength={100}
           />
           <FieldDefault
             disabled={isDisabled}
             id="recordPOSll.commitmentToCLJ"
             control={control}
             label="Você sabe que participar do CLJ é se comprometer com Cristo, com a paróquia e com o grupo?"
+            maxLength={50}
           />
           <FieldDefault
             disabled={isDisabled}
             id="recordPOSll.perseveranceInCommunity"
             control={control}
             label="Você é consciente de que não deve fazer o curso caso não queira perseverar na sua comunidade e no seu grupo?"
+            maxLength={50}
           />
           <FieldSetRadio
             disabled={isDisabled}
@@ -175,12 +210,14 @@ export const PosllForm = (props: PosllFormInterface) => {
             id="recordPOSll.currentGroupFunction"
             control={control}
             label="Atual função no grupo"
+            maxLength={50}
           />
           <FieldTextarea
             disabled={isDisabled}
             id="recordPOSll.parishChapelActivities"
             control={control}
             label="Exerce ou já exerceu outra atividade na Paróquia/Capela? Qual?"
+            maxLength={100}
           />
         </SessionForm>
 
@@ -207,17 +244,19 @@ export const PosllForm = (props: PosllFormInterface) => {
 
         <SessionForm title="Observações:">
           <div className="grid grid-cols-1 gap-4">
-            <FieldDefault
+            <FieldTextarea
               disabled={isDisabled}
               id="observationsCoordinator"
               control={control}
               label="Observação do Depto. de Pós e Coordenação paroquial"
+              maxLength={200}
             />
-            <FieldDefault
+            <FieldTextarea
               disabled={isDisabled}
               id="observationsDed"
               control={control}
               label="Observação do Diretor Espiritual Paroquial"
+              maxLength={200}
             />
           </div>
         </SessionForm>
