@@ -11,12 +11,15 @@ export async function GET(
   const { courseNumber } = await params;
   if (!courseNumber) throw new Error('Identificação necessária!');
 
-  const res = await fetch(`${process.env.BASE_API_URL}/records-by-number/${courseNumber}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token?.accessToken}`,
+  const res = await fetch(
+    `${process.env.BASE_API_URL}/list/records-filter?courseNumber=${courseNumber}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token?.accessToken}`,
+      },
     },
-  });
+  );
 
   if (res.status === 204) return NextResponse.json({ ok: false, data: [] });
 
