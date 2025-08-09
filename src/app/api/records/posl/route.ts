@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     'recordId',
   ]);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { recordPOSl, candidatePhone, dataConsent, recordNumber, ...resBody } = parsed;
+  const { recordPOSl, candidatePhone, dataConsent, ...resBody } = parsed;
   const { godfatherPhone } = recordPOSl;
   const formatedRecordPOSl = {
     ...recordPOSl,
@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
     ...resBody,
     recordPOSl: formatedRecordPOSl,
     dataConsent: Boolean(dataConsent),
-    recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 
@@ -64,7 +63,7 @@ export async function PUT(request: NextRequest) {
     'recordId',
   ]);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { id, dataConsent, recordNumber, candidatePhone, recordPOSl, ...resBody } = parsed;
+  const { id, dataConsent, candidatePhone, recordPOSl, ...resBody } = parsed;
   const { godfatherPhone } = recordPOSl;
   const formatedRecordPOSl = {
     ...recordPOSl,
@@ -74,7 +73,6 @@ export async function PUT(request: NextRequest) {
     ...resBody,
     recordPOSl: formatedRecordPOSl,
     dataConsent: Boolean(dataConsent),
-    recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 

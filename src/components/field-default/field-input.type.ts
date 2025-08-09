@@ -33,6 +33,5 @@ export interface FieldDefaultInterface<T extends FieldValues>
   label?: string;
   defaultValue?: string | boolean | string[];
   isLoading?: boolean;
-  isDecimal?: boolean;
   customLabel?: React.ReactNode;
 }

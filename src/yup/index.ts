@@ -2,4 +2,5 @@ export * from './course-schema';
 export * from './login-schama';
 export * from './posl-schema';
 export * from './posll-schema';
+export * from './poslll-schema';
 export * from './work-schema';

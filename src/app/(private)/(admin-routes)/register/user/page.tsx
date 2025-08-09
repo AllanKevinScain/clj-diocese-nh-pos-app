@@ -37,21 +37,14 @@ export default function RegisterUserClientPage() {
       <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Cadastrar usuário</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <FieldDefault id="name" defaultValue="" control={control} label="Paróquia/Capela" />
+        <FieldDefault id="name" control={control} label="Paróquia/Capela" />
 
-        <FieldDefault id="email" defaultValue="" control={control} label="Email" />
+        <FieldDefault id="email" control={control} label="Email" />
 
-        <FieldDefault
-          id="password"
-          defaultValue=""
-          control={control}
-          label="Senha"
-          type="password"
-        />
+        <FieldDefault id="password" control={control} label="Senha" type="password" showEye />
 
         <SelectDefault
           id="loginType"
-          defaultValue=""
           control={control}
           label="Tipo de usuário"
           options={[
@@ -63,7 +56,7 @@ export default function RegisterUserClientPage() {
           ]}
         />
 
-        <FieldDefault id="city" defaultValue="" control={control} label="Cidade" />
+        <FieldDefault id="city" control={control} label="Cidade" />
 
         <Button type="submit">Cadastrar</Button>
       </form>

@@ -3,7 +3,7 @@ import type { RecordType } from '@/types';
 export interface RecordPosllResponseInterface {
   id: string;
   typeOfRecord: RecordType;
-  courseNumber: number;
+  courseNumber: string;
   parishAcronym: string;
   recordNumber: string;
   candidateName: string;

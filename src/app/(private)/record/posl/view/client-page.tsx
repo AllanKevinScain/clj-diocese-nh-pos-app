@@ -5,9 +5,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
 import { PoslForm } from '@/components/forms';
+import type { RecordPoslResponseInterface } from '@/types';
 import { poslSchema } from '@/yup';
 
-import type { RecordPoslResponseInterface } from '../posl-server-call.type';
 import { ViewRecordBottomBar } from './view-record-bottom-bar';
 
 type PoslSchemaInfertype = InferType<typeof poslSchema>;

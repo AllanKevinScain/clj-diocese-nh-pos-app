@@ -42,10 +42,10 @@ export const authOptions: NextAuthOptions = {
 
         return {
           ...token,
-          id: user.id,
-          name: user.nome,
-          email: user.email,
-          loginType: user.loginType,
+          id: decodedToken.id,
+          name: decodedToken.nome,
+          email: decodedToken.email,
+          loginType: decodedToken.loginType,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           accessTokenExpires: expirationTime,
@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
 
       // Se o token de acesso expirou.
       try {
-        const response = await fetch(`${process.env.BASE_API_URL}/refresh-token`, {
+        const response = await fetch(`${process.env.BASE_API_URL}/auth/refresh-token`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',

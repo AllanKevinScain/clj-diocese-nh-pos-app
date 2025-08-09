@@ -1,4 +1,5 @@
-import { getRecordById } from '../server-call';
+import { getRecordPosllServerCall } from '@/server-calls';
+
 import { ViewRecordPosllClientPage } from './client-page';
 
 interface ViewRecordPosllPageInterface {
@@ -10,7 +11,7 @@ export default async function ViewRecordPosllPage(props: ViewRecordPosllPageInte
   const { searchParams } = props;
   const { id } = await searchParams;
 
-  const record = await getRecordById(id);
+  const record = await getRecordPosllServerCall(id);
 
   return <ViewRecordPosllClientPage record={record.data} />;
 }

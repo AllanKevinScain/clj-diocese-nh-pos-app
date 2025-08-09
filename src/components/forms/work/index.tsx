@@ -70,7 +70,7 @@ export const WorkForm = (props: WorkFormInterface) => {
               disabled={isDisabled}
               control={control}
               label="Número da ficha"
-              onChange={(e) => e.replace(/\D/g, '')}
+              type="number"
               maxLength={2}
             />
             <FieldDefault

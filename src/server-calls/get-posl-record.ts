@@ -3,10 +3,9 @@ import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
 import { formatMobilePhone } from '@/helpers';
+import type { RecordPoslResponseInterface } from '@/types';
 
-import type { RecordPoslResponseInterface } from '../posl-server-call.type';
-
-export async function getRecordById(
+export async function getPoslRecordServerCall(
   id: string,
 ): Promise<{ ok: boolean; data: RecordPoslResponseInterface }> {
   const token = await getServerSession(authOptions);
@@ -22,13 +21,12 @@ export async function getRecordById(
   });
 
   const data = await res.json();
-  const { recordPOSl, recordNumber, candidatePhone, ...record } = data;
+  const { recordPOSl, candidatePhone, ...record } = data;
 
   const formatedData = {
     ...record,
     hasDisease: !isEmpty(record.disease),
     takesMedication: !isEmpty(record.medication),
-    recordNumber: String(recordNumber),
     candidatePhone: formatMobilePhone(candidatePhone),
     recordPOSl: {
       ...recordPOSl,

@@ -22,8 +22,8 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
   const { updateCourse } = useCourses();
 
   const { handleSubmit, control } = useForm<CourseInferType>({
-    defaultValues: course,
     resolver: yupResolver(courseSchema),
+    defaultValues: course,
   });
 
   const onSubmit = async (data: CourseInferType) => {
@@ -72,7 +72,7 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
           ]}
         />
 
-        <FieldDefault id="courseNumber" control={control} label="Número do curso" />
+        <FieldDefault id="courseNumber" control={control} label="Número do curso" type="number" />
 
         <Button type="submit">Atualizar</Button>
       </form>

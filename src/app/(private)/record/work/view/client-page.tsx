@@ -5,15 +5,15 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
 import { WorkForm } from '@/components/forms';
+import type { RecordWorkResponseInterface } from '@/types';
 import { workSchema } from '@/yup';
 
-import type { RecordPosllResponseInterface } from '../posll-server-call.type';
 import { ViewRecordBottomBar } from './view-record-bottom-bar';
 
 type WorkSchemaInfertype = InferType<typeof workSchema>;
 
 interface ViewRecordWorkClientPageInterface {
-  record: RecordPosllResponseInterface;
+  record: RecordWorkResponseInterface;
 }
 
 export const ViewRecordWorkClientPage = (props: ViewRecordWorkClientPageInterface) => {
@@ -29,7 +29,7 @@ export const ViewRecordWorkClientPage = (props: ViewRecordWorkClientPageInterfac
       <FormProvider {...methods}>
         <WorkForm onSubmit={() => null} isDisabled />
       </FormProvider>
-      <ViewRecordBottomBar courseNumber={String(record.recordNumber)} recordId={record.id} />
+      <ViewRecordBottomBar courseNumber={record.recordNumber} recordId={record.id} />
     </>
   );
 };

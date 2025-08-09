@@ -1,4 +1,5 @@
-import { getRecordById } from '../server-call';
+import { getRecordWorkServerCall } from '@/server-calls';
+
 import { ViewRecordWorkClientPage } from './client-page';
 
 interface ViewRecordWorkPageInterface {
@@ -10,7 +11,7 @@ export default async function ViewRecordWorkPage(props: ViewRecordWorkPageInterf
   const { searchParams } = props;
   const { id } = await searchParams;
 
-  const record = await getRecordById(id);
+  const record = await getRecordWorkServerCall(id);
 
   return <ViewRecordWorkClientPage record={record.data} />;
 }

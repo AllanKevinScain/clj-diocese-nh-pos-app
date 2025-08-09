@@ -13,6 +13,12 @@ import { loginSchema } from '@/yup';
 
 type LoginSchemaInferType = InferType<typeof loginSchema>;
 
+const defaultValues = {
+  email: 'jose@gmail.com',
+  //   email: 'teste@gmail.com',
+  password: 'teste123!',
+};
+
 export function ClientPage() {
   const navigate = useRouter();
   const {
@@ -21,10 +27,7 @@ export function ClientPage() {
     formState: { isLoading },
   } = useForm<LoginSchemaInferType>({
     resolver: yupResolver(loginSchema),
-    defaultValues: {
-      email: 'teste@gmail.com',
-      password: 'teste123!',
-    },
+    defaultValues,
   });
 
   async function onSubmit(values: LoginSchemaInferType) {
@@ -70,12 +73,6 @@ export function ClientPage() {
             Entrar
           </Button>
         </form>
-
-        {/* <div className="text-center">
-          <a href="#" className="text-sm text-blue-600 hover:underline">
-            Esqueci minha senha
-          </a>
-        </div> */}
       </div>
     </div>
   );

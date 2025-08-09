@@ -56,12 +56,11 @@ export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPa
 
   const methods = useForm<PosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
-    defaultValues: { ...valoresPadrao, courseNumber: Number(courseNumber) },
+    defaultValues: { ...valoresPadrao, courseNumber },
   });
 
   async function onSubmit(record: PosllSchemaInfertype) {
     const res = await registerRecord({ typeOfRecord: 'POSll', data: record });
-    console.log('🚀 ~ onSubmit ~ res:', res);
 
     if (!res?.ok) {
       toast.error(res.data.message);

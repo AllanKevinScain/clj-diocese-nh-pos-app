@@ -1,4 +1,5 @@
-import { getRecordById } from '../server-call';
+import { getRecordPosllServerCall } from '@/server-calls';
+
 import { EditRecordPosllClientPage } from './client-page';
 
 interface EditRecordPosllPageInterface {
@@ -10,7 +11,7 @@ export default async function EditRecordPosllPage(props: EditRecordPosllPageInte
   const { searchParams } = props;
   const { id } = await searchParams;
 
-  const record = await getRecordById(id);
+  const record = await getRecordPosllServerCall(id);
 
   return <EditRecordPosllClientPage record={record.data} />;
 }

@@ -78,7 +78,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               id="recordNumber"
               control={control}
               label="Número da ficha"
-              onChange={(e) => e.replace(/\D/g, '')}
+              type="number"
               maxLength={2}
             />
             <FieldDefault

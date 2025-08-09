@@ -1,4 +1,5 @@
-import { getRecordById } from '../server-call';
+import { getRecordWorkServerCall } from '@/server-calls';
+
 import { EditRecordWorkClientPage } from './client-page';
 
 interface EditRecordWordPageInterface {
@@ -10,7 +11,7 @@ export default async function EditRecordWorkPage(props: EditRecordWordPageInterf
   const { searchParams } = props;
   const { id } = await searchParams;
 
-  const record = await getRecordById(id);
+  const record = await getRecordWorkServerCall(id);
 
   return <EditRecordWorkClientPage record={record.data} />;
 }

@@ -3,10 +3,9 @@ import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
 import { formatMobilePhone } from '@/helpers';
+import type { RecordPosllResponseInterface } from '@/types';
 
-import type { RecordPosllResponseInterface } from '../posll-server-call.type';
-
-export async function getRecordById(
+export async function getRecordPosllServerCall(
   id: string,
 ): Promise<{ ok: boolean; data: RecordPosllResponseInterface }> {
   const token = await getServerSession(authOptions);
@@ -14,7 +13,7 @@ export async function getRecordById(
 
   if (isEmpty(id)) throw new Error('Precisa de identificação!');
 
-  const url = `${process.env.BASE_API_URL}/records/work/${id}`;
+  const url = `${process.env.BASE_API_URL}/records/posll/${id}`;
 
   const res = await fetch(url, {
     method: 'GET',
@@ -23,18 +22,18 @@ export async function getRecordById(
 
   const data = await res.json();
 
-  const { recordWork, recordNumber, candidatePhone, ...record } = data;
+  const { recordPOSll, candidatePhone, ...record } = data;
 
   const formatedData = {
     ...record,
-    recordNumber: String(recordNumber),
     candidatePhone: formatMobilePhone(candidatePhone),
-    recordWork: {
-      ...recordWork,
-      playInstrument: !isEmpty(recordWork.instrument),
-      ...(recordWork.doingConfirmation && { hasConfirmation: false }),
-      ...((!recordWork.doingConfirmation || recordWork.doingConfirmation === null) && {
-        hasConfirmation: isEmpty(recordWork.notConfirmationBecause),
+    hasDisease: !isEmpty(record.disease),
+    takesMedication: !isEmpty(record.medication),
+    recordPOSll: {
+      ...recordPOSll,
+      ...(recordPOSll.doingConfirmation && { hasConfirmation: false }),
+      ...((!recordPOSll.doingConfirmation || recordPOSll.doingConfirmation === null) && {
+        hasConfirmation: isEmpty(recordPOSll.notConfirmationBecause),
       }),
     },
   };

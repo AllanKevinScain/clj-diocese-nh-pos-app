@@ -61,13 +61,12 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-          <FieldDefault id="name" defaultValue="" control={control} label="Nome" />
+          <FieldDefault id="name" control={control} label="Nome" />
 
-          <FieldDefault id="email" defaultValue="" control={control} label="Email" />
+          <FieldDefault id="email" control={control} label="Email" />
 
           <SelectDefault
             id="loginType"
-            defaultValue=""
             control={control}
             label="Tipo de usuário"
             options={[
@@ -76,13 +75,15 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
             ]}
           />
 
-          <FieldDefault id="city" defaultValue="" control={control} label="Cidade" />
+          <FieldDefault id="city" control={control} label="Cidade" />
 
           <Button type="submit">Atualizar</Button>
 
-          <Button type="button" onClick={handle}>
-            Apagar usuário
-          </Button>
+          {user.loginType !== 'admin' && (
+            <Button type="button" onClick={handle}>
+              Apagar usuário
+            </Button>
+          )}
         </form>
       </div>
     </>

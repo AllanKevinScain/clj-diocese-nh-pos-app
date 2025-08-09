@@ -1,28 +1,5 @@
-import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-
-export async function GET(request: NextRequest) {
-  const token = (await headers()).get('authorization');
-
-  if (!token) throw new Error('Token com problema');
-
-  const searchParams = request.nextUrl.searchParams;
-  const courseId = searchParams.get('courseId');
-
-  if (!courseId) throw new Error('Identificação necessária!');
-
-  const res = await fetch(`${process.env.BASE_API_URL}/course/${courseId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const data = await res.json();
-
-  return NextResponse.json({ ok: true, data });
-}
 
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });

@@ -8,15 +8,15 @@ import type { InferType } from 'yup';
 
 import { WorkForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
+import type { RecordWorkResponseInterface } from '@/types';
 import { workSchema } from '@/yup';
 
-import type { RecordPosllResponseInterface } from '../posll-server-call.type';
 import { EditRecordBottomBar } from './edit-record-bottom-bar';
 
 type WorkSchemaInfertype = InferType<typeof workSchema>;
 
 interface EditRecordWorkClientPageInterface {
-  record: RecordPosllResponseInterface;
+  record: RecordWorkResponseInterface;
 }
 
 export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterface) => {

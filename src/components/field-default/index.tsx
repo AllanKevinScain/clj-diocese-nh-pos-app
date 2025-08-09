@@ -8,7 +8,6 @@ import { Controller } from 'react-hook-form';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { twMerge } from 'tailwind-merge';
 
-import { CustomInputDecimal } from './decimal';
 import type { FieldDefaultInterface } from './field-input.type';
 import { CustomInputPadrao } from './padrao';
 
@@ -43,11 +42,9 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
     id,
     defaultValue,
     isLoading = false,
-    isDecimal = false,
     placeholder,
     disabled,
     onChangeValue,
-    showCifrao = false,
     label,
     ...restProps
   } = props;
@@ -83,30 +80,16 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
                   </span>
                 </Label>
               )}
-              {isDecimal && (
-                <CustomInputDecimal
-                  {...restProps}
-                  id={id}
-                  field={field}
-                  placeholder={placeholder}
-                  disabled={disabled}
-                  onChangeValue={onChangeValue}
-                  showCifrao={showCifrao}
-                  hasError={hasError}
-                />
-              )}
-              {!isDecimal && (
-                <CustomInputPadrao
-                  {...restProps}
-                  onChangeValue={onChangeValue}
-                  id={id}
-                  field={field}
-                  placeholder={placeholder}
-                  disabled={disabled}
-                  hasError={hasError}
-                />
-              )}
 
+              <CustomInputPadrao
+                {...restProps}
+                onChangeValue={onChangeValue}
+                id={id}
+                field={field}
+                placeholder={placeholder}
+                disabled={disabled}
+                hasError={hasError}
+              />
               {hasError && (
                 <Description className="text-xs text-red-500">{error?.message}</Description>
               )}

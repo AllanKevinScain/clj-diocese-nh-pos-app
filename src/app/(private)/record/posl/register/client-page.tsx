@@ -62,7 +62,7 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
 
   const methods = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
-    defaultValues: { ...valoresPadrao, courseNumber: Number(courseNumber) },
+    defaultValues: { ...valoresPadrao, courseNumber },
   });
 
   async function onSubmit(record: PoslSchemaInfertype) {

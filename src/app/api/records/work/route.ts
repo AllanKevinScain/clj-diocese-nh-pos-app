@@ -14,13 +14,12 @@ export async function POST(request: NextRequest) {
 
   const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { dataConsent, recordNumber, candidatePhone, recordWork, ...resBody } = parsed;
+  const { dataConsent, candidatePhone, recordWork, ...resBody } = parsed;
   const { hasConfirmation: _hC, playInstrument: _pI, ...restRecordWork } = recordWork;
   const formatedBody = {
     ...resBody,
     recordWork: restRecordWork,
     dataConsent: Boolean(dataConsent),
-    recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 
@@ -47,13 +46,12 @@ export async function PUT(request: NextRequest) {
 
   const typedBody = workSchema.omit(['createdAt', 'updatedAt', 'typeOfRecord', 'recordId']);
   const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { id, dataConsent, recordNumber, candidatePhone, recordWork, ...resRecord } = parsed;
+  const { id, dataConsent, candidatePhone, recordWork, ...resRecord } = parsed;
   const { hasConfirmation: _hC, playInstrument: _pI, ...restRecordWork } = recordWork;
   const formatedBody = {
     ...resRecord,
     recordWork: restRecordWork,
     dataConsent: Boolean(dataConsent),
-    recordNumber: Number(recordNumber),
     candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
   };
 

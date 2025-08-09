@@ -31,7 +31,7 @@ export const posDefault = yup.object({
   typeOfRecord: yup
     .mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>()
     .oneOf(['POSl', 'POSll', 'WORK', 'COUPLE_WORK']),
-  courseNumber: yup.number(),
+  courseNumber: yup.string(),
   parishAcronym: yup.string().max(10, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
   recordNumber: yup.string().required('Campo Obrigatório!'),
 

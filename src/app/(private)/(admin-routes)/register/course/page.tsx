@@ -16,11 +16,9 @@ export default function RegisterCoursePage() {
   const navigate = useRouter();
   const { registerCourse } = useCourses();
 
-  const { handleSubmit, control, watch } = useForm<CourseInferType>({
+  const { handleSubmit, control } = useForm<CourseInferType>({
     resolver: yupResolver(courseSchema),
   });
-
-  console.log('watch', watch());
 
   const onSubmit = async (data: CourseInferType) => {
     const res = await registerCourse(data);
@@ -40,7 +38,6 @@ export default function RegisterCoursePage() {
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
           id="startDate"
-          defaultValue=""
           control={control}
           type="date"
           customLabel={<span className="font-medium text-gray-700">Data de início</span>}
@@ -48,7 +45,6 @@ export default function RegisterCoursePage() {
 
         <FieldDefault
           id="endDate"
-          defaultValue=""
           control={control}
           type="date"
           customLabel={<span className="font-medium text-gray-700">Data de término</span>}
@@ -56,7 +52,6 @@ export default function RegisterCoursePage() {
 
         <SelectDefault
           id="typeOfCourse"
-          defaultValue=""
           control={control}
           label="Tipo do curso"
           options={[
@@ -65,7 +60,13 @@ export default function RegisterCoursePage() {
           ]}
         />
 
-        <FieldDefault id="courseNumber" defaultValue="" control={control} label="Número do curso" />
+        <FieldDefault
+          id="courseNumber"
+          control={control}
+          label="Número do curso"
+          type="number"
+          maxLength={4}
+        />
 
         <Button type="submit">Cadastrar</Button>
       </form>

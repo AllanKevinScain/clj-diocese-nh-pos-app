@@ -57,7 +57,7 @@ export const RegisterRecordWorkClientPage = (props: RegisterRecordWorkClientPage
 
   const methods = useForm<WorkSchemaInfertype>({
     resolver: yupResolver(workSchema),
-    defaultValues: { ...valoresPadrao, courseNumber: Number(courseNumber) },
+    defaultValues: { ...valoresPadrao, courseNumber },
   });
 
   async function onSubmit(record: WorkSchemaInfertype) {

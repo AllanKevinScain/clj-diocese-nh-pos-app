@@ -8,9 +8,9 @@ import type { InferType } from 'yup';
 
 import { PoslForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
+import type { RecordPoslResponseInterface } from '@/types';
 import { poslSchema } from '@/yup';
 
-import type { RecordPoslResponseInterface } from '../posl-server-call.type';
 import { EditRecordBottomBar } from './edit-record-bottom-bar';
 
 type PoslSchemaInfertype = InferType<typeof poslSchema>;
