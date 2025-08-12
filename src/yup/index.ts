@@ -1,3 +1,4 @@
+export * from './couple-schema';
 export * from './course-schema';
 export * from './login-schama';
 export * from './posl-schema';

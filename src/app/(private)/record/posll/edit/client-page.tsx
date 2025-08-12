@@ -6,12 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
+import { EditRecordBottomBar } from '@/components';
 import { PosllForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
 import type { RecordPosllResponseInterface } from '@/types';
 import { posllSchema } from '@/yup';
-
-import { EditRecordBottomBar } from './edit-record-bottom-bar';
 
 type PosllSchemaInfertype = InferType<typeof posllSchema>;
 
@@ -45,7 +44,7 @@ export const EditRecordPosllClientPage = (props: EditRecordPosllClientPageInterf
       <FormProvider {...methods}>
         <PosllForm onSubmit={onSubmit} />
       </FormProvider>
-      <EditRecordBottomBar recordId={record.id} />
+      <EditRecordBottomBar recordId={record.id} recordType="POSll" />
     </>
   );
 };

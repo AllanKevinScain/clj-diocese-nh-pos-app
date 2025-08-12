@@ -1,3 +1,4 @@
+export * from './get-couple-record';
 export * from './get-course';
 export * from './get-posl-record';
 export * from './get-posll-record';

@@ -1,5 +1,22 @@
 import type { RecordType } from '@/types';
 
+export type RecordPOSllType = {
+  id: string;
+  courseOneDone: string;
+  motivationToParticipate: string;
+  reasonForCLJII: string;
+  approachToChrist: string;
+  acceptsChurchDoctrine: string;
+  commitmentToCLJ: string;
+  perseveranceInCommunity: string;
+  hideImportantInfo: boolean;
+  currentGroupFunction: string;
+  parishChapelActivities: string;
+  doingConfirmation: boolean | null;
+  notConfirmationBecause: string | null;
+  recordId: string;
+};
+
 export interface RecordPosllResponseInterface {
   id: string;
   typeOfRecord: RecordType;
@@ -22,20 +39,5 @@ export interface RecordPosllResponseInterface {
   dataConsent: boolean;
   createdAt: string;
   updatedAt: string;
-  recordPOSll: {
-    id: string;
-    courseOneDone: string;
-    motivationToParticipate: string;
-    reasonForCLJII: string;
-    approachToChrist: string;
-    acceptsChurchDoctrine: string;
-    commitmentToCLJ: string;
-    perseveranceInCommunity: string;
-    hideImportantInfo: boolean;
-    currentGroupFunction: string;
-    parishChapelActivities: string;
-    doingConfirmation: boolean | null;
-    notConfirmationBecause: string | null;
-    recordId: string;
-  };
+  recordPOSll: RecordPOSllType;
 }

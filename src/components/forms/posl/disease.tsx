@@ -23,7 +23,7 @@ export const DiseaseFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
   });
 
   return (
-    <div>
+    <>
       <FieldSetRadio
         disabled={isDisabled}
         control={control}
@@ -41,6 +41,6 @@ export const DiseaseFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
       {hasDisease && (
         <FieldDefault disabled={isDisabled} id="disease" control={control} label="Doença" />
       )}
-    </div>
+    </>
   );
 };

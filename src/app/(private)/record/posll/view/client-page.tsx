@@ -4,11 +4,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
+import { ViewRecordBottomBar } from '@/components';
 import { PosllForm } from '@/components/forms';
 import type { RecordPosllResponseInterface } from '@/types';
 import { posllSchema } from '@/yup';
-
-import { ViewRecordBottomBar } from './view-record-bottom-bar';
 
 type PosllSchemaInfertype = InferType<typeof posllSchema>;
 
@@ -29,7 +28,9 @@ export const ViewRecordPosllClientPage = (props: ViewRecordPosllClientPageInterf
       <FormProvider {...methods}>
         <PosllForm onSubmit={() => null} isDisabled />
       </FormProvider>
-      <ViewRecordBottomBar courseNumber={record.recordNumber} recordId={record.id} />
+      <ViewRecordBottomBar
+        redirectEditUrl={`/record/posll/edit?courseNumber=${record.courseNumber}&id=${record.id}`}
+      />
     </>
   );
 };

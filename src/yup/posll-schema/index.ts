@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 import {
-  fieldNullisRequired,
+  fieldNullIsRequired,
   requiredDoingConfirmation,
   requiredIsNotMakesonfirmation,
 } from '../helpers';
@@ -28,7 +28,7 @@ const posllSchemaBase = yup.object({
     hideImportantInfo: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório' }),
 
     // função na paroquia e grupo
     currentGroupFunction: yup.string().required('Campo obrigatório'),

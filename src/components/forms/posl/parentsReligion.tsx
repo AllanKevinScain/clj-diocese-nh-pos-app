@@ -18,7 +18,7 @@ export const ParentsReligionFields = (props: Pick<PoslFormInterface, 'isDisabled
   });
 
   return (
-    <div>
+    <>
       <FieldSetRadio
         disabled={isDisabled}
         control={control}
@@ -40,6 +40,6 @@ export const ParentsReligionFields = (props: Pick<PoslFormInterface, 'isDisabled
           label="Outra Religião Associada"
         />
       )}
-    </div>
+    </>
   );
 };

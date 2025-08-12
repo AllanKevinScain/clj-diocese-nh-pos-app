@@ -30,6 +30,7 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
       control={control}
       defaultValue={defaultValue as PathValue<T, Path<T>>}
       render={({ field, fieldState: { error } }) => {
+        const { value, ref, ...restField } = field;
         const hasError = !!error?.message;
 
         return (
@@ -43,8 +44,9 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
             )}
             <Textarea
               {...restProps}
-              {...field}
-              ref={field.ref}
+              {...restField}
+              ref={ref}
+              value={value ?? ''}
               placeholder={restProps.placeholder ?? 'Digite aqui'}
               className={twMerge(
                 'border border-gray-300',
@@ -55,9 +57,9 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
               )}
               rows={3}
             />
-            {field.value?.length > 0 && (
+            {value?.length > 0 && (
               <Description className="text-xs text-gray-500">
-                {field.value?.length ?? 0} / {restProps.maxLength ?? 200}
+                {value?.length ?? 0} / {restProps.maxLength ?? 200}
               </Description>
             )}
 

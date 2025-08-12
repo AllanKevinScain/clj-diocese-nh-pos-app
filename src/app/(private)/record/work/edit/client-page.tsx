@@ -6,12 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
+import { EditRecordBottomBar } from '@/components';
 import { WorkForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
 import type { RecordWorkResponseInterface } from '@/types';
 import { workSchema } from '@/yup';
-
-import { EditRecordBottomBar } from './edit-record-bottom-bar';
 
 type WorkSchemaInfertype = InferType<typeof workSchema>;
 
@@ -44,7 +43,7 @@ export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterfac
       <FormProvider {...methods}>
         <WorkForm onSubmit={onSubmit} />
       </FormProvider>
-      <EditRecordBottomBar recordId={record.id} />
+      <EditRecordBottomBar recordId={record.id} recordType="WORK" />
     </>
   );
 };

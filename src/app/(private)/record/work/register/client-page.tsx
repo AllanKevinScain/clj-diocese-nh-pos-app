@@ -16,7 +16,7 @@ interface RegisterRecordWorkClientPageInterface {
   courseNumber: string;
 }
 
-const valoresPadrao: WorkSchemaInfertype = {
+const defaultValues: WorkSchemaInfertype = {
   dataConsent: null,
   observationsDed: '',
   observationsCoordinator: '',
@@ -57,7 +57,7 @@ export const RegisterRecordWorkClientPage = (props: RegisterRecordWorkClientPage
 
   const methods = useForm<WorkSchemaInfertype>({
     resolver: yupResolver(workSchema),
-    defaultValues: { ...valoresPadrao, courseNumber },
+    defaultValues: { ...defaultValues, courseNumber },
   });
 
   async function onSubmit(record: WorkSchemaInfertype) {

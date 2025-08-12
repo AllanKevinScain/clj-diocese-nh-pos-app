@@ -18,7 +18,7 @@ export const ParentsFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
   });
 
   return (
-    <div>
+    <>
       <FieldSetCheckbox
         disabled={isDisabled}
         control={control}
@@ -41,6 +41,6 @@ export const ParentsFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
           label="Quem"
         />
       )}
-    </div>
+    </>
   );
 };

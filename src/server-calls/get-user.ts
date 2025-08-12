@@ -19,7 +19,7 @@ export async function getUserServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as UserResponseInterface;
 
   if (res.status === 400) return { ok: false, data };
 

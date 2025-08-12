@@ -12,7 +12,7 @@ import { poslSchema } from '@/yup';
 
 type PoslSchemaInfertype = InferType<typeof poslSchema>;
 
-const valoresPadrao: PoslSchemaInfertype = {
+const defaultValues: PoslSchemaInfertype = {
   recordNumber: '',
   parishAcronym: '',
   candidateName: '',
@@ -62,7 +62,7 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
 
   const methods = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
-    defaultValues: { ...valoresPadrao, courseNumber },
+    defaultValues: { ...defaultValues, courseNumber },
   });
 
   async function onSubmit(record: PoslSchemaInfertype) {

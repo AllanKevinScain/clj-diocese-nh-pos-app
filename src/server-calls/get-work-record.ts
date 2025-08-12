@@ -20,7 +20,7 @@ export async function getRecordWorkServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as RecordWorkResponseInterface;
 
   const { recordWork, candidatePhone, ...record } = data;
 
@@ -28,12 +28,12 @@ export async function getRecordWorkServerCall(
     ...record,
     candidatePhone: formatMobilePhone(candidatePhone),
     recordWork: {
-      ...recordWork,
-      playInstrument: !isEmpty(recordWork.instrument),
-      ...(recordWork.doingConfirmation && { hasConfirmation: false }),
-      ...((!recordWork.doingConfirmation || recordWork.doingConfirmation === null) && {
-        hasConfirmation: isEmpty(recordWork.notConfirmationBecause),
-      }),
+      ...(recordWork ?? {}),
+      playInstrument: !isEmpty(recordWork?.instrument),
+      ...(recordWork?.doingConfirmation ? { hasConfirmation: false } : {}),
+      ...(!recordWork?.doingConfirmation || recordWork?.doingConfirmation === null
+        ? { hasConfirmation: isEmpty(recordWork?.notConfirmationBecause) }
+        : {}),
     },
   };
 

@@ -1,5 +1,26 @@
 import type { RecordType } from '@/types';
 
+export type RecordPOSlType = {
+  id: string;
+  godfatherName: string;
+  godfatherPhone: string;
+  godfatherEmail: string;
+  affinityWithGodfather: string;
+  attitudeCommunication: string;
+  doctrineCommunication: string;
+  godfatherResponsibility: string;
+  candidateSpirit: string;
+  candidateDisposition: string;
+  candidateParticipation: string;
+  fatherSituation: string;
+  motherSituation: string;
+  livesWith: string[];
+  otherWho: string;
+  parentsReligion: string;
+  parentsComment: string;
+  recordId: string;
+};
+
 export interface RecordPoslResponseInterface {
   id: string;
   typeOfRecord: RecordType;
@@ -22,24 +43,5 @@ export interface RecordPoslResponseInterface {
   dataConsent: true;
   createdAt: null;
   updatedAt: null;
-  recordPOSl: {
-    id: string;
-    godfatherName: string;
-    godfatherPhone: string;
-    godfatherEmail: string;
-    affinityWithGodfather: string;
-    attitudeCommunication: string;
-    doctrineCommunication: string;
-    godfatherResponsibility: string;
-    candidateSpirit: string;
-    candidateDisposition: string;
-    candidateParticipation: string;
-    fatherSituation: string;
-    motherSituation: string;
-    livesWith: string[];
-    otherWho: string;
-    parentsReligion: string;
-    parentsComment: string;
-    recordId: string;
-  };
+  recordPOSl: RecordPOSlType;
 }

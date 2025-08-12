@@ -1,5 +1,26 @@
 import type { RecordType } from '@/types';
 
+export type RecordWorkType = {
+  id: string;
+  courseOneDone: string;
+  courseTwoDone: string;
+  courseThreeDone: string;
+  workedInWhichCourses: string;
+  graceStateAwareness: string;
+  notFalsifyData: false;
+  showLifeTestimony: string;
+  currentGroupFunction: string;
+  parishActivities: string;
+  doingConfirmation: false;
+  notConfirmationBecause: string;
+  instrument: null;
+  reasonToWork: string;
+  workPreference: string;
+  willingToOtherFunction: false;
+  parishIndication: string[];
+  recordId: string;
+};
+
 export interface RecordWorkResponseInterface {
   id: string;
   typeOfRecord: RecordType;
@@ -22,24 +43,5 @@ export interface RecordWorkResponseInterface {
   dataConsent: true;
   createdAt: string;
   updatedAt: string;
-  recordWork: {
-    id: string;
-    courseOneDone: string;
-    courseTwoDone: string;
-    courseThreeDone: string;
-    workedInWhichCourses: string;
-    graceStateAwareness: string;
-    notFalsifyData: false;
-    showLifeTestimony: string;
-    currentGroupFunction: string;
-    parishActivities: string;
-    doingConfirmation: false;
-    notConfirmationBecause: string;
-    instrument: null;
-    reasonToWork: string;
-    workPreference: string;
-    willingToOtherFunction: false;
-    parishIndication: string[];
-    recordId: string;
-  };
+  recordWork: RecordWorkType;
 }

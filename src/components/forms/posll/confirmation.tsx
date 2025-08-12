@@ -27,7 +27,7 @@ export const ConfirmationFields = (props: Pick<PosllFormInterface, 'isDisabled'>
   });
 
   return (
-    <div>
+    <>
       <FieldSetRadio
         disabled={isDisabled}
         control={control}
@@ -67,6 +67,6 @@ export const ConfirmationFields = (props: Pick<PosllFormInterface, 'isDisabled'>
           label="Não, por quê?"
         />
       )}
-    </div>
+    </>
   );
 };

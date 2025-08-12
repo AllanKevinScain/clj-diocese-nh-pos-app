@@ -8,18 +8,7 @@ import { FaClipboardList } from 'react-icons/fa';
 import { RiEdit2Fill } from 'react-icons/ri';
 
 import { Button } from '@/components';
-import type { RecordType } from '@/types';
-
-interface ListRecordsInterface {
-  records?: {
-    id?: string;
-    nickname?: string;
-    candidateName?: string;
-    typeOfRecord?: RecordType;
-  }[];
-  courseNumber: string;
-  typeOfRecord: RecordType;
-}
+import type { ListRecordsInterface } from '@/types/list-records.type';
 
 export const ListRecords = (props: ListRecordsInterface) => {
   const { records, courseNumber, typeOfRecord } = props;
@@ -110,7 +99,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
 
       {/* Casal */}
       <div className="mb-4">
-        <h3 className="mb-4 text-lg font-bold">Casais:</h3>
+        <h3 className="text-lg font-bold">Casais:</h3>
 
         {!isEmpty(recordsCouple) && (
           <ul className="divide-y">
@@ -122,7 +111,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
                   <div className="flex items-center gap-2">
                     <FaClipboardList size={24} className="text-gray-500" />
                     <span className="text-base text-gray-700">
-                      {record.candidateName} ({record.nickname})
+                      Tio {record.candidateName} e Tia {record.recordCouple?.womanName}
                     </span>
                   </div>
                   <RiEdit2Fill size={24} className="text-gray-500" />

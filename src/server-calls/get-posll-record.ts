@@ -20,7 +20,7 @@ export async function getRecordPosllServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as RecordPosllResponseInterface;
 
   const { recordPOSll, candidatePhone, ...record } = data;
 

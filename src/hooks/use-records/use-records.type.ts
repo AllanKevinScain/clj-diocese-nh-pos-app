@@ -7,7 +7,7 @@ export interface UseRecordsInterface {
 
 export interface CallRecordInterface extends Pick<UseRecordsInterface, 'data'> {
   method: 'POST' | 'PUT';
-  api: '/api/records/posl' | '/api/records/posll' | '/api/records/work';
+  api: '/api/records/posl' | '/api/records/posll' | '/api/records/work' | '/api/records/couple';
 }
 export interface CallRecordReturnInterface {
   ok?: boolean;

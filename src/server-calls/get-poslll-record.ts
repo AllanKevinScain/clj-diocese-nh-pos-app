@@ -20,11 +20,11 @@ export async function getPoslllRecordServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as RecordPoslllResponseInterface;
 
   const formatedData = {
-    ...data.data,
-    candidatePhone: formatMobilePhone(data.data.candidatePhone),
+    ...data,
+    candidatePhone: formatMobilePhone(data.candidatePhone),
   };
 
   if (res.status === 400) return { ok: false, data };

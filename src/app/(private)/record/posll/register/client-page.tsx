@@ -16,7 +16,7 @@ interface RegisterRecordPosllClientPageInterface {
   courseNumber: string;
 }
 
-const valoresPadrao: PosllSchemaInfertype = {
+const defaultValues: PosllSchemaInfertype = {
   takesMedication: null,
   hasDisease: null,
   dataConsent: null,
@@ -56,7 +56,7 @@ export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPa
 
   const methods = useForm<PosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
-    defaultValues: { ...valoresPadrao, courseNumber },
+    defaultValues: { ...defaultValues, courseNumber },
   });
 
   async function onSubmit(record: PosllSchemaInfertype) {

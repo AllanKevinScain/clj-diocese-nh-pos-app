@@ -18,7 +18,7 @@ export const InstrumentFields = (props: Pick<WorkFormInterface, 'isDisabled'>) =
   });
 
   return (
-    <div>
+    <>
       <FieldSetRadio
         id="recordWork.playInstrument"
         disabled={isDisabled}
@@ -41,6 +41,6 @@ export const InstrumentFields = (props: Pick<WorkFormInterface, 'isDisabled'>) =
           maxLength={200}
         />
       )}
-    </div>
+    </>
   );
 };

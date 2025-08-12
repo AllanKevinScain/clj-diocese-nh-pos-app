@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
 import {
-  fieldNullisRequired,
+  fieldNullIsRequired,
   requiredDoingConfirmation,
   requiredIsNotMakesonfirmation,
 } from '../helpers';
@@ -30,7 +30,7 @@ const teamWorkSchema = yup.object().shape({
     notFalsifyData: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     showLifeTestimony: yup.string().required('Campo obrigatório'),
 
     // função na paroquia
@@ -43,7 +43,7 @@ const teamWorkSchema = yup.object().shape({
     willingToOtherFunction: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     parishIndication: yup.array().of(yup.string()).min(1, 'Campo Obrigatório!'),
 
     // Crisma
@@ -57,7 +57,7 @@ const teamWorkSchema = yup.object().shape({
     }),
     // -------- campo de auxilio - não vai pro back
     hasConfirmation: yup.boolean().nullable().test({
-      test: fieldNullisRequired,
+      test: fieldNullIsRequired,
       message: 'Campo obrigatório!',
     }),
 
@@ -68,7 +68,7 @@ const teamWorkSchema = yup.object().shape({
     }),
     // -------- campo de auxilio - não vai pro back
     playInstrument: yup.boolean().nullable().test({
-      test: fieldNullisRequired,
+      test: fieldNullIsRequired,
       message: 'Campo obrigatório!',
     }),
   }),

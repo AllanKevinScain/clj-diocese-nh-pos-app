@@ -1,9 +1,15 @@
 import { isEmpty } from 'lodash';
 import * as yup from 'yup';
 
-import { fieldNullisRequired } from '../helpers';
+import { fieldNullIsRequired } from '../helpers';
 import { posDefault } from '../pos-default';
 
+function workPreferenceChoosed(value: boolean | undefined | null, { parent }: yup.AnyObject) {
+  if (parent.workPreference !== 'sala') {
+    return value !== null;
+  }
+  return true;
+}
 function requiredCourseOne(value: string | undefined | null, { parent }: yup.AnyObject) {
   if (parent.hasCourseOne) {
     return !isEmpty(value);
@@ -28,15 +34,19 @@ const coupleSchemaBase = yup.object({
     recordId: yup.string().optional(),
 
     // tipo de casal no curso
-    workPreference: yup.string().oneOf(['sala', 'cozinha']).required('Campo obrigatório!'),
+    workPreference: yup
+      .string()
+      .oneOf(['sala', 'cozinha', 'sem-preferencia'])
+      .nullable()
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     externalCouple: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: workPreferenceChoosed, message: 'Campo obrigatório!' }),
     cookCouple: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: workPreferenceChoosed, message: 'Campo obrigatório!' }),
 
     // informações da mulher
     womanName: yup.string().required('Campo obrigatório!'),
@@ -69,14 +79,15 @@ const coupleSchemaBase = yup.object({
     familyLife: yup
       .string()
       .oneOf(['boa', 'regular', 'inexistente'])
-      .required('Campo obrigatório!'),
+      .nullable()
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
 
     // sobre o casamento
     religiousWeddingDate: yup.string().required('Campo obrigatório!'),
     participatedInRetreat: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     motivationToParticipate: yup.string().required('Campo obrigatório!'),
 
     // indicações
@@ -86,18 +97,18 @@ const coupleSchemaBase = yup.object({
     hasCourseOne: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     hasCourseTwo: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
     hasCourseThree: yup
       .boolean()
       .nullable()
-      .test({ test: fieldNullisRequired, message: 'Campo obrigatório!' }),
+      .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
   }),
 });
 
-export const workSchema = posDefault
+export const coupleSchema = posDefault
   .concat(coupleSchemaBase)
-  .omit(['allergy', 'birthDate', 'disease', 'hasDisease', 'medication', 'takesMedication']);
+  .omit(['allergy', 'disease', 'hasDisease', 'medication', 'takesMedication']);

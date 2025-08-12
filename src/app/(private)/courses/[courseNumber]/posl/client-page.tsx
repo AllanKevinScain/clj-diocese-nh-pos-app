@@ -4,15 +4,12 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { TbLoaderQuarter } from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
-import type { InferType } from 'yup';
 
 import { useCreateQuery, useListRecords } from '@/hooks';
-import type { poslSchema } from '@/yup';
+import type { ListRecordsType } from '@/types/list-records.type';
 
 import { ListRecords } from '../components';
 import { CoursesBottomBar } from '../components/courses-bottom-bar';
-
-export type InfertypePoslSchema = InferType<typeof poslSchema>;
 
 interface CourseClientPageInterface {
   courseNumber: string;
@@ -23,8 +20,8 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
   const { courseNumber, courseId } = props;
   const { listRecordsByCourseNumber } = useListRecords();
 
-  const { data, isLoading } = useCreateQuery<InfertypePoslSchema[]>({
-    queryKey: ['fichas', courseNumber],
+  const { data, isLoading } = useCreateQuery<ListRecordsType[]>({
+    queryKey: ['listRecordsPosl', courseNumber],
     queryFn: () => listRecordsByCourseNumber(courseNumber),
     onError: (error) => {
       toast.error(String(error.data?.message));

@@ -20,7 +20,7 @@ export async function getCourseServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as CourseResponseInterface;
 
   const formatedData = {
     ...data,

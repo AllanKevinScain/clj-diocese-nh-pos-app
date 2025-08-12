@@ -3,7 +3,7 @@
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
-import { posllSchema, poslSchema, workSchema } from '@/yup';
+import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
   CallRecordInterface,
@@ -33,16 +33,20 @@ export function useRecords() {
 
     try {
       if (typeOfRecord === 'POSl') {
-        await poslSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data, api: '/api/records/posl', method: 'POST' });
+        const validateData = await poslSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: validateData, api: '/api/records/posl', method: 'POST' });
       }
       if (typeOfRecord === 'POSll') {
-        await posllSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: data, api: '/api/records/posll', method: 'POST' });
+        const validateData = await posllSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: validateData, api: '/api/records/posll', method: 'POST' });
       }
       if (typeOfRecord === 'WORK') {
-        await workSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: data, api: '/api/records/work', method: 'POST' });
+        const validateData = await workSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: validateData, api: '/api/records/work', method: 'POST' });
+      }
+      if (typeOfRecord === 'COUPLE_WORK') {
+        const validateData = await coupleSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: validateData, api: '/api/records/couple', method: 'POST' });
       }
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     } catch (error) {
@@ -72,6 +76,11 @@ export function useRecords() {
       if (typeOfRecord === 'WORK') {
         await workSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: data, api: '/api/records/work', method: 'PUT' });
+      }
+      if (typeOfRecord === 'COUPLE_WORK') {
+        console.log('🚀 ~ editRecord ~ typeOfRecord:', typeOfRecord);
+        await coupleSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: data, api: '/api/records/couple', method: 'PUT' });
       }
       return { ok: false, data: { message: 'Falha na atualização!' } };
     } catch (error) {
