@@ -77,12 +77,20 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                       </button>
 
                       {isAdmin && (
-                        <button
-                          onClick={() => handleNavigate('/view/users')}
-                          className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                          <FaUserFriends className="text-blue-600" />
-                          <span>Usuários</span>
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleNavigate('/view/users')}
+                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
+                            <FaUserFriends className="text-blue-600" />
+                            <span>Usuários</span>
+                          </button>
+                          <button
+                            onClick={() => handleNavigate('/all')}
+                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
+                            <FaUserFriends className="text-blue-600" />
+                            <span>Filtro</span>
+                          </button>
+                        </>
                       )}
                     </div>
 

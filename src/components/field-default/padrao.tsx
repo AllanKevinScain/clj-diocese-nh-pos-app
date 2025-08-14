@@ -62,6 +62,7 @@ export const CustomInputPadrao = memo(
             'w-full rounded-md px-3 py-2 transition-all',
             'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
             'disabled:cursor-not-allowed disabled:bg-gray-100',
+            restProps.className,
             hasError && 'border-red-500',
           )}
         />

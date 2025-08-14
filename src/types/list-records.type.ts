@@ -5,10 +5,12 @@ import type { RecordPOSllType } from './posll.type';
 import type { RecordWorkType } from './work.type';
 
 export type ListRecordsType = {
-  id?: string;
-  nickname?: string;
-  candidateName?: string;
-  typeOfRecord?: RecordType;
+  id: string;
+  nickname: string;
+  candidateName: string;
+  typeOfRecord: RecordType;
+  candidatePhone: string;
+  updatedAt: string;
   recordPOSl?: RecordPOSlType;
   recordPOSll?: RecordPOSllType;
   recordWork?: RecordWorkType;
@@ -18,5 +20,4 @@ export type ListRecordsType = {
 export interface ListRecordsInterface {
   records?: ListRecordsType[];
   courseNumber: string;
-  typeOfRecord: RecordType;
 }

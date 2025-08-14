@@ -1,133 +1,81 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import Link from 'next/link';
-import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { FaClipboardList } from 'react-icons/fa';
-import { RiEdit2Fill } from 'react-icons/ri';
+import { twMerge } from 'tailwind-merge';
 
-import { Button } from '@/components';
+import { Button, ListItem } from '@/components';
+import { useToggleModal } from '@/hooks';
 import type { ListRecordsInterface } from '@/types/list-records.type';
 
+import { AddRecordModal } from './choose-add-record-modal';
+
 export const ListRecords = (props: ListRecordsInterface) => {
-  const { records, courseNumber, typeOfRecord } = props;
+  const { records, courseNumber } = props;
+  const router = useRouter();
+  const { handle, isOpen } = useToggleModal();
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
-  const recordsCandidate = useMemo(() => {
-    const filtered = records?.filter(
-      (record) => record.typeOfRecord === 'POSll' || record.typeOfRecord === 'POSl',
-    );
-    return filtered;
-  }, [records]);
+  const orderRecordsForDate = records?.sort((a, b) => {
+    const upA = dayjs(a.updatedAt);
+    const upB = dayjs(b.updatedAt);
+    if (upA.isAfter(upB)) return 0;
+    return 1;
+  });
 
-  const recordsWork = useMemo(() => {
-    const filtered = records?.filter((record) => record.typeOfRecord === 'WORK');
-    return filtered;
-  }, [records]);
-
-  const recordsCouple = useMemo(() => {
-    const filtered = records?.filter((record) => record.typeOfRecord === 'COUPLE_WORK');
-    return filtered;
-  }, [records]);
+  const toggleMenu = useCallback((id: string) => {
+    setOpenMenuId((prev) => (prev === id ? null : id));
+  }, []);
 
   return (
-    <div className="w-full">
-      <h1 className="mb-4 text-2xl font-bold">Fixas de curso {courseNumber}</h1>
-
-      {/* Cursistas */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold">Cursistas:</h3>
-
-        {!isEmpty(recordsCandidate) && (
-          <ul className="divide-y">
-            {recordsCandidate?.map((record) => (
-              <li key={record.id}>
-                <a
-                  href={`/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`}
-                  className="flex items-center justify-between py-3 transition hover:bg-gray-50">
-                  <div className="flex items-center gap-2">
-                    <FaClipboardList size={24} className="text-gray-500" />
-                    <span className="text-base text-gray-700">
-                      {record.candidateName} ({record.nickname})
-                    </span>
-                  </div>
-                  <RiEdit2Fill size={24} className="text-gray-500" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-        <Link
-          href={`/record/${typeOfRecord.toLocaleLowerCase()}/register?courseNumber=${courseNumber}`}>
-          <Button className="h-[40px]">
-            <BiPlus />
-            Criar ficha para cursista
+    <>
+      <AddRecordModal isOpen={isOpen} handleModal={handle} courseNumber={courseNumber} />
+      <div className={twMerge('flex flex-col gap-[12px]', 'w-full')}>
+        <div className="flex items-center justify-between">
+          <h1 className={twMerge('text-2xl font-bold', 'inline-flex items-center gap-[12px]')}>
+            <FaClipboardList size={24} className="text-gray-500" /> Fixas de curso {courseNumber}
+          </h1>
+          <Button variant="ghost" className="w-[45px] p-0" onClick={handle}>
+            <BiPlus size={45} />
           </Button>
-        </Link>
-      </div>
+        </div>
 
-      {/* Equipde de trabalho */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold">Equipe de trabalho:</h3>
-
-        {!isEmpty(recordsWork) && (
-          <ul className="divide-y">
-            {recordsWork?.map((record) => (
-              <li key={record.id}>
-                <a
-                  href={`/record/work/view?id=${record.id}`}
-                  className="flex items-center justify-between py-3 transition hover:bg-gray-50">
-                  <div className="flex items-center gap-2">
-                    <FaClipboardList size={24} className="text-gray-500" />
-                    <span className="text-base text-gray-700">
-                      {record.candidateName} ({record.nickname})
-                    </span>
-                  </div>
-                  <RiEdit2Fill size={24} className="text-gray-500" />
-                </a>
-              </li>
-            ))}
-          </ul>
+        {!isEmpty(orderRecordsForDate) && (
+          <div className={twMerge('flex flex-col gap-[12px]', 'w-full')}>
+            {orderRecordsForDate?.map((record) => {
+              return (
+                <ListItem
+                  key={record.id}
+                  candidateName={record.candidateName}
+                  candidatePhone={record.candidatePhone}
+                  id={record.id}
+                  nickname={record.nickname}
+                  typeOfRecord={record.typeOfRecord}
+                  updatedAt={dayjs(record.updatedAt)}
+                  womanName={record.recordCouple?.womanName}
+                  selectedId={openMenuId === record.id}
+                  handleOpenSubMenu={(id) => toggleMenu(id)}
+                  handleViewRecord={() => {
+                    if (record.typeOfRecord === 'POSl' || record.typeOfRecord === 'POSll') {
+                      router.push(
+                        `/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`,
+                      );
+                    } else if (record.typeOfRecord === 'WORK') {
+                      router.push(`/record/work/view?id=${record.id}`);
+                    } else {
+                      router.push(`/record/couple-work/view?id=${record.id}`);
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
         )}
-        <Link href={`/record/work/register?courseNumber=${courseNumber}`}>
-          <Button className="h-[40px]">
-            <BiPlus />
-            Criar ficha de trabalho
-          </Button>
-        </Link>
       </div>
-
-      {/* Casal */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold">Casais:</h3>
-
-        {!isEmpty(recordsCouple) && (
-          <ul className="divide-y">
-            {recordsCouple?.map((record) => (
-              <li key={record.id}>
-                <a
-                  href={`/record/couple-work/view?id=${record.id}`}
-                  className="flex items-center justify-between py-3 transition hover:bg-gray-50">
-                  <div className="flex items-center gap-2">
-                    <FaClipboardList size={24} className="text-gray-500" />
-                    <span className="text-base text-gray-700">
-                      Tio {record.candidateName} e Tia {record.recordCouple?.womanName}
-                    </span>
-                  </div>
-                  <RiEdit2Fill size={24} className="text-gray-500" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <Link href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
-          <Button className="h-[40px]">
-            <BiPlus />
-            Criar ficha para casal
-          </Button>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 };

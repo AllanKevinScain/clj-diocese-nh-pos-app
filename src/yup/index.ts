@@ -1,5 +1,6 @@
 export * from './couple-schema';
 export * from './course-schema';
+export * from './filter-records-schema';
 export * from './login-schama';
 export * from './posl-schema';
 export * from './posll-schema';

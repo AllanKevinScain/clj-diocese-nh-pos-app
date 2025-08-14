@@ -16,3 +16,53 @@ body {
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Barra de rolagem slim e elegante */
+@layer utilities {
+  .scroll-slim {
+    /* Habilite overflow na direção que quiser no JSX */
+    scrollbar-width: thin;                       /* Firefox */
+    scrollbar-color: rgb(var(--color-gray-400)) transparent; /* Firefox */
+  }
+
+  /* WebKit (Chrome, Edge, Safari) */
+  .scroll-slim::-webkit-scrollbar {
+    width: 8px;         /* vertical */
+    height: 8px;        /* horizontal */
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color--gray-300));
+    border-radius: 9999px;      /* bem arredondada */
+    border: 2px solid transparent;
+    background-clip: content-box;  /* dá aquele “miolo” fino */
+  }
+  .scroll-slim:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color-gray-400));
+  }
+  .scroll-slim::-webkit-scrollbar-thumb:active {
+    background-color: rgb(var(--color--gray-500));
+  }
+
+  /* Dark mode refinado */
+  .dark .scroll-slim {
+    scrollbar-color: rgb(var(--color--gray-500)) transparent;
+  }
+  .dark .scroll-slim::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color--gray-600));
+  }
+  .dark .scroll-slim:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color--gray-500));
+  }
+  .dark .scroll-slim::-webkit-scrollbar-thumb:active {
+    background-color: rgb(var(--color-gray-400));
+  }
+
+  /* Cantinho (Windows) */
+  .scroll-slim::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
