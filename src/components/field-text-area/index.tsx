@@ -34,14 +34,18 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
         const hasError = !!error?.message;
 
         return (
-          <Field className="w-full">
+          <Field className={twMerge('w-full', 'flex flex-col gap-[6px]')}>
             {!!label && (
-              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
-                <span className={twMerge('text-neutral-800', hasError && 'text-red-500')}>
-                  {label}
-                </span>
+              <Label
+                className={twMerge(
+                  'text-[16px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
+                  hasError && 'text-red-500',
+                )}>
+                {label}
               </Label>
             )}
+
             <Textarea
               {...restProps}
               {...restField}
@@ -49,16 +53,26 @@ export const FieldTextarea = <T extends FieldValues>(props: FieldDefaultInterfac
               value={value ?? ''}
               placeholder={restProps.placeholder ?? 'Digite aqui'}
               className={twMerge(
-                'border border-gray-300',
-                'w-full rounded-md px-3 py-2 transition-all',
-                'focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none',
-                'disabled:cursor-not-allowed disabled:bg-gray-100',
+                'border border-neutral-700',
+                'w-full rounded-[10px] bg-neutral-50 p-[10px]',
+                'focus:border-transparent focus:ring-2 focus:ring-neutral-500 focus:outline-none',
+                'disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:opacity-50',
+                'placeholder:text-neutral-400',
+                'transition-all',
+                // darkmode
+                'dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-neutral-300',
+                'dark:disabled:bg-neutral-700',
                 hasError && 'border-red-500',
               )}
               rows={3}
             />
             {value?.length > 0 && (
-              <Description className="text-xs text-gray-500">
+              <Description
+                className={twMerge(
+                  'text-[14px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
+                  hasError && 'text-red-500',
+                )}>
                 {value?.length ?? 0} / {restProps.maxLength ?? 200}
               </Description>
             )}

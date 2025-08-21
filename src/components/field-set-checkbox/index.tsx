@@ -1,6 +1,6 @@
 'use client';
 
-import { Description, Field } from '@headlessui/react';
+import { Description, Field, Label } from '@headlessui/react';
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
@@ -30,17 +30,17 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
         return (
           <Field className={twMerge('flex flex-col gap-4', 'w-full')}>
             {!!label && (
-              <span
+              <Label
                 className={twMerge(
-                  'flex gap-[4px]',
-                  'text-[16px] font-[500] text-neutral-800',
+                  'text-[16px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
                   hasError && 'text-red-500',
                 )}>
                 {label}
-              </span>
+              </Label>
             )}
 
-            <div className="flex flex-wrap gap-4">
+            <div className={twMerge('flex flex-wrap gap-4', disabled && 'opacity-50')}>
               {options.map((option) => (
                 <label
                   key={option.id}
@@ -62,8 +62,21 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
                       }
                       return onChange([...value, option.id]);
                     }}
+                    className={twMerge(
+                      'h-4 w-4 rounded',
+                      'accent-blue-500',
+                      'dark:accent-blue-200',
+                      hasError && 'border-red-500',
+                    )}
                   />
-                  {option.label}
+                  <span
+                    className={twMerge(
+                      'text-[16px] font-[500] text-neutral-500',
+                      'dark:text-neutral-300',
+                      hasError && 'text-red-500',
+                    )}>
+                    {option.label}
+                  </span>
                 </label>
               ))}
             </div>
@@ -72,7 +85,15 @@ export const FieldSetCheckbox = <T extends FieldValues>(props: FieldSetCheckboxI
               <Description className="text-xs text-red-500">{error?.message}</Description>
             )}
 
-            {observation && <span className="text-xs">{observation}</span>}
+            {observation && (
+              <span
+                className={twMerge(
+                  'text-[12px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
+                )}>
+                {observation}
+              </span>
+            )}
           </Field>
         );
       }}

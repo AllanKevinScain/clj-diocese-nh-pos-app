@@ -29,14 +29,33 @@ export function Button(props: ButtonProps) {
       <Link
         href={href}
         className={twMerge(
-          'w-full rounded-md px-4 py-3 text-center font-medium transition',
+          'h-[50px] w-fit rounded-md px-[12px]',
+          'transition-all',
           'disabled:opacity-50',
-          'flex items-center justify-between',
+          'flex items-center justify-center gap-[6px]',
           'cursor-pointer',
           (isLoading || props.disabled) && 'pointer-events-none',
-          variant === 'solid' && 'bg-blue-600 text-white hover:bg-blue-700',
-          variant === 'outline' && 'border border-blue-600 text-blue-600 hover:bg-blue-50',
-          variant === 'ghost' && 'text-blue-600 hover:bg-blue-50',
+          variant === 'solid' &&
+            twMerge(
+              'bg-neutral-700 text-white',
+              'active:bg-neutral-900',
+              'dark:bg-neutral-900 dark:text-neutral-200',
+              'dark:active:bg-neutral-700',
+            ),
+          variant === 'outline' &&
+            twMerge(
+              'border border-neutral-700 text-neutral-700',
+              'active:bg-neutral-900 active:text-neutral-300',
+              'dark:border-neutral-400 dark:text-neutral-400',
+              'dark:active:border-neutral-700 dark:active:bg-neutral-700',
+            ),
+          variant === 'ghost' &&
+            twMerge(
+              'text-neutral-700',
+              'active:bg-neutral-400 active:text-neutral-900',
+              'dark:text-neutral-400',
+              'active:text-neutral-300 dark:active:bg-neutral-700',
+            ),
           className,
         )}>
         {isLoading && <FiLoader className="h-5 w-5 animate-spin" />}
@@ -51,13 +70,32 @@ export function Button(props: ButtonProps) {
       type={type}
       disabled={isLoading || props.disabled}
       className={twMerge(
-        'w-full rounded-md px-4 py-3 text-center font-medium transition',
+        'h-[50px] w-fit rounded-md px-[12px]',
+        'transition-all',
         'disabled:opacity-50',
-        'flex items-center justify-between',
+        'flex items-center justify-center gap-[6px]',
         'cursor-pointer',
-        variant === 'solid' && 'bg-blue-600 text-white hover:bg-blue-700',
-        variant === 'outline' && 'border border-blue-600 text-blue-600 hover:bg-blue-50',
-        variant === 'ghost' && 'text-blue-600 hover:bg-blue-50',
+        variant === 'solid' &&
+          twMerge(
+            'bg-neutral-700 text-white',
+            'active:bg-neutral-900',
+            'dark:bg-neutral-900 dark:text-neutral-200',
+            'dark:active:bg-neutral-700',
+          ),
+        variant === 'outline' &&
+          twMerge(
+            'border border-neutral-700 text-neutral-700',
+            'active:bg-neutral-900 active:text-neutral-300',
+            'dark:border-neutral-400 dark:text-neutral-400',
+            'dark:active:border-neutral-700 dark:active:bg-neutral-700',
+          ),
+        variant === 'ghost' &&
+          twMerge(
+            'text-neutral-700',
+            'active:bg-neutral-400 active:text-neutral-900',
+            'dark:text-neutral-400',
+            'active:text-neutral-300 dark:active:bg-neutral-700',
+          ),
         className,
       )}>
       {isLoading && <FiLoader className="h-5 w-5 animate-spin" />}

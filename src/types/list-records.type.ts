@@ -20,4 +20,5 @@ export type ListRecordsType = {
 export interface ListRecordsInterface {
   records?: ListRecordsType[];
   courseNumber: string;
+  loading?: boolean;
 }

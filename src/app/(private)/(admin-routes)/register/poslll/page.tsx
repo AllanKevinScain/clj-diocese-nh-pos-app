@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { Button, FieldDefault, FieldTextarea } from '@/components';
+import { Button, Container, FieldDefault, FieldTextarea, Heading } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import { usePoslll } from '@/hooks';
 import { poslllSchema } from '@/yup';
@@ -33,8 +33,8 @@ export default function RegisterPoslllPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-10">
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Cadastrar CLJ lll</h2>
+    <Container>
+      <Heading as="h2">Cadastrar CLJ lll</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault id="candidateName" control={control} label="Nome" />
@@ -72,8 +72,10 @@ export default function RegisterPoslllPage() {
 
         <FieldTextarea id="formations" control={control} label="Formações" />
 
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit" className="w-full">
+          Cadastrar
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

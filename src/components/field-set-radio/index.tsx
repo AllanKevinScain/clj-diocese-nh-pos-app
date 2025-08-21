@@ -38,10 +38,13 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
         return (
           <Field className="w-full">
             {!!label && (
-              <Label className={twMerge('flex gap-[4px]', 'text-[16px] font-[500]')}>
-                <span className={twMerge('text-neutral-800', hasError && 'text-red-500')}>
-                  {label}
-                </span>
+              <Label
+                className={twMerge(
+                  'text-[16px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
+                  hasError && 'text-red-500',
+                )}>
+                {label}
               </Label>
             )}
 
@@ -49,6 +52,9 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
               className={twMerge(
                 'flex flex-wrap items-center gap-4',
                 'rounded-md bg-neutral-300 p-2',
+                // darkmode
+                'dark:bg-neutral-700',
+                disabled && 'opacity-50',
                 hasError && 'border border-red-500',
               )}>
               {options.map((item) => {
@@ -72,7 +78,7 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
                     <input ref={ref} readOnly className="sr-only" />
                     <div
                       className={twMerge(
-                        'rounded-full border border-gray-800',
+                        'rounded-full border border-neutral-800',
                         'flex items-center justify-center',
                         'h-[14px] w-[14px] bg-white',
                         disabled && 'bg-neutral-200',
@@ -82,12 +88,18 @@ export const FieldSetRadio = <T extends FieldValues>(props: FieldSetRadioInterfa
                         className={twMerge(
                           'rounded-full',
                           'h-[10px] w-[10px]',
-                          isMarked && 'bg-gray-800',
+                          isMarked && 'bg-neutral-800 dark:bg-neutral-900',
                           isMarked && disabled && 'bg-neutral-400',
                         )}
                       />
                     </div>
-                    <span>{label}</span>
+                    <span
+                      className={twMerge(
+                        'text-[16px] font-[500] text-neutral-500',
+                        'dark:text-neutral-300',
+                      )}>
+                      {label}
+                    </span>
                   </div>
                 );
               })}

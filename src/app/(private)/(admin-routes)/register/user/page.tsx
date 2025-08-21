@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { Button, FieldDefault, SelectDefault } from '@/components';
+import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useUsers } from '@/hooks';
 import { registerUserSchema } from '@/yup/user-schema';
 
@@ -33,15 +33,15 @@ export default function RegisterUserClientPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-10">
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Cadastrar usuário</h2>
+    <Container>
+      <Heading>Cadastrar usuário</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FieldDefault id="name" control={control} label="Paróquia/Capela" />
 
         <FieldDefault id="email" control={control} label="Email" />
 
-        <FieldDefault id="password" control={control} label="Senha" type="password" showEye />
+        <FieldDefault id="password" control={control} label="Senha" type="password" />
 
         <SelectDefault
           id="loginType"
@@ -58,8 +58,10 @@ export default function RegisterUserClientPage() {
 
         <FieldDefault id="city" control={control} label="Cidade" />
 
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit" className="w-full">
+          Cadastrar
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

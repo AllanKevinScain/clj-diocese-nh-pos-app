@@ -13,25 +13,12 @@ interface ComumInputsPropertiesInterface<T extends FieldValues> extends OmitedIn
   onChangeValue?: (_: string | number) => void;
 }
 
-export interface ComumDefaultInputInterface<T extends FieldValues>
-  extends ComumInputsPropertiesInterface<T> {
-  showEye?: boolean;
-  hasError?: boolean;
-}
-
-export interface ComumDecimalInputInterface<T extends FieldValues>
-  extends ComumInputsPropertiesInterface<T> {
-  showCifrao?: boolean;
-  hasError?: boolean;
-}
-
 export interface FieldDefaultInterface<T extends FieldValues>
-  extends Omit<ComumDefaultInputInterface<T>, 'field'>,
-    Omit<ComumDecimalInputInterface<T>, 'field'> {
+  extends Omit<ComumInputsPropertiesInterface<T>, 'field'> {
   id: Path<T>;
   control: Control<T> | undefined;
   label?: string;
   defaultValue?: string | boolean | string[];
-  isLoading?: boolean;
   customLabel?: React.ReactNode;
+  hasError?: boolean;
 }

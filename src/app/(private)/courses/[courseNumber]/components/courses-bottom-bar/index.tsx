@@ -26,14 +26,12 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
   const actionForAdmin: ActionButtonTypes[] = [
     {
       label: 'Editar curso',
-      type: 'warning',
       icon: <BiEdit size={40} />,
       url: `/edit/course/${courseId}`,
       click: () => {},
     },
     {
       label: 'Excluir curso',
-      type: 'error',
       icon: <BiTrash size={40} />,
       url: '',
       click: () => handle(),

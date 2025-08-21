@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { AcceptModal, Button, FieldDefault, FieldTextarea } from '@/components';
+import { AcceptModal, Button, Container, FieldDefault, FieldTextarea, Heading } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import { usePoslll, useToggleModal } from '@/hooks';
 import type { RecordPoslllResponseInterface } from '@/types';
@@ -56,10 +56,9 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
     <>
       <AcceptModal isOpen={isOpen} handle={handle} accept={deletePoslllById} />
 
-      <div className="mx-auto max-w-md px-4 py-8">
-        <h1 className="mb-8 text-center text-2xl font-semibold">
-          Edição do CLJ lll {poslll.candidateName} | {poslll.instagram}
-        </h1>
+      <Container>
+        <Heading>Edição do CLJ lll {poslll.candidateName}</Heading>
+        <Heading as="h2">{poslll.instagram}</Heading>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
           <FieldDefault id="candidateName" control={control} label="Nome" />
@@ -97,13 +96,16 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
 
           <FieldTextarea id="formations" control={control} label="Formações" />
 
-          <Button type="submit">Atualizar</Button>
-
-          <Button type="button" onClick={handle}>
-            Apagar registro
-          </Button>
+          <div className="flex gap-[16px]">
+            <Button type="button" variant="outline" className="w-full" onClick={handle}>
+              Apagar registro
+            </Button>
+            <Button type="submit" className="w-full">
+              Atualizar
+            </Button>
+          </div>
         </form>
-      </div>
+      </Container>
     </>
   );
 };

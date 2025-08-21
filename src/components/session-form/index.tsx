@@ -1,3 +1,5 @@
+import { Heading } from '../heading';
+
 export interface SessionFormInterface {
   title: string;
   children: React.ReactNode;
@@ -8,8 +10,10 @@ export const SessionForm = (props: SessionFormInterface) => {
 
   return (
     <div className="mb-6">
-      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
-      {children}
+      <Heading as="h3" className="font-[700]">
+        {title}
+      </Heading>
+      <div className="grid grid-cols-1 gap-4">{children}</div>
     </div>
   );
 };

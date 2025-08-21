@@ -8,14 +8,14 @@ import { BiPlus } from 'react-icons/bi';
 import { FaClipboardList } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 
-import { Button, ListItem } from '@/components';
+import { Button, Heading, ListItem, Loading } from '@/components';
 import { useToggleModal } from '@/hooks';
 import type { ListRecordsInterface } from '@/types/list-records.type';
 
 import { AddRecordModal } from './choose-add-record-modal';
 
 export const ListRecords = (props: ListRecordsInterface) => {
-  const { records, courseNumber } = props;
+  const { records, courseNumber, loading } = props;
   const router = useRouter();
   const { handle, isOpen } = useToggleModal();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
@@ -31,15 +31,18 @@ export const ListRecords = (props: ListRecordsInterface) => {
     setOpenMenuId((prev) => (prev === id ? null : id));
   }, []);
 
+  if (loading) return <Loading />;
+
   return (
     <>
       <AddRecordModal isOpen={isOpen} handleModal={handle} courseNumber={courseNumber} />
+
       <div className={twMerge('flex flex-col gap-[12px]', 'w-full')}>
         <div className="flex items-center justify-between">
-          <h1 className={twMerge('text-2xl font-bold', 'inline-flex items-center gap-[12px]')}>
-            <FaClipboardList size={24} className="text-gray-500" /> Fixas de curso {courseNumber}
-          </h1>
-          <Button variant="ghost" className="w-[45px] p-0" onClick={handle}>
+          <Heading className={twMerge('inline-flex items-center gap-[12px]')}>
+            <FaClipboardList size={24} /> Fixas do curso {courseNumber}
+          </Heading>
+          <Button variant="ghost" className="p-0" onClick={handle}>
             <BiPlus size={45} />
           </Button>
         </div>
@@ -48,7 +51,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
           <div className={twMerge('flex flex-col gap-[12px]', 'w-full')}>
             {orderRecordsForDate?.map((record) => {
               return (
-                <ListItem
+                <ListItem.record
                   key={record.id}
                   candidateName={record.candidateName}
                   candidatePhone={record.candidatePhone}

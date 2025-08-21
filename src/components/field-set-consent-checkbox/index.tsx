@@ -28,22 +28,24 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
         const { value, onChange, ref } = field;
 
         return (
-          <Field className="w-full">
+          <Field className={twMerge('w-full', 'flex flex-col gap-[6px]')}>
             {!!label && (
               <Label
                 className={twMerge(
                   'flex gap-[4px]',
-                  'text-[16px] font-[500]',
+                  'text-[16px] font-[500] text-neutral-500',
+                  'dark:text-neutral-300',
                   hasError && 'text-red-500',
                 )}>
-                <span className="text-neutral-800">{label}</span>
+                {label}
               </Label>
             )}
 
-            <div className="flex gap-4">
+            <div className={twMerge('flex gap-4', disabled && 'opacity-50')}>
               <label
                 className={twMerge(
                   'flex cursor-pointer items-center gap-2 text-sm text-neutral-800',
+                  'dark:text-neutral-300',
                   hasError && 'text-red-500',
                 )}>
                 <input
@@ -53,7 +55,9 @@ export const FieldSetConsentCheckbox = <T extends FieldValues>(
                   checked={value || false}
                   onChange={() => onChange(!value || false)}
                   className={twMerge(
-                    'h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
+                    'h-4 w-4 rounded',
+                    'accent-blue-500',
+                    'dark:accent-blue-200',
                     hasError && 'border-red-500',
                   )}
                 />

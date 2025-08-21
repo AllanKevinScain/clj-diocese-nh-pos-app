@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { Button, FieldDefault } from '@/components';
+import { Button, Container, Divider, FieldDefault, Heading, Text } from '@/components';
 import { loginSchema } from '@/yup';
 
 type LoginSchemaInferType = InferType<typeof loginSchema>;
@@ -47,33 +47,24 @@ export function ClientPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-6">
+    <Container className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-sm space-y-6">
-        <h1 className="text-center text-2xl font-semibold">Entrar na sua conta</h1>
-        <img
-          src="https://cljdiocesenh.com.br/wp-content/uploads/2020/03/logo-Curso-de-Lideran%C3%A7a.png"
-          alt="Logo"
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-        />
+        <div className="flex flex-col gap-[6px]">
+          <Heading as="h1">Gestão de cursos CLJ</Heading>
+          <Divider className="max-w-[50%]" />
+          <Text>Este site ajuda você a encontrar informações mais rápido</Text>
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <FieldDefault id="email" control={control} label="Digite seu e-mail" />
 
-          <FieldDefault
-            id="password"
-            control={control}
-            label="Digite sua senha"
-            type="password"
-            showEye
-          />
+          <FieldDefault id="password" control={control} label="Digite sua senha" type="password" />
 
-          <Button type="submit" isLoading={isLoading}>
+          <Button type="submit" className="w-full" isLoading={isLoading}>
             Entrar
           </Button>
         </form>
       </div>
-    </div>
+    </Container>
   );
 }

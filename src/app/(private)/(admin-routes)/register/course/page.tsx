@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { Button, FieldDefault, SelectDefault } from '@/components';
+import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useCourses } from '@/hooks';
 import { courseSchema } from '@/yup';
 
@@ -32,8 +32,8 @@ export default function RegisterCoursePage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-10">
-      <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">Cadastrar Curso</h2>
+    <Container>
+      <Heading>Cadastrar Curso</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
@@ -68,8 +68,10 @@ export default function RegisterCoursePage() {
           maxLength={4}
         />
 
-        <Button type="submit">Cadastrar</Button>
+        <Button type="submit" className="w-full">
+          Cadastrar
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

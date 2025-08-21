@@ -2,7 +2,7 @@
 
 import { useFormContext } from 'react-hook-form';
 
-import { Button, DefaultDialog, FieldDefault } from '@/components';
+import { Button, DefaultDialog, FieldDefault, Heading } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 
 import type { FilterRecordsSchemaInfertype } from '../page';
@@ -25,25 +25,25 @@ export const FilterModal = (props: FilterModalInterface) => {
       actionsButtons={
         <div className="flex items-center justify-between">
           <Button
-            className="flex max-w-[80px] justify-center"
-            onClick={() => {
-              onSearch();
-              handleModal();
-            }}>
-            Sim
-          </Button>
-          <Button
             variant="outline"
-            className="flex max-w-[80px] justify-center"
+            className="w-[80px]"
             onClick={() => {
               handleModal();
               reset();
             }}>
             Não
           </Button>
+          <Button
+            className="w-[80px]"
+            onClick={() => {
+              onSearch();
+              handleModal();
+            }}>
+            Sim
+          </Button>
         </div>
       }>
-      <h4 className="text-sm text-gray-500">Pesquise por:</h4>
+      <Heading>Pesquise por:</Heading>
 
       <div className="flex flex-col gap-2 p-[2px]">
         <FieldDefault

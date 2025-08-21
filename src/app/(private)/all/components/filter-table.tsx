@@ -2,7 +2,7 @@
 
 import { FaSadCry } from 'react-icons/fa';
 
-import { Button, Table } from '@/components';
+import { Button, Heading, Table } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import type { FilterRecordsType } from '@/types';
 
@@ -53,10 +53,8 @@ export const FilterTable = (props: FilterTableInterface) => {
             <Table.td colSpan={10}>
               <div className="flex w-full flex-col items-center justify-center">
                 <FaSadCry size={45} />
-                <h3 className="text-neutral-600">Nenhum resultado encontrado</h3>
-                <Button onClick={clearFilters} className="w-fit">
-                  Limpar filtros
-                </Button>
+                <Heading as="h3">Nenhum resultado encontrado</Heading>
+                <Button onClick={clearFilters}>Limpar filtros</Button>
               </div>
             </Table.td>
           </Table.tr>

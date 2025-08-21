@@ -2,6 +2,8 @@ import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { cookies } from 'next/headers';
+import { twMerge } from 'tailwind-merge';
 
 import { Providers } from '@/providers';
 
@@ -20,14 +22,19 @@ export const metadata: Metadata = {
   description: 'Página de autenticação',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const theme = cookieStore.get('theme')?.value;
+
   return (
-    <html lang="pt-br">
-      <body className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}>
+    <html lang="pt-br" className={twMerge(theme === 'dark' ? 'dark' : '')}>
+      <body
+        className={twMerge(
+          geistSans.variable,
+          geistMono.variable,
+          'relative antialiased',
+          'h-screen overflow-y-auto',
+        )}>
         <Providers>{children}</Providers>
       </body>
     </html>

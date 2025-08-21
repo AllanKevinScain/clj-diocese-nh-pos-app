@@ -5,6 +5,8 @@ import { HiX } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
+import { Heading } from '../heading';
+import { Text } from '../text';
 
 interface DefaultDialogInterface {
   isOpen: boolean;
@@ -21,41 +23,47 @@ export const DefaultDialog = (props: DefaultDialogInterface) => {
     <Dialog open={isOpen} as="div" className="relative z-10" onClose={handleModal}>
       <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
 
-      <div className="fixed inset-0 flex items-center justify-center px-[16px]">
+      <div className={twMerge('fixed inset-0', 'flex items-center justify-center', 'px-[16px]')}>
         <DialogPanel
-          className={twMerge('relative', 'w-full bg-white', 'rounded-xl', 'overflow-hidden')}>
+          className={twMerge(
+            'relative',
+            'w-full',
+            'rounded-xl',
+            'overflow-hidden',
+            'bg-white',
+            'dark:bg-neutral-600',
+          )}>
+          {/* Botão de fechar */}
           <Button
             onClick={handleModal}
             aria-label="Fechar filtro"
             variant="ghost"
-            className={twMerge(
-              'absolute top-0 right-0',
-              'h-[40px] w-[40px] p-1',
-              'flex items-center justify-center',
-            )}>
-            <HiX className="h-5 w-5" aria-hidden="true" />
+            className={twMerge('absolute top-0 right-0', 'dark:text-neutral-300')}>
+            <HiX size={30} aria-hidden="true" />
           </Button>
-          <DialogTitle
-            as="h3"
-            className={twMerge(
-              'text-start text-lg font-medium text-gray-900',
-              'border-b border-gray-300',
-              'bg-neutral-100 px-[24px] py-[12px]',
-            )}>
-            {title}
+          {/* Cabeçalho */}
+          <DialogTitle as="h3">
+            <Text
+              className={twMerge(
+                'border-b border-gray-300',
+                'bg-neutral-100 px-[24px] py-[12px]',
+                'dark:border-neutral-300 dark:bg-neutral-500',
+              )}>
+              {title}
+            </Text>
           </DialogTitle>
-          <div className="p-[24px]">
-            {/* Botão de fechar */}
-
-            {/* Cabeçalho */}
-
-            {/* container */}
-            <div className={twMerge('relative', 'max-h-[70vh] overflow-auto')}>{children}</div>
+          {/* container */}
+          <div className={twMerge('relative', 'max-h-[70vh] overflow-auto', 'p-[24px]')}>
+            {children}
           </div>
 
           {/* Botões */}
           <div
-            className={twMerge('border-t border-gray-300', 'bg-neutral-100 px-[24px] py-[12px]')}>
+            className={twMerge(
+              'border-t border-gray-300',
+              'bg-neutral-100 px-[24px] py-[12px]',
+              'dark:border-neutral-300 dark:bg-neutral-500',
+            )}>
             {actionsButtons}
           </div>
         </DialogPanel>

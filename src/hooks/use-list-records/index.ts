@@ -17,7 +17,10 @@ export function useListRecords() {
   }
 
   async function listAllRecords(values: FilterSchemaInfertype) {
-    const filterValues = Object.entries(values).filter((entry) => !isEmpty(entry[1]));
+    const filterValues = Object.entries(values).filter((entry) => !isEmpty(entry[1])) as [
+      string,
+      string,
+    ][];
     const transforForObject = Object.fromEntries(filterValues);
     const searchParams = new URLSearchParams(transforForObject);
     const queryString = searchParams.toString();

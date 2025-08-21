@@ -1,6 +1,6 @@
 'use client';
 
-import { FaPeopleArrows } from 'react-icons/fa';
+import { BiHeart } from 'react-icons/bi';
 import { GiKnifeFork } from 'react-icons/gi';
 import { TbCircleNumber1Filled, TbCircleNumber2Filled } from 'react-icons/tb';
 
@@ -19,7 +19,7 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
     <DefaultDialog
       isOpen={isOpen}
       handleModal={handleModal}
-      title="Adicionar nova ficha de:"
+      title="Adicionar nova ficha para:"
       actionsButtons={
         <div className="flex justify-end">
           <Button className="w-fit" onClick={handleModal}>
@@ -28,20 +28,32 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
         </div>
       }>
       <div className="flex flex-col gap-[12px]">
-        <Button isLink href={`/record/posl/register?courseNumber=${courseNumber}`}>
+        <Button
+          isLink
+          className="w-full"
+          href={`/record/posl/register?courseNumber=${courseNumber}`}>
           <TbCircleNumber1Filled />
           Jovem CLJ l
         </Button>
-        <Button isLink href={`/record/posll/register?courseNumber=${courseNumber}`}>
+        <Button
+          isLink
+          className="w-full"
+          href={`/record/posll/register?courseNumber=${courseNumber}`}>
           <TbCircleNumber2Filled />
           Jovem CLJ ll
         </Button>
-        <Button isLink href={`/record/work/register?courseNumber=${courseNumber}`}>
+        <Button
+          isLink
+          className="w-full"
+          href={`/record/work/register?courseNumber=${courseNumber}`}>
           <GiKnifeFork />
           Trabalho
         </Button>
-        <Button isLink href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
-          <FaPeopleArrows />
+        <Button
+          isLink
+          className="w-full"
+          href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
+          <BiHeart />
           Casal
         </Button>
       </div>

@@ -1,25 +1,27 @@
 'use client';
 
+import { twMerge } from 'tailwind-merge';
+
 import { useVerifyToken } from '@/hooks';
 
 import { NavBarDrawer } from './drawer-nav-bar';
-import { NavBarMenu } from './menu-nav-bar';
 
 interface NavBarProps {
   showDrawer?: boolean;
-  showMenu?: boolean;
 }
 
-export function NavBar({ showDrawer = true, showMenu = true }: NavBarProps) {
+export function NavBar({ showDrawer = true }: NavBarProps) {
   useVerifyToken();
 
   return (
-    <header className="flex items-center justify-between bg-blue-600 px-4 py-4 text-white shadow-md">
+    <header
+      className={twMerge(
+        'flex items-center',
+        'bg-neutral-700 px-4 py-4',
+        'shadow-md',
+        'sticky top-0 z-[2]',
+      )}>
       <NavBarDrawer showDrawer={showDrawer} />
-
-      <span className="text-lg font-bold">CLJ</span>
-
-      <NavBarMenu showMenu={showMenu} />
     </header>
   );
 }

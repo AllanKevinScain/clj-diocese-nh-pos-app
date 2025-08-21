@@ -6,9 +6,13 @@ import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { BiMenu } from 'react-icons/bi';
-import { FaCross, FaEdit, FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import { FaCross, FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
+import { Divider } from '../divider';
+import { Heading } from '../heading';
+import { ButtonItem } from './button-item';
 
 interface NavBarDrawerInterface {
   showDrawer?: boolean;
@@ -31,99 +35,74 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className="text-2xl">
-        <BiMenu size={40} />
+      <button className="text-white" onClick={() => setIsOpen(true)}>
+        <BiMenu size={50} />
       </button>
 
       <Transition show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={setIsOpen}>
           <Transition show={isOpen}>
             <TransitionChild as={Fragment}>
-              <div className="fixed inset-0 bg-black opacity-50" />
+              <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
             </TransitionChild>
 
             <div className="fixed inset-0 flex">
               <TransitionChild as={Fragment}>
-                <DialogPanel className="flex w-72 max-w-full flex-col bg-white p-4 shadow-xl">
-                  <div className="flex flex-col items-center gap-2">
-                    <img
-                      src="/logo_clj.jpg"
-                      alt="Logo CLJ"
-                      className="rounded-full border border-black"
-                    />
-                    <span className="text-sm font-semibold text-gray-700">
-                      Olá, {data?.user?.name}
-                    </span>
-                  </div>
-
-                  <hr className="my-3" />
-
+                <DialogPanel
+                  className={twMerge(
+                    'flex flex-col justify-between',
+                    'w-72 bg-neutral-100 p-[30px]',
+                    'shadow-xl',
+                    'dark:bg-neutral-900',
+                  )}>
                   <nav className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-2">
-                      <span className="text-gray-700">Listagens</span>
-                      {/* Itens padrão */}
-                      <button
-                        onClick={() => handleNavigate('/courses')}
-                        className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                        <FaCross className="text-blue-600" />
-                        <span>Cursos</span>
-                      </button>
+                    <Heading as="h3">Olá, {data?.user?.name}</Heading>
+                    <Divider />
 
-                      <button
-                        onClick={() => handleNavigate('/poslll')}
-                        className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                        <FaUserFriends className="text-blue-600" />
-                        <span>CLJs lll</span>
-                      </button>
-
+                    <div className="flex flex-col gap-[6px]">
+                      <ButtonItem navigate={() => handleNavigate('/courses')}>
+                        <FaCross />
+                        Cursos
+                      </ButtonItem>
+                      <ButtonItem navigate={() => handleNavigate('/poslll')}>
+                        <FaUserFriends />
+                        CLJ{"'"}s lll
+                      </ButtonItem>
                       {isAdmin && (
                         <>
-                          <button
-                            onClick={() => handleNavigate('/view/users')}
-                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                            <FaUserFriends className="text-blue-600" />
-                            <span>Usuários</span>
-                          </button>
-                          <button
-                            onClick={() => handleNavigate('/all')}
-                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                            <FaUserFriends className="text-blue-600" />
-                            <span>Filtro</span>
-                          </button>
+                          <ButtonItem navigate={() => handleNavigate('/view/users')}>
+                            <FaUserFriends />
+                            Usuários
+                          </ButtonItem>
+                          <ButtonItem navigate={() => handleNavigate('/all')}>
+                            <FaUserFriends />
+                            Filtro
+                          </ButtonItem>
                         </>
                       )}
-                    </div>
-
-                    <div className="flex flex-col gap-2">
                       {!isEmpty(data) && data.user.loginType === 'admin' && (
                         <>
-                          <span className="text-gray-700">Cadastros</span>
-                          <button
-                            onClick={() => handleNavigate('/register/course')}
-                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                            <FaEdit className="text-blue-600" />
-                            <span>Cadastrar curso</span>
-                          </button>
-
-                          <button
-                            onClick={() => handleNavigate('/register/user')}
-                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                            <FaUserEdit className="text-blue-600" />
-                            <span>Cadastrar usuário</span>
-                          </button>
-
-                          <button
-                            onClick={() => handleNavigate('/register/poslll')}
-                            className="flex items-center gap-3 rounded px-3 py-2 text-left text-gray-700 hover:bg-gray-100">
-                            <FaEdit className="text-blue-600" />
-                            <span>Cadastrar CLJ lll</span>
-                          </button>
+                          <ButtonItem navigate={() => handleNavigate('/register/course')}>
+                            <FaUserEdit />
+                            Cadastrar curso
+                          </ButtonItem>
+                          <ButtonItem navigate={() => handleNavigate('/register/user')}>
+                            <FaUserEdit />
+                            Cadastrar usuário
+                          </ButtonItem>
+                          <ButtonItem navigate={() => handleNavigate('/register/poslll')}>
+                            <FaUserEdit />
+                            Cadastrar CLJ lll
+                          </ButtonItem>
                         </>
                       )}
                     </div>
                   </nav>
 
-                  <Button variant="ghost" onClick={() => signOut({ callbackUrl: '/' })}>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => signOut({ callbackUrl: '/' })}>
                     Sair
                   </Button>
                 </DialogPanel>

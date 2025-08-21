@@ -2,9 +2,8 @@
 
 import React from 'react';
 import toast from 'react-hot-toast';
-import { TbLoaderQuarter } from 'react-icons/tb';
-import { twMerge } from 'tailwind-merge';
 
+import { Container } from '@/components';
 import { useCreateQuery, useListRecords } from '@/hooks';
 import type { ListRecordsType } from '@/types/list-records.type';
 
@@ -20,7 +19,7 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
   const { courseNumber, courseId } = props;
   const { listRecordsByCourseNumber } = useListRecords();
 
-  const { data, isLoading } = useCreateQuery<ListRecordsType[]>({
+  const { data } = useCreateQuery<ListRecordsType[]>({
     queryKey: ['listRecordsPosll', courseNumber],
     queryFn: () => listRecordsByCourseNumber(courseNumber),
     onError: (error) => {
@@ -29,17 +28,9 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
   });
 
   return (
-    <div
-      className={twMerge(
-        'mx-auto flex w-full max-w-screen-xl flex-col gap-8 px-4',
-        isLoading && 'h-[80vh] items-center justify-center',
-      )}>
+    <Container>
       <CoursesBottomBar courseId={courseId} />
-
-      {isLoading && <TbLoaderQuarter size={30} className="animate-spin text-gray-600" />}
-      {!isLoading && (
-        <ListRecords records={data} courseNumber={courseNumber} typeOfRecord="POSll" />
-      )}
-    </div>
+      <ListRecords records={data} courseNumber={courseNumber} />
+    </Container>
   );
 };

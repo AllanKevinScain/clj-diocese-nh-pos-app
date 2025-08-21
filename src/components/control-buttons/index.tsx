@@ -1,13 +1,13 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import Link from 'next/link';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
+import { Button } from '../button';
+
 export type ActionButtonTypes = {
   label: string;
-  type?: 'error' | 'warning' | 'primary';
   icon: React.JSX.Element;
   url: string;
   click: () => void;
@@ -23,19 +23,14 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
   return (
     <div className={twMerge('fixed bottom-0 left-0 w-full', 'flex')}>
       {buttons.map((action) => {
-        const { type = 'primary' } = action;
-
         const content = (
           <div
             className={twMerge(
-              'flex w-full items-center justify-center',
-              'text-center text-sm font-semibold text-white transition-colors',
-              'px-4 py-2',
+              'flex items-center justify-center',
+              'text-center text-sm font-semibold',
+              'w-full px-4 py-2',
               'cursor-pointer',
               'sm:gap-8 sm:text-base',
-              type === 'primary' && 'bg-blue-600 hover:bg-blue-700',
-              type === 'warning' && 'bg-yellow-500 hover:bg-yellow-600',
-              type === 'error' && 'bg-red-500 hover:bg-red-600',
             )}>
             <span className={twMerge('hidden', 'sm:inline')}>{action.label}</span>
             {action.icon}
@@ -45,13 +40,13 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
         return (
           <div key={action.label} className="w-full">
             {!isEmpty(action.url) ? (
-              <Link href={action.url} className="block">
+              <Button isLink href={action.url} className="h-[70px] w-full rounded-none">
                 {content}
-              </Link>
+              </Button>
             ) : (
-              <button onClick={action.click} className="w-full">
+              <Button onClick={action.click} className="h-[70px] w-full rounded-none">
                 {content}
-              </button>
+              </Button>
             )}
           </div>
         );

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
-import { Button, FieldDefault, SelectDefault } from '@/components';
+import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useCourses } from '@/hooks';
 import { courseSchema } from '@/yup';
 
@@ -38,10 +38,9 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
   };
 
   return (
-    <div className="mx-auto max-w-md px-4 py-8">
-      <h1 className="mb-8 text-center text-2xl font-semibold">
-        Edição do curso {course.courseNumber} | {course.typeOfCourse}
-      </h1>
+    <Container>
+      <Heading>Edição do curso {course.courseNumber}</Heading>
+      <Heading>{course.typeOfCourse}</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault
@@ -74,8 +73,10 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
 
         <FieldDefault id="courseNumber" control={control} label="Número do curso" type="number" />
 
-        <Button type="submit">Atualizar</Button>
+        <Button type="submit" className="w-full">
+          Atualizar
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };

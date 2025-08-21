@@ -7,12 +7,15 @@ import type { InferType } from 'yup';
 
 import {
   Button,
+  Container,
   FieldDefault,
   FieldSetCheckbox,
   FieldSetConsentCheckbox,
   FieldSetRadio,
   FieldTextarea,
+  Heading,
   SessionForm,
+  Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import type { posllSchema } from '@/yup';
@@ -48,97 +51,93 @@ export const PosllForm = (props: PosllFormInterface) => {
   }, []);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-20">
+    <Container>
       <form
+        className="flex flex-col gap-6 pb-[30%]"
         onSubmit={handleSubmit(onSubmit, (errors) => {
           if (process.env.NODE_ENV === 'development') {
             console.log('Erros no onSubmit:', errors);
             showErrors(errors);
           }
-        })}
-        className="mt-6 flex flex-col gap-6">
+        })}>
         <div className="space-y-1 text-center">
-          <h1 className="text-2xl font-bold">Curso de Liderança Juvenil - CLJ</h1>
-          <p>Secretariado Diocesano de Novo Hamburgo</p>
-          <h2 className="text-lg font-semibold">FICHA DE CANDIDATO(A) AO CLJ II</h2>
+          <Heading>Curso de Liderança Juvenil - CLJ</Heading>
+          <Text>Secretariado Diocesano de Novo Hamburgo</Text>
+          <Heading as="h2">FICHA DE CANDIDATO(A) AO CLJ II</Heading>
         </div>
 
         <SessionForm title="Dados da ficha:">
-          <div className="grid grid-cols-1 gap-4">
-            <FieldDefault
-              disabled={isDisabled}
-              id="recordNumber"
-              control={control}
-              label="Número da ficha"
-              type="number"
-              maxLength={2}
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="parishAcronym"
-              control={control}
-              label="Sigla da paróquia/capela"
-              onChange={(e) => e.replace(/[0-9]/g, '')}
-              maxLength={10}
-            />
-          </div>
+          <FieldDefault
+            disabled={isDisabled}
+            id="recordNumber"
+            control={control}
+            label="Número da ficha"
+            type="number"
+            maxLength={2}
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="parishAcronym"
+            control={control}
+            label="Sigla da paróquia/capela"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={10}
+          />
         </SessionForm>
 
         <SessionForm title="Dados do(a) Candidato(a):">
-          <div className="grid grid-cols-1 gap-4">
-            <FieldDefault
-              disabled={isDisabled}
-              id="candidateName"
-              control={control}
-              label="Nome Cursista"
-              onChange={(e) => e.replace(/[0-9]/g, '')}
-              maxLength={50}
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="nickname"
-              control={control}
-              label="Apelido"
-              maxLength={50}
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="candidatePhone"
-              control={control}
-              onChange={(e) => formatMobilePhone(e)}
-              label="Telefone Cursista"
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="priest"
-              control={control}
-              label="Pároco"
-              onChange={(e) => e.replace(/[0-9]/g, '')}
-              maxLength={50}
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="birthDate"
-              control={control}
-              type="date"
-              label="Data de Nascimento"
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="instagram"
-              control={control}
-              label="Instagram"
-              maxLength={30}
-            />
-            <FieldDefault
-              disabled={isDisabled}
-              id="parishChapel"
-              control={control}
-              label="Paróquia/Capela"
-              onChange={(e) => e.replace(/[0-9]/g, '')}
-              maxLength={50}
-            />
-          </div>
+          <FieldDefault
+            disabled={isDisabled}
+            id="candidateName"
+            control={control}
+            label="Nome Cursista"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={50}
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="nickname"
+            control={control}
+            label="Apelido"
+            maxLength={50}
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="candidatePhone"
+            control={control}
+            onChange={(e) => formatMobilePhone(e)}
+            label="Telefone Cursista"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="priest"
+            control={control}
+            label="Pároco"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={50}
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="birthDate"
+            control={control}
+            type="date"
+            label="Data de Nascimento"
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="instagram"
+            control={control}
+            label="Instagram"
+            maxLength={30}
+          />
+          <FieldDefault
+            disabled={isDisabled}
+            id="parishChapel"
+            control={control}
+            label="Paróquia/Capela"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={50}
+          />
         </SessionForm>
 
         <SessionForm title="Consenso ao âmbito do curso:">
@@ -243,36 +242,32 @@ export const PosllForm = (props: PosllFormInterface) => {
         </SessionForm>
 
         <SessionForm title="Observações:">
-          <div className="grid grid-cols-1 gap-4">
-            <FieldTextarea
-              disabled={isDisabled}
-              id="observationsCoordinator"
-              control={control}
-              label="Observação do Depto. de Pós e Coordenação paroquial"
-              maxLength={200}
-            />
-            <FieldTextarea
-              disabled={isDisabled}
-              id="observationsDed"
-              control={control}
-              label="Observação do Diretor Espiritual Paroquial"
-              maxLength={200}
-            />
-          </div>
+          <FieldTextarea
+            disabled={isDisabled}
+            id="observationsCoordinator"
+            control={control}
+            label="Observação do Depto. de Pós e Coordenação paroquial"
+            maxLength={200}
+          />
+          <FieldTextarea
+            disabled={isDisabled}
+            id="observationsDed"
+            control={control}
+            label="Observação do Diretor Espiritual Paroquial"
+            maxLength={200}
+          />
         </SessionForm>
 
         <SessionForm title="Saúde:">
-          <div className="grid grid-cols-1 gap-4">
-            <DiseaseFields isDisabled={isDisabled} />
-            <MedicationFields isDisabled={isDisabled} />
+          <DiseaseFields isDisabled={isDisabled} />
+          <MedicationFields isDisabled={isDisabled} />
 
-            <FieldDefault
-              disabled={isDisabled}
-              id="allergy"
-              label="Tem algum tipo de alergia (medicamentos, alimentos, etc.)?"
-              control={control}
-            />
-          </div>
+          <FieldDefault
+            disabled={isDisabled}
+            id="allergy"
+            label="Tem algum tipo de alergia (medicamentos, alimentos, etc.)?"
+            control={control}
+          />
         </SessionForm>
 
         <SessionForm title="Consentimento de dados:">
@@ -285,11 +280,11 @@ export const PosllForm = (props: PosllFormInterface) => {
         </SessionForm>
 
         {!isDisabled && (
-          <Button type="submit" className="mt-3 mb-2 w-full">
+          <Button type="submit" className="w-full">
             Enviar
           </Button>
         )}
       </form>
-    </div>
+    </Container>
   );
 };
