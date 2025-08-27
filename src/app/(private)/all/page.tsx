@@ -66,7 +66,7 @@ export default function DownloadExcelArchives() {
     <FormProvider {...methods}>
       <FilterModal isOpen={isOpen} handleModal={handle} onSearch={() => refetch()} />
 
-      <Container>
+      <Container className="min-h-screen">
         <div className={twMerge('w-full', 'flex flex-col gap-[12px]')}>
           <div className="flex gap-[8px]">
             <div className="flex w-full">
