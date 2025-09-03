@@ -7,3 +7,4 @@ export * from './posll.type';
 export * from './poslll.type';
 export * from './user.type';
 export * from './work.type';
+export * from './work-table.type';

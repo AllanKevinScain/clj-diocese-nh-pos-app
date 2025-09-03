@@ -1,10 +1,13 @@
 'use client';
 
+import { isEmpty } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { BiEdit } from 'react-icons/bi';
 import type { InferType } from 'yup';
 
 import { Container, ControlButtons, Heading, Tab } from '@/components';
+import { useWorkTable } from '@/hooks';
+import type { WorkTableResponseInterface } from '@/types';
 import type { backgroundTableSchema } from '@/yup';
 
 import { Communities } from './communities';
@@ -13,34 +16,52 @@ import { RequiredFunctions } from './required-functions';
 
 interface MontageClientPageInterface {
   courseNumber: string;
+  workTable: WorkTableResponseInterface | null;
 }
 
 type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
 
+const workTableInitiate: BackgroundTableSchemaInferType = {
+  auxiliar: null,
+  base: null,
+  coordinator: null,
+  courseNumber: '',
+  auxiliarLiturgy: '',
+  auxiliarSecretary: '',
+  bar: '',
+  coupleKitchenCoordinator: '',
+  coupleSafeToBe: '',
+  folkloreCoordinator: '',
+  kitchenSpiritual: '',
+  liturgy: '',
+  secretary: '',
+  cleanWorkRecords: [],
+  copeWorkRecords: [],
+  kitchenWorkRecords: [],
+  communities: [],
+};
+
 export function MontageClientPage(props: MontageClientPageInterface) {
-  const { courseNumber } = props;
+  const { courseNumber, workTable } = props;
+  const { updateWorkTable, registerWorkTable } = useWorkTable();
 
   const { control, getValues } = useForm<BackgroundTableSchemaInferType>({
     defaultValues: {
-      auxiliar: null,
-      base: null,
-      coordinator: null,
+      ...workTableInitiate,
+      ...workTable,
       courseNumber,
-      auxiliarLiturgy: '',
-      auxiliarSecretary: '',
-      bar: '',
-      coupleKitchenCoordinator: '',
-      coupleSafeToBe: '',
-      folkloreCoordinator: '',
-      kitchenSpiritual: '',
-      liturgy: '',
-      secretary: '',
-      cleanWorkRecords: [],
-      copeWorkRecords: [],
-      kitchenWorkRecords: [],
-      communities: [],
     },
   });
+
+  async function handleWorkTable() {
+    const isCreated = !isEmpty(workTable);
+
+    if (isCreated) {
+      await registerWorkTable(getValues());
+    } else {
+      await updateWorkTable(getValues());
+    }
+  }
 
   return (
     <>
@@ -68,9 +89,7 @@ export function MontageClientPage(props: MontageClientPageInterface) {
         </Tab.container>
       </Container>
       <ControlButtons
-        buttons={[
-          { label: 'Salvar', icon: <BiEdit size={40} />, click: () => console.log(getValues()) },
-        ]}
+        buttons={[{ label: 'Salvar', icon: <BiEdit size={40} />, click: handleWorkTable }]}
       />
     </>
   );

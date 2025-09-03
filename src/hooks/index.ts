@@ -8,3 +8,4 @@ export * from './use-records';
 export * from './use-toggle-modal';
 export * from './use-users';
 export * from './use-verify-token';
+export * from './use-work-table';

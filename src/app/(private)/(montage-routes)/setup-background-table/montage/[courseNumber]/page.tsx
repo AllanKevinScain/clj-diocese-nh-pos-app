@@ -1,3 +1,5 @@
+import { getWorkTableServerCall } from '@/server-calls';
+
 import { MontageClientPage } from './client-page';
 
 interface MontagePageInterface {
@@ -8,5 +10,7 @@ export default async function MontagePage(props: MontagePageInterface) {
   const { params } = props;
   const { courseNumber } = await params;
 
-  return <MontageClientPage courseNumber={courseNumber} />;
+  const workTable = await getWorkTableServerCall(courseNumber);
+
+  return <MontageClientPage courseNumber={courseNumber} workTable={workTable.data} />;
 }
