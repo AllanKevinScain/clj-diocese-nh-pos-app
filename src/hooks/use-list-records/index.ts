@@ -6,6 +6,14 @@ import type { filterRecordsSchema } from '@/yup';
 
 export type FilterSchemaInfertype = yup.InferType<typeof filterRecordsSchema>;
 
+type FilterListWorkCandidateRecordsType = {
+  courseNumber: string;
+  work?: boolean;
+  posl?: boolean;
+  posll?: boolean;
+  coupleWork?: boolean;
+};
+
 export function useListRecords() {
   async function listRecordsByCourseNumber(courseNumber: string) {
     const req = await fetch(`/api/records/list-by-number/${courseNumber}`, {
@@ -33,8 +41,32 @@ export function useListRecords() {
     return data;
   }
 
+  async function listWorkCandidateRecords(values: FilterListWorkCandidateRecordsType) {
+    const { courseNumber } = values;
+    let url = `/api/records/list-all/?courseNumber=${courseNumber}`;
+
+    if (values.work) {
+      url += `&typeOfRecord=WORK`;
+    }
+    if (values.posl) {
+      url += `&typeOfRecord=POSl`;
+    }
+    if (values.posll) {
+      url += `&typeOfRecord=POSll`;
+    }
+    if (values.coupleWork) {
+      url += `&typeOfRecord=COUPLE_WORK`;
+    }
+
+    const req = await fetch(url, { method: 'GET' });
+    const data = await req.json();
+
+    return data;
+  }
+
   return {
     listRecordsByCourseNumber,
     listAllRecords,
+    listWorkCandidateRecords,
   };
 }

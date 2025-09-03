@@ -5,7 +5,6 @@ import { HiX } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
-import { Heading } from '../heading';
 import { Text } from '../text';
 
 interface DefaultDialogInterface {

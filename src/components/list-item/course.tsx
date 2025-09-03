@@ -16,6 +16,8 @@ interface CourseListItemInterface {
 export const CourseListItem = (props: CourseListItemInterface) => {
   const { courseNumber, startDate, endDate, href } = props;
 
+  const existsDates = startDate && endDate;
+
   return (
     <Link href={href}>
       <div
@@ -29,9 +31,11 @@ export const CourseListItem = (props: CourseListItemInterface) => {
         )}>
         <div className="flex items-center justify-between gap-[12px]">
           <Text>Curso Nº {courseNumber}</Text>
-          <Text>
-            {dayjs(startDate).format('DD/MM/YYYY')} - {dayjs(endDate).format('DD/MM/YYYY')}
-          </Text>
+          {existsDates && (
+            <Text>
+              {dayjs(startDate).format('DD/MM/YYYY')} - {dayjs(endDate).format('DD/MM/YYYY')}
+            </Text>
+          )}
         </div>
       </div>
     </Link>

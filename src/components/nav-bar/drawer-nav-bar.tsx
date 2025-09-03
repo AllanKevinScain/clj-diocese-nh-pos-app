@@ -2,11 +2,11 @@
 
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { isEmpty } from 'lodash';
-import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FaCross, FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import { SiBlockbench } from 'react-icons/si';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
@@ -21,15 +21,9 @@ interface NavBarDrawerInterface {
 export function NavBarDrawer(props: NavBarDrawerInterface) {
   const { showDrawer } = props;
   const { data } = useSession();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = !isEmpty(data) && data.user.loginType === 'admin';
-
-  const handleNavigate = (path: string) => {
-    router.push(path);
-    setIsOpen(false);
-  };
 
   if (!showDrawer) return;
 
@@ -60,21 +54,21 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                     <Divider />
 
                     <div className="flex flex-col gap-[6px]">
-                      <ButtonItem navigate={() => handleNavigate('/courses')}>
+                      <ButtonItem isLink ended={() => setIsOpen(false)} href="/courses">
                         <FaCross />
                         Cursos
                       </ButtonItem>
-                      <ButtonItem navigate={() => handleNavigate('/poslll')}>
+                      <ButtonItem isLink ended={() => setIsOpen(false)} href="/poslll">
                         <FaUserFriends />
                         CLJ{"'"}s lll
                       </ButtonItem>
                       {isAdmin && (
                         <>
-                          <ButtonItem navigate={() => handleNavigate('/view/users')}>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/view/users">
                             <FaUserFriends />
                             Usuários
                           </ButtonItem>
-                          <ButtonItem navigate={() => handleNavigate('/all')}>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/all">
                             <FaUserFriends />
                             Filtro
                           </ButtonItem>
@@ -82,17 +76,24 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                       )}
                       {!isEmpty(data) && data.user.loginType === 'admin' && (
                         <>
-                          <ButtonItem navigate={() => handleNavigate('/register/course')}>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/course">
                             <FaUserEdit />
                             Cadastrar curso
                           </ButtonItem>
-                          <ButtonItem navigate={() => handleNavigate('/register/user')}>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/user">
                             <FaUserEdit />
                             Cadastrar usuário
                           </ButtonItem>
-                          <ButtonItem navigate={() => handleNavigate('/register/poslll')}>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/poslll">
                             <FaUserEdit />
                             Cadastrar CLJ lll
+                          </ButtonItem>
+                          <ButtonItem
+                            isLink
+                            ended={() => setIsOpen(false)}
+                            href="/setup-background-table/courses">
+                            <SiBlockbench />
+                            Montar mesa de fundo
                           </ButtonItem>
                         </>
                       )}

@@ -11,5 +11,6 @@ export const filterRecordsSchema = yup.object({
   parishChapel: yup.string().nullable(),
   courseNumber: yup.string().nullable(),
   recordNumber: yup.string().nullable(),
+  typeOfRecord: yup.mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>().nullable(),
   search: yup.string().nullable(),
 });

@@ -1,3 +1,4 @@
+export * from './background-table-schema';
 export * from './couple-schema';
 export * from './course-schema';
 export * from './filter-records-schema';

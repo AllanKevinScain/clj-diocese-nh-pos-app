@@ -1,50 +1,21 @@
 'use client';
 
-import Link from 'next/link';
-import type { ButtonHTMLAttributes } from 'react';
+import { useLinkStatus } from 'next/link';
 import { FiLoader } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 
-import { LinkButton } from './link';
+import type { ButtonProps } from '.';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'solid' | 'outline' | 'ghost';
-  isLink?: boolean;
-  href?: string;
-  isLoading?: boolean;
-}
-
-export function Button(props: ButtonProps) {
-  const {
-    children,
-    isLoading = false,
-    variant = 'solid',
-    className,
-    type = 'button',
-    isLink = false,
-    href = '#',
-    ...restProps
-  } = props;
-
-  if (isLink) {
-    return (
-      <Link href={href} className={twMerge((isLoading || props.disabled) && 'pointer-events-none')}>
-        <LinkButton variant={variant} className={className}>
-          {children}
-        </LinkButton>
-      </Link>
-    );
-  }
+export function LinkButton(props: ButtonProps) {
+  const { children, variant = 'solid', className } = props;
+  const loadingLink = useLinkStatus();
 
   return (
-    <button
-      {...restProps}
-      type={type}
-      disabled={isLoading || props.disabled}
+    <div
       className={twMerge(
-        'h-[50px] w-fit rounded-md px-[12px]',
+        'h-full min-h-[50px] w-full px-[12px]',
         'transition-all',
-        'disabled:opacity-50',
+        'rounded-md',
         'flex items-center justify-center gap-[6px]',
         'cursor-pointer',
         variant === 'solid' &&
@@ -70,8 +41,7 @@ export function Button(props: ButtonProps) {
           ),
         className,
       )}>
-      {isLoading && <FiLoader className="h-5 w-5 animate-spin" />}
-      {children}
-    </button>
+      {loadingLink.pending ? <FiLoader className="h-5 w-5 animate-spin" /> : children}
+    </div>
   );
 }

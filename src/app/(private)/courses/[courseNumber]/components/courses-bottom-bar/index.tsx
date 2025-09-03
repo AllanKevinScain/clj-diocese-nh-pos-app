@@ -28,12 +28,10 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
       label: 'Editar curso',
       icon: <BiEdit size={40} />,
       url: `/edit/course/${courseId}`,
-      click: () => {},
     },
     {
       label: 'Excluir curso',
       icon: <BiTrash size={40} />,
-      url: '',
       click: () => handle(),
     },
   ];
@@ -43,7 +41,6 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
     {
       label: 'Voltar',
       icon: <HiArrowUturnLeft size={40} />,
-      url: '',
       click: () => navigate.back(),
     },
   ];

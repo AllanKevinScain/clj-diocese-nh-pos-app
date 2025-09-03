@@ -10,7 +10,7 @@ export const Container = (props: DivProps) => {
       {...restProps}
       className={twMerge(
         'px-[16px] py-[16px] pb-[10%]',
-        'h-full',
+        'min-h-[90vh]',
         'bg-gray-50',
         'dark:bg-neutral-600',
         className,

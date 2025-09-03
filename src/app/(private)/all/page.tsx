@@ -19,16 +19,17 @@ export type FilterRecordsSchemaInfertype = yup.InferType<typeof filterRecordsSch
 type FilterRecordsSchemaKeyType = keyof Omit<FilterRecordsSchemaInfertype, 'search'>;
 
 const labelForFilterFields: Record<FilterRecordsSchemaKeyType, string> = {
-  parishAcronym: 'Sigla Paroq.',
+  parishAcronym: 'Sigla paroq.',
   candidateName: 'Nome',
   nickname: 'Apelido',
-  birthDate: 'Data de Nasc.',
+  birthDate: 'Data de nasc.',
   candidatePhone: 'Telefone',
   instagram: 'Instagram',
   priest: 'Pároco',
   parishChapel: 'Paróquia/Capela',
   courseNumber: 'Curso',
   recordNumber: 'Ficha',
+  typeOfRecord: 'Tipo de ficha',
 };
 
 export default function DownloadExcelArchives() {

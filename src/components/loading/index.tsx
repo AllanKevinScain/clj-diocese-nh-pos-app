@@ -22,7 +22,10 @@ export const Loading = (props: LoadingInterface) => {
           : 'flex items-center justify-center p-4',
       )}>
       <div className="flex w-full max-w-xs flex-col items-center gap-4 rounded-2xl bg-white/90 p-6 text-center">
-        <FaSpinner className="animate-spin text-5xl text-blue-600" aria-hidden />
+        <FaSpinner
+          className={twMerge('animate-spin text-5xl text-black', 'dark:text-neutral-500')}
+          aria-hidden
+        />
 
         <div className="flex flex-col items-center gap-1">
           <span className="text-sm font-semibold text-gray-700">{message}</span>

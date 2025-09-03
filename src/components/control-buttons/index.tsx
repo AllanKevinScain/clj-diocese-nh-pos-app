@@ -9,8 +9,8 @@ import { Button } from '../button';
 export type ActionButtonTypes = {
   label: string;
   icon: React.JSX.Element;
-  url: string;
-  click: () => void;
+  url?: string;
+  click?: () => void;
 };
 
 interface ControlButtonsInterface {
@@ -39,11 +39,12 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
 
         return (
           <div key={action.label} className="w-full">
-            {!isEmpty(action.url) ? (
+            {!isEmpty(action.url) && (
               <Button isLink href={action.url} className="h-[70px] w-full rounded-none">
                 {content}
               </Button>
-            ) : (
+            )}
+            {isEmpty(action.url) && (
               <Button onClick={action.click} className="h-[70px] w-full rounded-none">
                 {content}
               </Button>
