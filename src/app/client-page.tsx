@@ -47,7 +47,7 @@ export function ClientPage() {
   }
 
   return (
-    <Container className="flex min-h-screen items-center justify-center">
+    <Container className="flex items-center justify-center">
       <div className="w-full max-w-sm space-y-6">
         <div className="flex flex-col gap-[6px]">
           <Heading as="h1">Gestão de cursos CLJ</Heading>

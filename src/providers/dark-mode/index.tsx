@@ -55,11 +55,11 @@ export const DarkModeProvider = ({ children }: DarkModeProviderInterface) => {
 
   return (
     <DarkModeContext.Provider value={{ toggleTheme }}>
-      <main className={twMerge('relative')}>
+      <main className={twMerge('relative', 'h-screen', 'flex flex-col')}>
         <button
           onClick={toggleTheme}
           className={twMerge(
-            'fixed top-0 right-0 z-[3]',
+            'fixed top-0 right-0 z-[3] cursor-pointer',
             'transition-all duration-300',
             'p-[16px]',
             mode === 'dark' ? 'rotate-180 text-neutral-100' : 'rotate-0 text-neutral-900',

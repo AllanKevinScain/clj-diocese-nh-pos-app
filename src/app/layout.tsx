@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           geistSans.variable,
           geistMono.variable,
           'relative antialiased',
-          'h-screen overflow-y-auto',
+          'flex h-screen flex-col',
         )}>
         <Providers>{children}</Providers>
       </body>

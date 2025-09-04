@@ -69,11 +69,13 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
             control={control}
             label="Tipo de usuário"
             options={[
-              { value: 'admin', label: 'Possui liberdade para qualquer ação' },
-              { value: 'manager', label: 'Pode cadastrar fixas' },
+              {
+                value: 'admin',
+                label: 'Administrador - Possui liberdade para qualquer ação',
+              },
+              { value: 'manager', label: 'Gerente - Pode cadastrar fixas' },
             ]}
           />
-
           <FieldDefault id="city" control={control} label="Cidade" />
 
           <div className="flex gap-[16px]">

@@ -29,7 +29,7 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
 
   return (
     <>
-      <button className="text-white" onClick={() => setIsOpen(true)}>
+      <button className="cursor-pointer text-white" onClick={() => setIsOpen(true)}>
         <BiMenu size={50} />
       </button>
 

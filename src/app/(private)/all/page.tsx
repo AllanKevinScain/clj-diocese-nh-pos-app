@@ -67,7 +67,7 @@ export default function DownloadExcelArchives() {
     <FormProvider {...methods}>
       <FilterModal isOpen={isOpen} handleModal={handle} onSearch={() => refetch()} />
 
-      <Container className="min-h-screen">
+      <Container className="flex flex-col gap-[12px]">
         <div className={twMerge('w-full', 'flex flex-col gap-[12px]')}>
           <div className="flex gap-[8px]">
             <div className="flex w-full">
@@ -99,6 +99,7 @@ export default function DownloadExcelArchives() {
                 );
               })}
             </div>
+
             {Object.entries(values).filter((item) => !isEmpty(item[1]) && item[0] !== 'search')
               .length > 0 && (
               <Button

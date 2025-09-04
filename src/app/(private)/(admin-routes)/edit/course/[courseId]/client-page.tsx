@@ -43,23 +43,9 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
       <Heading>{course.typeOfCourse}</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
-        <FieldDefault
-          id="startDate"
-          control={control}
-          type="date"
-          customLabel={
-            <label className="mb-1 block font-medium text-gray-700">Data de início</label>
-          }
-        />
+        <FieldDefault id="startDate" control={control} type="date" label="Data de início" />
 
-        <FieldDefault
-          control={control}
-          id="endDate"
-          type="date"
-          customLabel={
-            <label className="mb-1 block font-medium text-gray-700">Data de término</label>
-          }
-        />
+        <FieldDefault control={control} id="endDate" type="date" label="Data de término" />
 
         <SelectDefault
           id="typeOfCourse"

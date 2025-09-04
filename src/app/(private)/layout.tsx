@@ -12,9 +12,9 @@ export default async function PrivateLayout({ children }: { children: React.Reac
   if (session.error) redirect('/logout');
 
   return (
-    <div className="relative min-h-screen">
+    <>
       <NavBar />
       {children}
-    </div>
+    </>
   );
 }

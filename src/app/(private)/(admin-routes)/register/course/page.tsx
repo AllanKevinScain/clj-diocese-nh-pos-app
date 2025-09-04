@@ -36,19 +36,9 @@ export default function RegisterCoursePage() {
       <Heading>Cadastrar Curso</Heading>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
-        <FieldDefault
-          id="startDate"
-          control={control}
-          type="date"
-          customLabel={<span className="font-medium text-gray-700">Data de início</span>}
-        />
+        <FieldDefault id="startDate" control={control} type="date" label="Data de início" />
 
-        <FieldDefault
-          id="endDate"
-          control={control}
-          type="date"
-          customLabel={<span className="font-medium text-gray-700">Data de término</span>}
-        />
+        <FieldDefault id="endDate" control={control} type="date" label="Data de término" />
 
         <SelectDefault
           id="typeOfCourse"
