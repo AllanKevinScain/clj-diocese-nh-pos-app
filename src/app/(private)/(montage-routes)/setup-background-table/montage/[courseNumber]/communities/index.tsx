@@ -65,10 +65,18 @@ export const Communities = (props: CommunitiesInterface) => {
         control={control}
         isLoading={isLoading}
         options={
-          data?.data.map((item) => ({
-            label: item.candidateName,
-            value: item.id ?? '',
-          })) || []
+          data?.data.map((item) => {
+            if (item.typeOfRecord === 'COUPLE_WORK') {
+              return {
+                label: `Tios ${item.candidateName} e ${item.recordCouple?.womanName}`,
+                value: item.id ?? '',
+              };
+            }
+            return {
+              label: item.candidateName,
+              value: item.id ?? '',
+            };
+          }) || []
         }
       />
     </div>

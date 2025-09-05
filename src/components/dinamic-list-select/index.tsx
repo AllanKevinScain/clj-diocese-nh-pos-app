@@ -6,7 +6,6 @@ import { BiPlus, BiTrash } from 'react-icons/bi';
 
 import { Button } from '../button';
 import { SelectDefaultComponent } from '../select-default/select';
-import { Select } from './select';
 
 type Option = { value: string; label: string };
 

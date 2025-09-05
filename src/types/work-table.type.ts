@@ -1,7 +1,12 @@
+type MembersType = {
+  communityId: string;
+  recordId: string;
+};
+
 export type CommunityType = {
   id: string;
   number: string;
-  members: string[];
+  members: MembersType[];
 };
 
 export interface WorkTableResponseInterface {

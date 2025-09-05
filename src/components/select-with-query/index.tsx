@@ -14,7 +14,7 @@ interface SelectWithQueryType<T extends FieldValues>
 export const SelectWithQuery = <T extends FieldValues>(props: SelectWithQueryType<T>) => {
   const { control, id, label, call, modelData } = props;
 
-  const { data, isLoading } = useCreateQuery({
+  const { data, isLoading, isFetching } = useCreateQuery({
     queryKey: [`select-${id}`],
     queryFn: call,
     queryOptions: {
@@ -29,7 +29,7 @@ export const SelectWithQuery = <T extends FieldValues>(props: SelectWithQueryTyp
       label={label}
       id={id}
       options={data as { value: string; label: string }[]}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     />
   );
 };

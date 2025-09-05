@@ -4,7 +4,7 @@ import type { Control } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 import type { InferType } from 'yup';
 
-import { DynamicListSelect, SessionForm } from '@/components';
+import { DynamicListSelect, Loading, SessionForm } from '@/components';
 import { useCreateQuery, useEspecificRecords } from '@/hooks';
 import type { FilterRecordsType } from '@/types';
 import type { backgroundTableSchema } from '@/yup';
@@ -21,10 +21,12 @@ export const Kitchen = (props: KitchenInterface) => {
 
   const { listWorkRecordsByNumberCourse } = useEspecificRecords();
 
-  const { data } = useCreateQuery<FilterRecordsType>({
+  const { data, isLoading } = useCreateQuery<FilterRecordsType>({
     queryFn: () => listWorkRecordsByNumberCourse(courseNumber),
     queryKey: [`work-records-${courseNumber}`],
   });
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className={twMerge('flex flex-col gap-[16px]', 'w-full pb-[10%]')}>
@@ -32,6 +34,7 @@ export const Kitchen = (props: KitchenInterface) => {
         <DynamicListSelect
           control={control}
           id="copeWorkRecords"
+          isLoading={isLoading}
           options={
             data?.data.map((item) => ({
               label: item.candidateName,
@@ -43,6 +46,7 @@ export const Kitchen = (props: KitchenInterface) => {
       <SessionForm title="Limpeza:">
         <DynamicListSelect
           control={control}
+          isLoading={isLoading}
           id="cleanWorkRecords"
           options={
             data?.data.map((item) => ({
@@ -55,6 +59,7 @@ export const Kitchen = (props: KitchenInterface) => {
       <SessionForm title="Cozinha:">
         <DynamicListSelect
           control={control}
+          isLoading={isLoading}
           id="kitchenWorkRecords"
           options={
             data?.data.map((item) => ({

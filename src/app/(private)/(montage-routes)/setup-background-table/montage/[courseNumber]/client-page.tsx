@@ -1,14 +1,17 @@
 'use client';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { BiEdit } from 'react-icons/bi';
 import type { InferType } from 'yup';
 
 import { Container, ControlButtons, Heading, Tab } from '@/components';
 import { useWorkTable } from '@/hooks';
 import type { WorkTableResponseInterface } from '@/types';
-import type { backgroundTableSchema } from '@/yup';
+import { backgroundTableSchema } from '@/yup';
 
 import { Communities } from './communities';
 import { Kitchen } from './kitchen';
@@ -25,16 +28,16 @@ const workTableInitiate: BackgroundTableSchemaInferType = {
   auxiliar: null,
   base: null,
   coordinator: null,
-  courseNumber: '',
-  auxiliarLiturgy: '',
-  auxiliarSecretary: '',
-  bar: '',
-  coupleKitchenCoordinator: '',
-  coupleSafeToBe: '',
-  folkloreCoordinator: '',
-  kitchenSpiritual: '',
-  liturgy: '',
-  secretary: '',
+  courseNumber: null,
+  auxiliarLiturgy: null,
+  auxiliarSecretary: null,
+  bar: null,
+  coupleKitchenCoordinator: null,
+  coupleSafeToBe: null,
+  folkloreCoordinator: null,
+  kitchenSpiritual: null,
+  liturgy: null,
+  secretary: null,
   cleanWorkRecords: [],
   copeWorkRecords: [],
   kitchenWorkRecords: [],
@@ -46,6 +49,7 @@ export function MontageClientPage(props: MontageClientPageInterface) {
   const { updateWorkTable, registerWorkTable } = useWorkTable();
 
   const { control, getValues } = useForm<BackgroundTableSchemaInferType>({
+    resolver: yupResolver(backgroundTableSchema),
     defaultValues: {
       ...workTableInitiate,
       ...workTable,
@@ -53,15 +57,23 @@ export function MontageClientPage(props: MontageClientPageInterface) {
     },
   });
 
-  async function handleWorkTable() {
+  const handleWorkTable = useCallback(async () => {
     const isCreated = !isEmpty(workTable);
 
+    let callResponse = {} as { ok: boolean; data: { message: string; data: unknown } };
+
     if (isCreated) {
-      await registerWorkTable(getValues());
+      callResponse = await updateWorkTable(getValues());
     } else {
-      await updateWorkTable(getValues());
+      callResponse = await registerWorkTable(getValues());
     }
-  }
+
+    if (callResponse.ok) {
+      return toast.success(callResponse.data.message);
+    }
+
+    return toast.error(JSON.stringify(callResponse.data));
+  }, [registerWorkTable, updateWorkTable, getValues, workTable]);
 
   return (
     <>
@@ -89,7 +101,13 @@ export function MontageClientPage(props: MontageClientPageInterface) {
         </Tab.container>
       </Container>
       <ControlButtons
-        buttons={[{ label: 'Salvar', icon: <BiEdit size={40} />, click: handleWorkTable }]}
+        buttons={[
+          {
+            label: 'Salvar',
+            icon: <BiEdit size={40} />,
+            click: async () => await handleWorkTable(),
+          },
+        ]}
       />
     </>
   );

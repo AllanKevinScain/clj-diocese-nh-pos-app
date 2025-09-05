@@ -20,9 +20,7 @@ export function useWorkTable() {
       method: 'PUT',
       body: JSON.stringify(props),
     });
-
     const res = await req.json();
-
     return res;
   }
 
