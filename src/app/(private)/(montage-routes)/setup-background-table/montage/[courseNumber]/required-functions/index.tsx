@@ -76,7 +76,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
           modelData={(data) => {
             const typedData = data as FilterRecordsType;
             return typedData.data.map((item) => ({
-              label: item.candidateName,
+              label: `Tios ${item.candidateName} e ${item.recordCouple?.womanName}`,
               value: item.id ?? '',
             }));
           }}
@@ -89,7 +89,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
           modelData={(data) => {
             const typedData = data as FilterRecordsType;
             return typedData.data.map((item) => ({
-              label: item.candidateName,
+              label: `Tios ${item.candidateName} e ${item.recordCouple?.womanName}`,
               value: item.id ?? '',
             }));
           }}

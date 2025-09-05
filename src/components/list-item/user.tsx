@@ -21,6 +21,7 @@ export const UserListItem = (props: UserListItemInterface) => {
       <div
         className={twMerge(
           'relative',
+          'cursor-pointer',
           'bg-neutral-300 p-4',
           'rounded-xl border border-neutral-700',
           'shadow-sm',

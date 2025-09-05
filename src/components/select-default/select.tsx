@@ -49,7 +49,7 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
   }, []);
 
   return (
-    <Field className={twMerge('w-full', 'flex flex-col gap-[6px]')}>
+    <Field className={twMerge('w-full', 'flex flex-col gap-[6px]', 'cursor-pointer')}>
       {!!label && (
         <Label
           className={twMerge(
@@ -80,7 +80,7 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
             'dark:disabled:bg-neutral-700',
             hasError && 'border-red-500',
           )}>
-          <Text className={twMerge('text-neutral-400', selected && 'text-neutral-900')}>
+          <Text className={twMerge('text-neutral-400 opacity-70', selected && 'text-neutral-900')}>
             {selected ? selected.label : 'Selecione'}
           </Text>
           <BiChevronUp

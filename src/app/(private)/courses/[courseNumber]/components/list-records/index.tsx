@@ -42,7 +42,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
           <Heading className={twMerge('inline-flex items-center gap-[12px]')}>
             <FaClipboardList size={24} /> Fixas do curso {courseNumber}
           </Heading>
-          <Button variant="ghost" className="p-0" onClick={handle}>
+          <Button variant="ghost" className="p-0 dark:text-neutral-100" onClick={handle}>
             <BiPlus size={45} />
           </Button>
         </div>
@@ -50,6 +50,15 @@ export const ListRecords = (props: ListRecordsInterface) => {
         {!isEmpty(orderRecordsForDate) && (
           <div className={twMerge('flex flex-col gap-[12px]', 'w-full')}>
             {orderRecordsForDate?.map((record) => {
+              function url() {
+                if (record.typeOfRecord === 'POSl' || record.typeOfRecord === 'POSll') {
+                  return `/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`;
+                } else if (record.typeOfRecord === 'WORK') {
+                  return `/record/work/view?id=${record.id}`;
+                }
+                return `/record/couple-work/view?id=${record.id}`;
+              }
+
               return (
                 <ListItem.record
                   key={record.id}
@@ -62,17 +71,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
                   womanName={record.recordCouple?.womanName}
                   selectedId={openMenuId === record.id}
                   handleOpenSubMenu={(id) => toggleMenu(id)}
-                  handleViewRecord={() => {
-                    if (record.typeOfRecord === 'POSl' || record.typeOfRecord === 'POSll') {
-                      router.push(
-                        `/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`,
-                      );
-                    } else if (record.typeOfRecord === 'WORK') {
-                      router.push(`/record/work/view?id=${record.id}`);
-                    } else {
-                      router.push(`/record/couple-work/view?id=${record.id}`);
-                    }
-                  }}
+                  urlViewRecord={url()}
                 />
               );
             })}

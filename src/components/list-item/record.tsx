@@ -20,7 +20,7 @@ interface RecordListItemInterface {
   candidatePhone: string;
   handleOpenSubMenu: (_: string) => void;
   selectedId: boolean;
-  handleViewRecord: () => void;
+  urlViewRecord: string;
   courseNumber?: string;
   updatedAt?: Dayjs;
   womanName?: string;
@@ -34,7 +34,7 @@ export const RecordListItem = (props: RecordListItemInterface) => {
     nickname,
     selectedId,
     handleOpenSubMenu,
-    handleViewRecord,
+    urlViewRecord,
     typeOfRecord,
     courseNumber,
     updatedAt,
@@ -51,44 +51,46 @@ export const RecordListItem = (props: RecordListItemInterface) => {
   }, [candidateName, typeOfRecord, womanName]);
 
   return (
-    <button
-      className={twMerge(
-        'relative',
-        'bg-neutral-300 p-4',
-        'rounded-xl border border-neutral-700',
-        'shadow-sm',
-        'dark:bg-neutral-700',
-        'dark:active:bg-neutral-500',
-      )}
-      onClick={() => handleOpenSubMenu(id)}>
-      <div className="flex items-center justify-between gap-[12px]">
-        {typeOfRecord === 'POSl' && <TbCircleNumber1Filled size={24} className={iconsStyle} />}
-        {typeOfRecord === 'POSll' && <TbCircleNumber2Filled size={24} className={iconsStyle} />}
-        {typeOfRecord === 'WORK' && <GiKnifeFork size={24} className={iconsStyle} />}
-        {typeOfRecord === 'COUPLE_WORK' && (
-          <>
-            <FaRegHeart size={24} className={iconsStyle} />
-            <FaPeopleArrows size={24} className={iconsStyle} />
-          </>
+    <>
+      <button
+        className={twMerge(
+          'relative',
+          'cursor-pointer',
+          'bg-neutral-300 p-4',
+          'rounded-xl border border-neutral-700',
+          'shadow-sm',
+          'dark:bg-neutral-700',
+          'dark:active:bg-neutral-500',
         )}
-        <div className="w-full">
-          {typeOfRecord !== 'COUPLE_WORK' && (
-            <Text className="text-start">
-              {candidateName} ({nickname})
-            </Text>
-          )}
+        onClick={() => handleOpenSubMenu(id)}>
+        <div className="flex items-center justify-between gap-[12px]">
+          {typeOfRecord === 'POSl' && <TbCircleNumber1Filled size={24} className={iconsStyle} />}
+          {typeOfRecord === 'POSll' && <TbCircleNumber2Filled size={24} className={iconsStyle} />}
+          {typeOfRecord === 'WORK' && <GiKnifeFork size={24} className={iconsStyle} />}
           {typeOfRecord === 'COUPLE_WORK' && (
-            <Text className="text-start">
-              Tio {candidateName} e Tia {womanName}
-            </Text>
+            <>
+              <FaRegHeart size={24} className={iconsStyle} />
+              <FaPeopleArrows size={24} className={iconsStyle} />
+            </>
           )}
-          <div className="flex w-full justify-between">
-            <Text>{courseNumber ? courseNumber : updatedAt?.format('DD/MM/YYYY')}</Text>
-            <Text>{formatMobilePhone(candidatePhone)}</Text>
+          <div className="w-full">
+            {typeOfRecord !== 'COUPLE_WORK' && (
+              <Text className="text-start">
+                {candidateName} ({nickname})
+              </Text>
+            )}
+            {typeOfRecord === 'COUPLE_WORK' && (
+              <Text className="text-start">
+                Tio {candidateName} e Tia {womanName}
+              </Text>
+            )}
+            <div className="flex w-full justify-between">
+              <Text>{courseNumber ? courseNumber : updatedAt?.format('DD/MM/YYYY')}</Text>
+              <Text>{formatMobilePhone(candidatePhone)}</Text>
+            </div>
           </div>
         </div>
-      </div>
-
+      </button>
       <DefaultDialog
         isOpen={selectedId}
         handleModal={() => handleOpenSubMenu(id)}
@@ -100,11 +102,11 @@ export const RecordListItem = (props: RecordListItemInterface) => {
             </Button>
           </div>
         }>
-        <Button className="w-full" onClick={handleViewRecord}>
+        <Button isLink className="w-full" href={urlViewRecord}>
           <GrOverview />
           Visualizar
         </Button>
       </DefaultDialog>
-    </button>
+    </>
   );
 };

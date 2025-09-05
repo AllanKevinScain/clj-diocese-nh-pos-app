@@ -19,6 +19,5 @@ export interface FieldDefaultInterface<T extends FieldValues>
   control: Control<T> | undefined;
   label?: string;
   defaultValue?: string | boolean | string[];
-  customLabel?: React.ReactNode;
   hasError?: boolean;
 }
