@@ -62,6 +62,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
           <FieldDefault id="candidateName" control={control} label="Nome" />
+          <FieldDefault id="parishChapel" control={control} label="Paróquia/Capela" />
 
           <FieldDefault
             id="candidatePhone"

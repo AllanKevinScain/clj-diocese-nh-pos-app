@@ -4,6 +4,7 @@ export const poslllSchema = yup.object({
   id: yup.string().uuid(),
   candidatePhone: yup.string().required('Campo obrigatório!'),
   candidateName: yup.string().required('Campo obrigatório!'),
+  parishChapel: yup.string().required('Campo obrigatório!'),
   instagram: yup.string().required('Campo obrigatório!'),
   courseOne: yup
     .string()

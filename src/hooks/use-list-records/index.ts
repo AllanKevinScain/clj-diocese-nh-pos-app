@@ -2,9 +2,9 @@
 import { isEmpty } from 'lodash';
 import type * as yup from 'yup';
 
-import type { filterRecordsSchema } from '@/yup';
+import type { reportExportWithFilterSchema } from '@/yup';
 
-export type FilterSchemaInfertype = yup.InferType<typeof filterRecordsSchema>;
+export type FilterSchemaInfertype = yup.InferType<typeof reportExportWithFilterSchema>;
 
 type FilterListWorkCandidateRecordsType = {
   courseNumber: string;

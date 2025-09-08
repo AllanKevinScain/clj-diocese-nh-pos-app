@@ -5,8 +5,13 @@ import { isEmpty } from 'lodash';
 import { signOut, useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { BiMenu } from 'react-icons/bi';
-import { FaCross, FaUserEdit, FaUserFriends } from 'react-icons/fa';
+import { FaCross } from 'react-icons/fa';
+import { FaUsers } from 'react-icons/fa6';
+import { GiThreeFriends } from 'react-icons/gi';
+import { LuPaperclip } from 'react-icons/lu';
+import { MdAddCircle } from 'react-icons/md';
 import { SiBlockbench } from 'react-icons/si';
+import { TbWorldPlus } from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
@@ -55,44 +60,48 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
 
                     <div className="flex flex-col gap-[6px]">
                       <ButtonItem isLink ended={() => setIsOpen(false)} href="/courses">
-                        <FaCross />
+                        <FaCross size={30} />
                         Cursos
                       </ButtonItem>
                       <ButtonItem isLink ended={() => setIsOpen(false)} href="/poslll">
-                        <FaUserFriends />
+                        <GiThreeFriends size={30} />
                         CLJ{"'"}s lll
                       </ButtonItem>
                       {isAdmin && (
                         <>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/view/users">
-                            <FaUserFriends />
+                            <FaUsers size={30} />
                             Usuários
                           </ButtonItem>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/all">
-                            <FaUserFriends />
-                            Filtro
+                            <TbWorldPlus size={30} />
+                            Todas as fichas
+                          </ButtonItem>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/export">
+                            <LuPaperclip size={30} />
+                            Arquivos
                           </ButtonItem>
                         </>
                       )}
                       {!isEmpty(data) && data.user.loginType === 'admin' && (
                         <>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/course">
-                            <FaUserEdit />
+                            <MdAddCircle size={30} />
                             Cadastrar curso
                           </ButtonItem>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/user">
-                            <FaUserEdit />
+                            <MdAddCircle size={30} />
                             Cadastrar usuário
                           </ButtonItem>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/poslll">
-                            <FaUserEdit />
+                            <MdAddCircle size={30} />
                             Cadastrar CLJ lll
                           </ButtonItem>
                           <ButtonItem
                             isLink
                             ended={() => setIsOpen(false)}
                             href="/setup-background-table/courses">
-                            <SiBlockbench />
+                            <SiBlockbench size={30} />
                             Montar mesa de fundo
                           </ButtonItem>
                         </>

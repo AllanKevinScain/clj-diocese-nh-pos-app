@@ -2,7 +2,6 @@
 
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
-import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { FaClipboardList } from 'react-icons/fa';
@@ -16,7 +15,6 @@ import { AddRecordModal } from './choose-add-record-modal';
 
 export const ListRecords = (props: ListRecordsInterface) => {
   const { records, courseNumber, loading } = props;
-  const router = useRouter();
   const { handle, isOpen } = useToggleModal();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 

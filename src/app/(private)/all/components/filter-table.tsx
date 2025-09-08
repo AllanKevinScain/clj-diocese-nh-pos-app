@@ -43,8 +43,8 @@ export const FilterTable = (props: FilterTableInterface) => {
             <Table.td>{record.instagram}</Table.td>
             <Table.td>{record.priest}</Table.td>
             <Table.td>{record.parishChapel}</Table.td>
-            <Table.td className="text-center">{record.courseNumber}</Table.td>
-            <Table.td className="text-center">{record.recordNumber}</Table.td>
+            <Table.td>{record.courseNumber}</Table.td>
+            <Table.td>{record.recordNumber}</Table.td>
           </Table.tr>
         ))}
 

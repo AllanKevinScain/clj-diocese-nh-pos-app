@@ -11,7 +11,7 @@ export interface SelectDefaultInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T>;
   options: Option[];
-  label: string;
+  label?: string;
   className?: string;
   isLoading?: boolean;
 }

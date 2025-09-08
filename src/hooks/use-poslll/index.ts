@@ -15,7 +15,6 @@ export function usePoslll() {
 
     return res;
   }
-
   async function registerPoslll(props: PoslllInferType) {
     const req = await fetch('/api/poslll', {
       method: 'POST',
@@ -24,7 +23,6 @@ export function usePoslll() {
     const res = await req.json();
     return res;
   }
-
   async function updatePoslll(props: PoslllInferType) {
     const { id, ...rest } = props;
     const req = await fetch(`/api/poslll?poslllId=${id}`, {
@@ -36,10 +34,16 @@ export function usePoslll() {
 
     return res;
   }
-
   async function deletePoslll(poslllId: string) {
     const req = await fetch(`/api/poslll?poslllId=${poslllId}`, {
       method: 'DELETE',
+    });
+    const res = await req.json();
+    return res;
+  }
+  async function getPoslllById(id: string): Promise<{ ok: boolean; data: PoslllInferType }> {
+    const req = await fetch(`/api/poslll/${id}`, {
+      method: 'GET',
     });
     const res = await req.json();
     return res;
@@ -50,5 +54,6 @@ export function usePoslll() {
     registerPoslll,
     updatePoslll,
     deletePoslll,
+    getPoslllById,
   };
 }

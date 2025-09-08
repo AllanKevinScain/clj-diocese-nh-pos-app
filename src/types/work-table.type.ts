@@ -3,10 +3,10 @@ type MembersType = {
   recordId: string;
 };
 
-export type CommunityType = {
+export type CommunityType<T> = {
   id: string;
   number: string;
-  members: MembersType[];
+  members: T[];
 };
 
 export interface WorkTableResponseInterface {
@@ -26,5 +26,32 @@ export interface WorkTableResponseInterface {
   cleanWorkRecords: string[];
   copeWorkRecords: string[];
   kitchenWorkRecords: string[];
-  communities: CommunityType[];
+  communities: CommunityType<MembersType>[];
 }
+
+export interface WorkTableRecordsResponseInterface {
+  courseNumber?: string;
+  // pos lll
+  coordinator: string;
+  base: string;
+  auxiliar: string;
+  kitchenSpiritual: string;
+  liturgy: string;
+  secretary: string;
+
+  // pos ll
+  coupleSafeToBe: string;
+  coupleKitchenCoordinator: string;
+  auxiliarSecretary: string;
+  auxiliarLiturgy: string;
+  bar: string;
+  folkloreCoordinator: string;
+
+  // arrays
+  cleanWorkRecords: string[];
+  copeWorkRecords: string[];
+  kitchenWorkRecords: string[];
+  communities: CommunityType<string>[];
+}
+
+export type WorkTableWithRecords = { ok: boolean; data: WorkTableRecordsResponseInterface };

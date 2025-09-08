@@ -4,9 +4,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth-config';
 import type { WorkTableResponseInterface } from '@/types';
 
-export async function getWorkTableServerCall(
-  id: string,
-): Promise<{ ok: boolean; data: WorkTableResponseInterface | null }> {
+export type ResponseWorkTableResponse = { ok: boolean; data: WorkTableResponseInterface | null };
+
+export async function getWorkTableServerCall(id: string): Promise<ResponseWorkTableResponse> {
   const token = await getServerSession(authOptions);
   if (!token?.accessToken) throw new Error('Token com problema');
 

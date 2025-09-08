@@ -3,6 +3,7 @@
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
+import type { RecordFilterType } from '@/types';
 import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
@@ -95,7 +96,6 @@ export function useRecords() {
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     }
   }
-
   async function deleteRecordById(
     recordId: string,
     typeOfRecord: 'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK',
@@ -106,10 +106,18 @@ export function useRecords() {
     const res = await req.json();
     return res;
   }
+  async function getRecordById(id: string): Promise<{ ok: boolean; data: RecordFilterType }> {
+    const req = await fetch(`/api/record-by-id/${id}`, {
+      method: 'GET',
+    });
+    const res = await req.json();
+    return res;
+  }
 
   return {
     registerRecord,
     editRecord,
     deleteRecordById,
+    getRecordById,
   };
 }
