@@ -56,6 +56,7 @@ export function CoursesClientPage(props: CoursesClientPageInterface) {
             endDate={course.endDate}
             startDate={course.startDate}
             href={url()}
+            disabled={loginType === 'builder-manager'}
           />
         );
       })}

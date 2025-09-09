@@ -1,30 +1,31 @@
 'use client';
 
 import dayjs from 'dayjs';
-import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
+import { Button } from '../button';
 import { Text } from '../text';
 
 interface CourseListItemInterface {
+  href: string;
   courseNumber?: string;
   startDate?: string;
   endDate?: string;
-  href: string;
+  disabled?: boolean;
 }
 
 export const CourseListItem = (props: CourseListItemInterface) => {
-  const { courseNumber, startDate, endDate, href } = props;
+  const { courseNumber, startDate, endDate, href, disabled = false } = props;
 
   const existsDates = startDate && endDate;
 
   return (
-    <Link href={href}>
+    <Button isLink href={href} variant="ghost" className="w-full p-0" disabled={disabled}>
       <div
         className={twMerge(
           'relative',
           'cursor-pointer',
-          'bg-neutral-300 p-4',
+          'w-full bg-neutral-300 p-4',
           'rounded-xl border border-neutral-700',
           'shadow-sm',
           'dark:border-neutral-300 dark:bg-neutral-700',
@@ -39,6 +40,6 @@ export const CourseListItem = (props: CourseListItemInterface) => {
           )}
         </div>
       </div>
-    </Link>
+    </Button>
   );
 };

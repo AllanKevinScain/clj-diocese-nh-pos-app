@@ -29,6 +29,7 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = !isEmpty(data) && data.user.loginType === 'admin';
+  const isManager = !isEmpty(data) && data.user.loginType === 'manager';
 
   if (!showDrawer) return;
 
@@ -77,14 +78,6 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                             <TbWorldPlus size={30} />
                             Todas as fichas
                           </ButtonItem>
-                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/export">
-                            <LuPaperclip size={30} />
-                            Arquivos
-                          </ButtonItem>
-                        </>
-                      )}
-                      {!isEmpty(data) && data.user.loginType === 'admin' && (
-                        <>
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/course">
                             <MdAddCircle size={30} />
                             Cadastrar curso
@@ -96,6 +89,14 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/poslll">
                             <MdAddCircle size={30} />
                             Cadastrar CLJ lll
+                          </ButtonItem>
+                        </>
+                      )}
+                      {!isManager && (
+                        <>
+                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/export">
+                            <LuPaperclip size={30} />
+                            Arquivos
                           </ButtonItem>
                           <ButtonItem
                             isLink

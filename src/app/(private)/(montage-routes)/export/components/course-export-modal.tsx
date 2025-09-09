@@ -3,7 +3,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import type * as yup from 'yup';
 
 import { Button, DefaultDialog, FieldDefault, Heading } from '@/components';
@@ -25,6 +27,8 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
   const { isOpen, handleModal } = props;
   const { listAllRecords } = useListRecords();
 
+  const [isBuildingArchive, setBuildingArchive] = useState(false);
+
   const { control, reset, handleSubmit } = useForm<ReportExportWithFilterSchemaSchemaInfertype>({
     resolver: yupResolver(reportExportWithFilterSchema),
     defaultValues: {
@@ -43,39 +47,46 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
   });
 
   async function generateArchive(values: ReportExportWithFilterSchemaSchemaInfertype) {
-    const allRecordsResponse = await listAllRecords(values);
+    setBuildingArchive(true);
+    try {
+      const allRecordsResponse = await listAllRecords(values);
 
-    if (allRecordsResponse?.data) {
-      const records = allRecordsResponse as FilterRecordsType;
-      const { data } = records;
+      if (allRecordsResponse?.data) {
+        const records = allRecordsResponse as FilterRecordsType;
+        const { data } = records;
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Registros');
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Registros');
 
-      worksheet.columns = [
-        { header: 'Nome', key: 'candidateName', width: 25 },
-        { header: 'Telefone', key: 'candidatePhone', width: 15 },
-        { header: 'Apelido', key: 'nickname', width: 20 },
-        { header: 'Instagram', key: 'instagram', width: 20 },
-        { header: 'Data Nascimento', key: 'birthDate', width: 35 },
-        { header: 'Sigla Grupo', key: 'parishAcronym', width: 12 },
-        { header: 'Paróquia/Capela', key: 'parishChapel', width: 35 },
-      ];
+        worksheet.columns = [
+          { header: 'Nome', key: 'candidateName', width: 25 },
+          { header: 'Telefone', key: 'candidatePhone', width: 15 },
+          { header: 'Apelido', key: 'nickname', width: 20 },
+          { header: 'Instagram', key: 'instagram', width: 20 },
+          { header: 'Data Nascimento', key: 'birthDate', width: 35 },
+          { header: 'Sigla Grupo', key: 'parishAcronym', width: 12 },
+          { header: 'Paróquia/Capela', key: 'parishChapel', width: 35 },
+        ];
 
-      worksheet.getRow(1).eachCell((cell) => {
-        cell.font = { bold: true };
-      });
-
-      data.forEach((item) => worksheet.addRow(item));
-
-      workbook.xlsx.writeBuffer().then((buffer) => {
-        const blob = new Blob([buffer], {
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        worksheet.getRow(1).eachCell((cell) => {
+          cell.font = { bold: true };
         });
-        saveAs(blob, `curso-${values.courseNumber}.xlsx`);
-      });
 
-      handleModal();
+        data.forEach((item) => worksheet.addRow(item));
+
+        workbook.xlsx.writeBuffer().then((buffer) => {
+          const blob = new Blob([buffer], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+          saveAs(blob, `curso-${values.courseNumber}.xlsx`);
+        });
+
+        handleModal();
+      }
+    } catch (error) {
+      toast.error(JSON.stringify(error));
+    } finally {
+      setBuildingArchive(false);
     }
   }
 
@@ -88,13 +99,16 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
         <div className="flex items-center justify-between">
           <Button
             variant="outline"
+            disabled={isBuildingArchive}
             onClick={() => {
               handleModal();
               reset();
             }}>
             Fechar
           </Button>
-          <Button onClick={handleSubmit(generateArchive)}>Gerar arquivo</Button>
+          <Button isLoading={isBuildingArchive} onClick={handleSubmit(generateArchive)}>
+            Gerar arquivo
+          </Button>
         </div>
       }>
       <Heading>Filtre por:</Heading>

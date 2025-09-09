@@ -19,9 +19,11 @@ export async function GET(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
+  if (res.status === 204) {
+    return NextResponse.json({ ok: false, data: { message: 'Nenhum conteudo encontrado' } });
+  }
+
   const data = await res.json();
-
   if (res.status !== 200) return NextResponse.json({ ok: false, data });
-
   return NextResponse.json({ ok: true, data });
 }

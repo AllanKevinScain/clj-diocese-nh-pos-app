@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 export default async function MontageLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
 
-  if (session?.user.loginType !== 'admin') {
+  if (session?.user.loginType === 'manager') {
     redirect('/courses');
   }
+
   return children;
 }
