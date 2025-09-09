@@ -18,7 +18,7 @@ interface EditRecordPoslClientPageInterface {
 
 export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterface) => {
   const { record } = props;
-  const { editRecord } = useRecords();
+  const { editRecord, isFetching } = useRecords();
 
   const methods = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
@@ -32,7 +32,7 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   return (
     <>
       <FormProvider {...methods}>
-        <PoslForm onSubmit={onSubmit} />
+        <PoslForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
       <EditRecordBottomBar recordId={record.id} recordType="POSl" />
     </>

@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
@@ -15,6 +16,8 @@ import type {
 
 export function useRecords() {
   const router = useRouter();
+  const { data: dataSession } = useSession();
+
   async function _callRecord(props: CallRecordInterface) {
     const { data, api, method } = props;
     try {
@@ -72,7 +75,7 @@ export function useRecords() {
         toast.error(e.data.message);
       } else {
         toast.success(e.data.message);
-        if (e.data.data) {
+        if (e.data.data && dataSession?.user.loginType === 'manager') {
           router.push(
             `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
           );
@@ -128,7 +131,7 @@ export function useRecords() {
         toast.error(e.data.message);
       } else {
         toast.success(e.data.message);
-        if (e.data.data) {
+        if (e.data.data && dataSession?.user.loginType === 'manager') {
           router.push(
             `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
           );
@@ -156,5 +159,6 @@ export function useRecords() {
     registerRecord: mutationRegisterRecord.mutateAsync,
     editRecord: mutationEditRecord.mutateAsync,
     deleteRecordById,
+    isFetching: mutationRegisterRecord.isPending || mutationEditRecord.isPending || false,
   };
 }

@@ -56,7 +56,7 @@ interface RegisterRecordPoslClientPageInterface {
 
 export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPageInterface) => {
   const { courseNumber } = props;
-  const { registerRecord } = useRecords();
+  const { registerRecord, isFetching } = useRecords();
 
   const methods = useForm<PoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
@@ -69,7 +69,7 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
 
   return (
     <FormProvider {...methods}>
-      <PoslForm onSubmit={onSubmit} />
+      <PoslForm onSubmit={onSubmit} isSending={isFetching} />
     </FormProvider>
   );
 };

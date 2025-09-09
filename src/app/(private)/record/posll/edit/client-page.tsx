@@ -1,9 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { redirect } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import { EditRecordBottomBar } from '@/components';
@@ -20,7 +18,7 @@ interface EditRecordPosllClientPageInterface {
 
 export const EditRecordPosllClientPage = (props: EditRecordPosllClientPageInterface) => {
   const { record } = props;
-  const { editRecord } = useRecords();
+  const { editRecord, isFetching } = useRecords();
 
   const methods = useForm<PosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
@@ -28,21 +26,13 @@ export const EditRecordPosllClientPage = (props: EditRecordPosllClientPageInterf
   });
 
   async function onSubmit(record: PosllSchemaInfertype) {
-    const res = await editRecord({ typeOfRecord: 'POSll', data: record });
-
-    if (!res?.ok) {
-      console.log(res);
-      toast.error(JSON.stringify(res.data.message));
-    } else {
-      toast.success(res.data.message);
-      redirect(`/courses`);
-    }
+    await editRecord({ typeOfRecord: 'POSll', data: record });
   }
 
   return (
     <>
       <FormProvider {...methods}>
-        <PosllForm onSubmit={onSubmit} />
+        <PosllForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
       <EditRecordBottomBar recordId={record.id} recordType="POSll" />
     </>

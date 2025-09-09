@@ -1,9 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { redirect } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import { EditRecordBottomBar } from '@/components';
@@ -20,7 +18,7 @@ interface EditRecordCoupleClientPageInterface {
 
 export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInterface) => {
   const { record } = props;
-  const { editRecord } = useRecords();
+  const { editRecord, isFetching } = useRecords();
 
   const methods = useForm<CoupleSchemaInfertype>({
     resolver: yupResolver(coupleSchema),
@@ -28,20 +26,13 @@ export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInte
   });
 
   async function onSubmit(record: CoupleSchemaInfertype) {
-    const res = await editRecord({ typeOfRecord: 'COUPLE_WORK', data: record });
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      redirect(`/courses`);
-    }
+    await editRecord({ typeOfRecord: 'COUPLE_WORK', data: record });
   }
 
   return (
     <>
       <FormProvider {...methods}>
-        <CoupleForm onSubmit={onSubmit} />
+        <CoupleForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
       <EditRecordBottomBar recordId={record.id} recordType="COUPLE_WORK" />
     </>
