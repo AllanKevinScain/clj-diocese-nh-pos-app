@@ -13,3 +13,8 @@ export interface CallRecordReturnInterface {
   ok?: boolean;
   data: { message: string; data?: RecordFilterType };
 }
+
+export interface GetRecordByIdReturnInterface {
+  ok: boolean;
+  data: RecordFilterType;
+}

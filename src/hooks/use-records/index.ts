@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
-import type { RecordFilterType } from '@/types';
 import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
   CallRecordInterface,
   CallRecordReturnInterface,
+  GetRecordByIdReturnInterface,
   UseRecordsInterface,
 } from './use-records.type';
 
@@ -152,7 +152,7 @@ export function useRecords() {
     const res = await req.json();
     return res;
   }
-  async function getRecordById(id: string): Promise<{ ok: boolean; data: RecordFilterType }> {
+  async function getRecordById(id: string): Promise<GetRecordByIdReturnInterface> {
     const req = await fetch(`/api/record-by-id/${id}`, {
       method: 'GET',
     });
