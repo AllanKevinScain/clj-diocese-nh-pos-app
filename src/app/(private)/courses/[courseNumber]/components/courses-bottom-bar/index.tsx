@@ -11,11 +11,11 @@ import { AcceptModal, ControlButtons } from '@/components';
 import { useCourses, useToggleModal } from '@/hooks';
 
 interface CoursesBottomBarInterface {
-  courseId: string;
+  courseId?: string;
 }
 
 export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
-  const { courseId } = props;
+  const { courseId = '' } = props;
   const { data } = useSession();
   const navigate = useRouter();
   const { isOpen, handle } = useToggleModal();

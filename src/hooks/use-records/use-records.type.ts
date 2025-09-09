@@ -1,4 +1,4 @@
-import type { RecordType } from '@/types';
+import type { RecordFilterType, RecordType } from '@/types';
 
 export interface UseRecordsInterface {
   typeOfRecord: RecordType;
@@ -11,5 +11,5 @@ export interface CallRecordInterface extends Pick<UseRecordsInterface, 'data'> {
 }
 export interface CallRecordReturnInterface {
   ok?: boolean;
-  data: { message: string };
+  data: { message: string; data?: RecordFilterType };
 }

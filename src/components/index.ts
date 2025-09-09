@@ -6,6 +6,7 @@ export * from './default-dialog';
 export * from './dinamic-list-select';
 export * from './divider';
 export * from './edit-record-bottom-bar';
+export * from './empty';
 export * from './field-default';
 export * from './field-set-checkbox';
 export * from './field-set-consent-checkbox';

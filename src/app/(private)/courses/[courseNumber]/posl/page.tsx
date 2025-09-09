@@ -1,3 +1,7 @@
+import { getServerSession } from 'next-auth';
+
+import { authOptions } from '@/auth-config';
+
 import { CourseClientPage } from './client-page';
 
 interface CoursePageInterface {
@@ -10,5 +14,12 @@ export default async function CoursePagePosl(props: CoursePageInterface) {
   const { courseNumber } = await params;
   const { courseId } = await searchParams;
 
-  return <CourseClientPage courseNumber={courseNumber} courseId={courseId} />;
+  const session = await getServerSession(authOptions);
+
+  return (
+    <CourseClientPage
+      courseNumber={courseNumber}
+      courseId={session?.user.loginType === 'admin' ? courseId : undefined}
+    />
+  );
 }

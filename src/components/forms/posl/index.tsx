@@ -15,6 +15,7 @@ import {
   FieldSetRadio,
   FieldTextarea,
   Heading,
+  Loading,
   SessionForm,
   Text,
 } from '@/components';
@@ -37,10 +38,11 @@ export interface ClearFieldParamsInteface {
 export interface PoslFormInterface {
   onSubmit: (_: PoslSchemaInfertype) => void;
   isDisabled?: boolean;
+  isSending?: boolean;
 }
 
 export const PoslForm = (props: PoslFormInterface) => {
-  const { onSubmit, isDisabled = false } = props;
+  const { onSubmit, isDisabled = false, isSending = false } = props;
 
   const { control, handleSubmit } = useFormContext<PoslSchemaInfertype>();
 
@@ -60,6 +62,7 @@ export const PoslForm = (props: PoslFormInterface) => {
 
   return (
     <Container>
+      {isSending && <Loading />}
       <form
         className="flex flex-col gap-6 pb-[30%]"
         onSubmit={handleSubmit(onSubmit, (errors) => {

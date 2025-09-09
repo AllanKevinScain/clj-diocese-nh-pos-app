@@ -1,53 +1,11 @@
-'use client';
+import { getServerSession } from 'next-auth';
 
-import type { InferType } from 'yup';
+import { authOptions } from '@/auth-config';
 
-import { Container, Heading, ListItem, Loading } from '@/components';
-import { useCourses, useCreateQuery } from '@/hooks';
-import type { courseSchema } from '@/yup';
+import { CoursesClientPage } from './client-page';
 
-import { NewCourse } from './components';
+export default async function CoursesPage() {
+  const session = await getServerSession(authOptions);
 
-type CourseSchemaInferType = InferType<typeof courseSchema>;
-
-export default function CoursesPage() {
-  const { listCourses } = useCourses();
-
-  const { data, isLoading } = useCreateQuery<CourseSchemaInferType[]>({
-    queryKey: ['cursos'],
-    queryFn: listCourses,
-  });
-
-  const isEmptyCourse = data && data.length === 0 && !isLoading;
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isEmptyCourse) {
-    return (
-      <Container className="flex flex-col items-center justify-center gap-2">
-        <Heading as="h2">Nenhum curso foi cadastrado!</Heading>
-        <NewCourse />
-      </Container>
-    );
-  }
-
-  return (
-    <Container className="flex flex-col gap-[16px]">
-      <Heading>Cursos</Heading>
-
-      {data?.map((course) => (
-        <ListItem.course
-          key={course.id}
-          courseNumber={course.courseNumber}
-          endDate={course.endDate}
-          startDate={course.startDate}
-          href={`/courses/${course.courseNumber}/${course.typeOfCourse.toLocaleLowerCase()}?courseId=${course.id}`}
-        />
-      ))}
-
-      <NewCourse />
-    </Container>
-  );
+  return <CoursesClientPage loginType={session?.user.loginType || 'manager'} />;
 }

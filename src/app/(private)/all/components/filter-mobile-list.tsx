@@ -1,10 +1,9 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { FaSadCry } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 
-import { Button, Heading, ListItem } from '@/components';
+import { Empty, ListItem } from '@/components';
 import type { FilterRecordsType } from '@/types';
 
 interface FilterMobileListInterface {
@@ -24,11 +23,7 @@ export const FilterMobileList = (props: FilterMobileListInterface) => {
 
   if (list.data.length === 0) {
     return (
-      <div className={twMerge('flex flex-col items-center justify-center', 'h-[50vh] w-full')}>
-        <FaSadCry size={45} />
-        <Heading as="h3">Nenhum resultado encontrado</Heading>
-        <Button onClick={clearFilters}>Limpar filtros</Button>
-      </div>
+      <Empty className="h-[50vh]" title="Nenhum resultado encontrado" handleClick={clearFilters} />
     );
   }
 

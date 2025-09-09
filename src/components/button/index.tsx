@@ -28,8 +28,10 @@ export function Button(props: ButtonProps) {
 
   if (isLink) {
     return (
-      <Link href={href} className={twMerge((isLoading || props.disabled) && 'pointer-events-none')}>
-        <LinkButton variant={variant} className={className}>
+      <Link
+        href={href}
+        className={twMerge((isLoading || restProps.disabled) && 'pointer-events-none')}>
+        <LinkButton variant={variant} disabled={restProps.disabled} className={className}>
           {children}
         </LinkButton>
       </Link>
@@ -40,7 +42,7 @@ export function Button(props: ButtonProps) {
     <button
       {...restProps}
       type={type}
-      disabled={isLoading || props.disabled}
+      disabled={isLoading || restProps.disabled}
       className={twMerge(
         'h-[50px] w-fit rounded-md px-[12px]',
         'transition-all',

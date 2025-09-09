@@ -1,5 +1,6 @@
 'use client';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import type * as yup from 'yup';
 
@@ -8,7 +9,7 @@ import { generateCourseMontagem } from '@/helpers';
 import type { CourseInferType } from '@/hooks';
 import { useCourses, useListRecords, useWorkTable } from '@/hooks';
 import type { WorkTableWithRecords } from '@/types';
-import type { exportWorkTableSchema } from '@/yup';
+import { exportWorkTableSchema } from '@/yup';
 
 type ReportExportWithFilterSchemaSchemaInfertype = yup.InferType<typeof exportWorkTableSchema>;
 
@@ -24,6 +25,7 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
   const { listCourses } = useCourses();
 
   const { control, reset, handleSubmit } = useForm<ReportExportWithFilterSchemaSchemaInfertype>({
+    resolver: yupResolver(exportWorkTableSchema),
     defaultValues: {
       courseNumber: null,
     },

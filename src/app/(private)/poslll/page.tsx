@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import type { InferType } from 'yup';
 
 import { Button, Container, Heading, Loading, NewTodo } from '@/components';
@@ -10,6 +11,7 @@ type PoslllSchemaInferType = InferType<typeof poslllSchema>;
 
 export default function PosCLJlllPage() {
   const { listPoslll } = usePoslll();
+  const { data: dataSession } = useSession();
 
   const { data, isLoading } = useCreateQuery<PoslllSchemaInferType[]>({
     queryKey: ['listPoslll'],
@@ -38,11 +40,12 @@ export default function PosCLJlllPage() {
       {data?.map((pos) => (
         <Button
           key={pos.id}
+          disabled={dataSession?.user.loginType !== 'admin'}
           isLink
           variant="outline"
           href={`/edit/poslll/${pos.id}`}
           className="w-full">
-          {pos.candidateName} - {pos.formations}
+          {pos.candidateName} - {pos.parishChapel}
         </Button>
       ))}
       <NewTodo content="Cadastrar novo CLJ lll" href="/register/poslll" />

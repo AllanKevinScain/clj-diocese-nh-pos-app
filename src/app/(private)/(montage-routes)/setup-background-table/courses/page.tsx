@@ -2,7 +2,7 @@
 
 import type { InferType } from 'yup';
 
-import { Container, Heading, ListItem, Loading } from '@/components';
+import { Container, Empty, Heading, ListItem, Loading } from '@/components';
 import { useCourses, useCreateQuery } from '@/hooks';
 import type { courseSchema } from '@/yup';
 
@@ -15,6 +15,7 @@ export default function SetupBackgroundTablePage() {
     queryKey: ['cursos'],
     queryFn: listCourses,
   });
+  const noResults = data?.length === 0;
 
   if (isLoading) {
     return <Loading />;
@@ -22,7 +23,7 @@ export default function SetupBackgroundTablePage() {
 
   return (
     <Container className="flex flex-col gap-[16px]">
-      <Heading>Montagem</Heading>
+      {!noResults && <Heading>Montagem</Heading>}
       {data?.map((course) => (
         <ListItem.course
           key={course.id}
@@ -30,6 +31,8 @@ export default function SetupBackgroundTablePage() {
           href={`/setup-background-table/montage/${course.courseNumber}`}
         />
       ))}
+
+      {noResults && <Empty className="h-[50vh]" title="Nenhum curso cadastrado" />}
     </Container>
   );
 }

@@ -7,7 +7,7 @@ import { BiPlus } from 'react-icons/bi';
 import { FaClipboardList } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 
-import { Button, Heading, ListItem, Loading } from '@/components';
+import { Button, Empty, Heading, ListItem, Loading } from '@/components';
 import { useToggleModal } from '@/hooks';
 import type { ListRecordsInterface } from '@/types/list-records.type';
 
@@ -74,6 +74,10 @@ export const ListRecords = (props: ListRecordsInterface) => {
               );
             })}
           </div>
+        )}
+
+        {isEmpty(orderRecordsForDate) && (
+          <Empty className="h-[50vh]" title="Nenhuma ficha cadastrada" />
         )}
       </div>
     </>

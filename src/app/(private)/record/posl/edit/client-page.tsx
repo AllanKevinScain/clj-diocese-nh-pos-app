@@ -1,9 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { redirect } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import { EditRecordBottomBar } from '@/components';
@@ -28,14 +26,7 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   });
 
   async function onSubmit(record: PoslSchemaInfertype) {
-    const res = await editRecord({ typeOfRecord: 'POSl', data: record });
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      redirect(`/courses`);
-    }
+    await editRecord({ typeOfRecord: 'POSl', data: record });
   }
 
   return (

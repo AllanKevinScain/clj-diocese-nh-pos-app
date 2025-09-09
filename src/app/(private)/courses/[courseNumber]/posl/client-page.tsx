@@ -12,7 +12,7 @@ import { CoursesBottomBar } from '../components/courses-bottom-bar';
 
 interface CourseClientPageInterface {
   courseNumber: string;
-  courseId: string;
+  courseId?: string;
 }
 
 export const CourseClientPage = (props: CourseClientPageInterface) => {

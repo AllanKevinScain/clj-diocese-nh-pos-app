@@ -7,7 +7,7 @@ declare module 'next-auth' {
     refreshToken: string;
     id: string;
     email: string;
-    loginType: 'admin' | 'manager';
+    loginType: 'admin' | 'manager' | 'builder-manager';
     nome: string;
   }
 

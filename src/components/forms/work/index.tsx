@@ -16,6 +16,7 @@ import {
   FieldSetRadio,
   FieldTextarea,
   Heading,
+  Loading,
   SessionForm,
   Text,
 } from '@/components';
@@ -30,10 +31,11 @@ export type WorkSchemaInfertype = InferType<typeof workSchema>;
 export interface WorkFormInterface {
   onSubmit: (_: WorkSchemaInfertype) => void;
   isDisabled?: boolean;
+  isSending?: boolean;
 }
 
 export const WorkForm = (props: WorkFormInterface) => {
-  const { onSubmit, isDisabled } = props;
+  const { onSubmit, isDisabled = false, isSending = false } = props;
 
   const { control, handleSubmit } = useFormContext<WorkSchemaInfertype>();
 
@@ -53,6 +55,7 @@ export const WorkForm = (props: WorkFormInterface) => {
 
   return (
     <Container>
+      {isSending && <Loading />}
       <form
         className="flex flex-col gap-6 pb-[30%]"
         onSubmit={handleSubmit(onSubmit, (errors) => {

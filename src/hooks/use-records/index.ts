@@ -1,5 +1,7 @@
 'use client';
 
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
@@ -13,6 +15,7 @@ import type {
 } from './use-records.type';
 
 export function useRecords() {
+  const router = useRouter();
   async function _callRecord(props: CallRecordInterface) {
     const { data, api, method } = props;
     try {
@@ -62,6 +65,28 @@ export function useRecords() {
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     }
   }
+  const mutationRegisterRecord = useMutation({
+    mutationKey: ['registerRecord'],
+    mutationFn: registerRecord,
+    onSuccess: (e) => {
+      if (!e?.ok) {
+        toast.error(e.data.message);
+      } else {
+        toast.success(e.data.message);
+        if (e.data.data) {
+          router.push(
+            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
+          );
+        } else {
+          router.push('/courses');
+        }
+      }
+    },
+    onError: (e) => {
+      toast.error(JSON.stringify(e));
+    },
+  });
+
   async function editRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
     const { typeOfRecord, data } = props;
 
@@ -96,6 +121,27 @@ export function useRecords() {
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     }
   }
+  const mutationEditRecord = useMutation({
+    mutationKey: ['editRecord'],
+    mutationFn: editRecord,
+    onSuccess: (e) => {
+      if (!e?.ok) {
+        toast.error(e.data.message);
+      } else {
+        toast.success(e.data.message);
+        if (e.data.data) {
+          router.push(
+            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
+          );
+        } else {
+          router.push('/courses');
+        }
+      }
+    },
+    onError: (e) => {
+      toast.error(JSON.stringify(e));
+    },
+  });
   async function deleteRecordById(
     recordId: string,
     typeOfRecord: 'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK',
@@ -115,8 +161,8 @@ export function useRecords() {
   }
 
   return {
-    registerRecord,
-    editRecord,
+    registerRecord: mutationRegisterRecord.mutateAsync,
+    editRecord: mutationEditRecord.mutateAsync,
     deleteRecordById,
     getRecordById,
   };

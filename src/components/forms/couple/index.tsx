@@ -15,6 +15,7 @@ import {
   FieldSetRadio,
   FieldTextarea,
   Heading,
+  Loading,
   SessionForm,
   Text,
 } from '@/components';
@@ -31,10 +32,11 @@ export type CoupleSchemaInfertype = InferType<typeof coupleSchema>;
 export interface CoupleFormInterface {
   onSubmit: (_: CoupleSchemaInfertype) => void;
   isDisabled?: boolean;
+  isSending?: boolean;
 }
 
 export const CoupleForm = (props: CoupleFormInterface) => {
-  const { onSubmit, isDisabled } = props;
+  const { onSubmit, isDisabled = false, isSending = false } = props;
 
   const { control, handleSubmit } = useFormContext<CoupleSchemaInfertype>();
 
@@ -54,6 +56,7 @@ export const CoupleForm = (props: CoupleFormInterface) => {
 
   return (
     <Container>
+      {isSending && <Loading />}
       <form
         className="flex flex-col gap-6 pb-[30%]"
         onSubmit={handleSubmit(onSubmit, (errors) => {

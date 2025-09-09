@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 import type { ButtonProps } from '.';
 
 export function LinkButton(props: ButtonProps) {
-  const { children, variant = 'solid', className } = props;
+  const { children, variant = 'solid', className, disabled = false } = props;
   const loadingLink = useLinkStatus();
 
   return (
@@ -39,6 +39,7 @@ export function LinkButton(props: ButtonProps) {
             'dark:text-neutral-400',
             'active:text-neutral-300 dark:active:bg-neutral-700',
           ),
+        disabled && 'opacity-75',
         className,
       )}>
       {loadingLink.pending ? <FiLoader className="h-5 w-5 animate-spin" /> : children}

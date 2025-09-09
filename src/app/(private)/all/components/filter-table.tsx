@@ -1,8 +1,6 @@
 'use client';
 
-import { FaSadCry } from 'react-icons/fa';
-
-import { Button, Heading, Table } from '@/components';
+import { Empty, Table } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import type { FilterRecordsType } from '@/types';
 
@@ -51,11 +49,7 @@ export const FilterTable = (props: FilterTableInterface) => {
         {list.data.length === 0 && (
           <Table.tr>
             <Table.td colSpan={10}>
-              <div className="flex w-full flex-col items-center justify-center">
-                <FaSadCry size={45} />
-                <Heading as="h3">Nenhum resultado encontrado</Heading>
-                <Button onClick={clearFilters}>Limpar filtros</Button>
-              </div>
+              <Empty title="Nenhum resultado encontrado" handleClick={clearFilters} />
             </Table.td>
           </Table.tr>
         )}

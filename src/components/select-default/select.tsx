@@ -23,7 +23,7 @@ export interface SelectDefaultComponenttInterface {
 }
 
 export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) => {
-  const { options, label, className, isLoading = false, error, ref, onChange, value } = props;
+  const { options = [], label, className, isLoading = false, error, ref, onChange, value } = props;
   const [open, setOpen] = useState(false);
   const divReference = useRef<HTMLDivElement>(null);
 
