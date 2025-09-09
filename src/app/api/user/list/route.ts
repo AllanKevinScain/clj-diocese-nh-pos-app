@@ -13,9 +13,8 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  if (res.status === 204) return NextResponse.json([]);
-
   const data = await res.json();
-
-  return NextResponse.json(data);
+  if (res.status === 204) return NextResponse.json({ ok: true, data: [] });
+  if (res.status !== 200) return NextResponse.json({ ok: false, data: data });
+  return NextResponse.json({ ok: true, data });
 }

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   });
 
   const data = await res.json();
-
+  if (res.status !== 200) return NextResponse.json({ ok: false, data: data });
   return NextResponse.json({ ok: true, data });
 }
 
@@ -40,7 +40,7 @@ export async function PUT(request: NextRequest) {
   });
 
   const data = await res.json();
-
+  if (res.status !== 200) return NextResponse.json({ ok: false, data: data });
   return NextResponse.json({ ok: true, data });
 }
 
@@ -59,6 +59,6 @@ export async function DELETE(request: NextRequest) {
   });
 
   const data = await res.json();
-
+  if (res.status !== 200) return NextResponse.json({ ok: false, data: data });
   return NextResponse.json({ ok: true, data });
 }

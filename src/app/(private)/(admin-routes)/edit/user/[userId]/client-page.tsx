@@ -1,10 +1,8 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import { AcceptModal, Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
@@ -19,7 +17,6 @@ interface EditUserClientPageInterface {
 
 export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   const { user } = props;
-  const navigate = useRouter();
 
   const { updateUser, deleteUser } = useUsers();
   const { isOpen, handle } = useToggleModal();
@@ -30,25 +27,11 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   });
 
   const onSubmit = async (data: UserSchemaInferType) => {
-    const res = await updateUser(data);
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      navigate.push('/view/users');
-    }
+    await updateUser(data);
   };
 
   async function deleteUserById() {
-    const response = await deleteUser(user.id!);
-
-    if (!response?.ok) {
-      toast.error(response.data.message);
-    } else {
-      toast.success(response.data.message);
-      navigate.push('/view/users');
-    }
+    await deleteUser(user.id!);
   }
 
   return (
@@ -74,6 +57,7 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
                 label: 'Administrador - Possui liberdade para qualquer ação',
               },
               { value: 'manager', label: 'Gerente - Pode cadastrar fixas' },
+              { value: 'builder-manager', label: 'Montagem - Pode mexer na mesa de fundo' },
             ]}
           />
           <FieldDefault id="city" control={control} label="Cidade" />

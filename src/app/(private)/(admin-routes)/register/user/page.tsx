@@ -1,10 +1,8 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import type { InferType } from 'yup';
 
 import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
@@ -14,7 +12,6 @@ import { registerUserSchema } from '@/yup/user-schema';
 type RegisterUserSchemaInferType = InferType<typeof registerUserSchema>;
 
 export default function RegisterUserClientPage() {
-  const navigate = useRouter();
   const { registerUser } = useUsers();
 
   const { handleSubmit, control } = useForm<RegisterUserSchemaInferType>({
@@ -22,14 +19,7 @@ export default function RegisterUserClientPage() {
   });
 
   const onSubmit = async (data: RegisterUserSchemaInferType) => {
-    const res = await registerUser(data);
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      navigate.push('/view/users');
-    }
+    await registerUser(data);
   };
 
   return (
@@ -53,6 +43,7 @@ export default function RegisterUserClientPage() {
               label: 'Administrador - Possui liberdade para qualquer ação',
             },
             { value: 'manager', label: 'Gerente - Pode cadastrar fixas' },
+            { value: 'builder-manager', label: 'Montagem - Pode mexer na mesa de fundo' },
           ]}
         />
 
