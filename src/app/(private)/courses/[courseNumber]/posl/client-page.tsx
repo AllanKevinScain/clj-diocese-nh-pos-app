@@ -29,8 +29,8 @@ export const CourseClientPage = (props: CourseClientPageInterface) => {
 
   return (
     <Container>
-      <CoursesBottomBar courseId={courseId} />
       <ListRecords records={data} courseNumber={courseNumber} loading={isLoading || isFetching} />
+      <CoursesBottomBar courseId={courseId} />
     </Container>
   );
 };

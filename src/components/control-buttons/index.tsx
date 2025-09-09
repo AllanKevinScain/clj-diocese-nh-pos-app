@@ -21,7 +21,7 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
   const { buttons } = props;
 
   return (
-    <div className={twMerge('fixed bottom-0 left-0 w-full', 'flex')}>
+    <div className={twMerge('fixed bottom-0 left-0 w-full', 'flex', 'z-[1]')}>
       {buttons.map((action) => {
         const content = (
           <div

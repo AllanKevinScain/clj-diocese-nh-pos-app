@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { BiEdit, BiTrash } from 'react-icons/bi';
 import { HiArrowUturnLeft } from 'react-icons/hi2';
@@ -21,29 +22,31 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
   const { isOpen, handle } = useToggleModal();
   const { deleteCourse } = useCourses();
 
-  const isAdmin = data?.user.loginType === 'admin';
-
-  const actionForAdmin: ActionButtonTypes[] = [
-    {
-      label: 'Editar curso',
-      icon: <BiEdit size={40} />,
-      url: `/edit/course/${courseId}`,
-    },
-    {
-      label: 'Excluir curso',
-      icon: <BiTrash size={40} />,
-      click: () => handle(),
-    },
-  ];
-
-  const actionButtons = [
-    ...(isAdmin ? actionForAdmin : []),
-    {
-      label: 'Voltar',
-      icon: <HiArrowUturnLeft size={40} />,
-      click: () => navigate.back(),
-    },
-  ];
+  const actionButtons = useMemo(() => {
+    const baseButtons: ActionButtonTypes[] = [
+      {
+        label: 'Voltar',
+        icon: <HiArrowUturnLeft size={40} />,
+        click: () => navigate.back(),
+      },
+    ];
+    if (data?.user.loginType === 'admin') {
+      return [
+        {
+          label: 'Editar curso',
+          icon: <BiEdit size={40} />,
+          url: `/edit/course/${courseId}`,
+        },
+        {
+          label: 'Excluir curso',
+          icon: <BiTrash size={40} />,
+          click: () => handle(),
+        },
+        ...baseButtons,
+      ];
+    }
+    return baseButtons;
+  }, [courseId, data?.user.loginType, handle, navigate]);
 
   async function deleteCourseById() {
     const response = await deleteCourse(courseId);

@@ -33,14 +33,16 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
         click: () => navigate.back(),
       },
     ];
-
     if (dataSession?.user.loginType === 'admin') {
-      permissionsFuntions.push({
-        label: 'Excluir',
-        icon: <BiTrash size={40} />,
-        url: '',
-        click: () => handle(),
-      });
+      return [
+        {
+          label: 'Excluir',
+          icon: <BiTrash size={40} />,
+          url: '',
+          click: () => handle(),
+        },
+        ...permissionsFuntions,
+      ];
     }
     return permissionsFuntions;
   }, [dataSession?.user.loginType, handle, navigate]);
