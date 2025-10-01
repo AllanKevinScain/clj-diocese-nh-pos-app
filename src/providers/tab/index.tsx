@@ -26,6 +26,8 @@ export const TabProvider = ({ children }: TabProviderInterface) => {
   };
 
   return (
-    <TabContext.Provider value={{ changeTab, activeTab: tab }}>{children}</TabContext.Provider>
+    <TabContext.Provider value={{ changeTab, activeTab: tab }}>
+      <div className="flex w-full flex-col gap-[12px]">{children}</div>
+    </TabContext.Provider>
   );
 };

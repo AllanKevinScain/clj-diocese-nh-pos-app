@@ -10,6 +10,7 @@ import type { InferType } from 'yup';
 
 import { Container, ControlButtons, Heading, Tab } from '@/components';
 import { useWorkTable } from '@/hooks';
+import { TabProvider } from '@/providers/tab';
 import type { WorkTableResponseInterface } from '@/types';
 import { backgroundTableSchema } from '@/yup';
 
@@ -80,7 +81,7 @@ export function MontageClientPage(props: MontageClientPageInterface) {
       <Container className="flex flex-col gap-[16px]">
         <Heading>Montagem do curso {courseNumber}</Heading>
 
-        <Tab.container>
+        <TabProvider>
           <Tab.header>
             <Tab.hi value={0} label="Coordenação" />
             <Tab.hi value={1} label="Cozinha" />
@@ -98,7 +99,7 @@ export function MontageClientPage(props: MontageClientPageInterface) {
               <Communities control={control} courseNumber={courseNumber} />
             </Tab.bi>
           </Tab.body>
-        </Tab.container>
+        </TabProvider>
       </Container>
       <ControlButtons
         buttons={[
