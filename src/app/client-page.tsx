@@ -14,7 +14,7 @@ import { loginSchema } from '@/yup';
 type LoginSchemaInferType = InferType<typeof loginSchema>;
 
 const defaultValues = {
-  email: 'jose@gmail.com',
+  email: 'padrejose@gmail.com',
   //   email: 'teste@gmail.com',
   password: 'teste123!',
 };

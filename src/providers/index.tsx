@@ -12,7 +12,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <Toaster toastOptions={{ duration: 5000 }} />
+        <Toaster toastOptions={{ duration: 3000 }} />
 
         <DarkModeProvider>{children}</DarkModeProvider>
       </QueryClientProvider>

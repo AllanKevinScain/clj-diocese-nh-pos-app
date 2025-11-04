@@ -1,10 +1,6 @@
 'use client';
 
-import type { InferType } from 'yup';
-
-import type { poslllSchema } from '@/yup';
-
-export type PoslllInferType = InferType<typeof poslllSchema>;
+import type { PoslllSchemaInferType } from '@/yup';
 
 export function usePoslll() {
   async function listPoslll() {
@@ -15,7 +11,7 @@ export function usePoslll() {
 
     return res;
   }
-  async function registerPoslll(props: PoslllInferType) {
+  async function registerPoslll(props: PoslllSchemaInferType) {
     const req = await fetch('/api/poslll', {
       method: 'POST',
       body: JSON.stringify(props),
@@ -23,7 +19,7 @@ export function usePoslll() {
     const res = await req.json();
     return res;
   }
-  async function updatePoslll(props: PoslllInferType) {
+  async function updatePoslll(props: PoslllSchemaInferType) {
     const { id, ...rest } = props;
     const req = await fetch(`/api/poslll?poslllId=${id}`, {
       method: 'PUT',
@@ -34,14 +30,14 @@ export function usePoslll() {
 
     return res;
   }
-  async function deletePoslll(poslllId: string) {
+  async function changeStatusPoslll(poslllId: string) {
     const req = await fetch(`/api/poslll?poslllId=${poslllId}`, {
-      method: 'DELETE',
+      method: 'PATCH',
     });
     const res = await req.json();
     return res;
   }
-  async function getPoslllById(id: string): Promise<{ ok: boolean; data: PoslllInferType }> {
+  async function getPoslllById(id: string): Promise<{ ok: boolean; data: PoslllSchemaInferType }> {
     const req = await fetch(`/api/poslll/${id}`, {
       method: 'GET',
     });
@@ -53,7 +49,7 @@ export function usePoslll() {
     listPoslll,
     registerPoslll,
     updatePoslll,
-    deletePoslll,
+    changeStatusPoslll,
     getPoslllById,
   };
 }

@@ -41,6 +41,7 @@ export function LinkButton(props: ButtonProps) {
           ),
         disabled && 'opacity-75',
         className,
+        loadingLink.pending && 'pointer-events-none flex-row items-center justify-center',
       )}>
       {loadingLink.pending ? <FiLoader className="h-5 w-5 animate-spin" /> : children}
     </div>

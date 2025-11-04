@@ -3,13 +3,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import type { InferType } from 'yup';
 
 import { AcceptModal, Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useToggleModal, useUsers } from '@/hooks';
+import type { UserSchemaInferType } from '@/yup/user-schema';
 import { userSchema } from '@/yup/user-schema';
-
-type UserSchemaInferType = InferType<typeof userSchema>;
 
 interface EditUserClientPageInterface {
   user: UserSchemaInferType;
@@ -18,8 +16,10 @@ interface EditUserClientPageInterface {
 export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   const { user } = props;
 
-  const { updateUser, deleteUser } = useUsers();
+  const { updateUser, changeStatusUser } = useUsers();
   const { isOpen, handle } = useToggleModal();
+
+  const isActive = user.active;
 
   const { handleSubmit, control } = useForm<UserSchemaInferType>({
     resolver: yupResolver(userSchema),
@@ -31,7 +31,7 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   };
 
   async function deleteUserById() {
-    await deleteUser(user.id!);
+    await changeStatusUser(user.id!);
   }
 
   return (
@@ -44,6 +44,8 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <FieldDefault id="name" control={control} label="Nome" />
+
+          <FieldDefault id="coName" control={control} label="Sigla do grupo" />
 
           <FieldDefault id="email" control={control} label="Email" />
 
@@ -60,11 +62,20 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
               { value: 'builder-manager', label: 'Montagem - Pode mexer na mesa de fundo' },
             ]}
           />
+
           <FieldDefault id="city" control={control} label="Cidade" />
+
+          <Button
+            variant="ghost"
+            isLink
+            href={`/edit/user/${user.id}/password`}
+            className="justify-start">
+            Aleterar senha
+          </Button>
 
           <div className="flex gap-[16px]">
             <Button type="button" variant="outline" className="w-full" onClick={handle}>
-              Apagar usuário
+              {isActive ? 'Desativar' : 'Ativar'} usuário
             </Button>
             <Button type="submit" className="w-full">
               Atualizar

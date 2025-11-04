@@ -4,7 +4,5 @@ export * from './filter-records.type';
 export * from './generic-types.type';
 export * from './posl.type';
 export * from './posll.type';
-export * from './poslll.type';
-export * from './user.type';
 export * from './work.type';
 export * from './work-table.type';

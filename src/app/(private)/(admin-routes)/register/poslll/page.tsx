@@ -4,24 +4,34 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
-import { Button, Container, FieldDefault, FieldTextarea, Heading } from '@/components';
-import { formatMobilePhone } from '@/helpers';
-import { usePoslll } from '@/hooks';
+import {
+  Button,
+  Container,
+  FieldDefault,
+  FieldTextarea,
+  Heading,
+  SelectDefault,
+} from '@/components';
+import { useCreateQuery, usePoslll, useUsers } from '@/hooks';
+import type { PoslllSchemaInferType } from '@/yup';
 import { poslllSchema } from '@/yup';
-
-export type PoslllInferType = InferType<typeof poslllSchema>;
 
 export default function RegisterPoslllPage() {
   const navigate = useRouter();
   const { registerPoslll } = usePoslll();
+  const { listParishes } = useUsers();
 
-  const { handleSubmit, control } = useForm<PoslllInferType>({
+  const { handleSubmit, control } = useForm<PoslllSchemaInferType>({
     resolver: yupResolver(poslllSchema),
   });
 
-  const onSubmit = async (data: PoslllInferType) => {
+  const { data: parishes } = useCreateQuery({
+    queryKey: ['list-parishes'],
+    queryFn: listParishes,
+  });
+
+  const onSubmit = async (data: PoslllSchemaInferType) => {
     const res = await registerPoslll(data);
 
     if (!res?.ok) {
@@ -38,15 +48,16 @@ export default function RegisterPoslllPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
         <FieldDefault id="candidateName" control={control} label="Nome" />
-        <FieldDefault id="parishChapel" control={control} label="Paróquia/Capela" />
 
-        <FieldDefault
-          id="candidatePhone"
+        <SelectDefault
+          id="parishChapel"
           control={control}
-          onChange={(e) => formatMobilePhone(e)}
-          label="Telefone"
+          label="Paróquia/Capela"
+          options={parishes?.data || []}
         />
+
         <FieldDefault id="instagram" control={control} label="Instagram" />
+
         <div className="flex items-start gap-[10px]">
           <FieldDefault
             id="courseOne"

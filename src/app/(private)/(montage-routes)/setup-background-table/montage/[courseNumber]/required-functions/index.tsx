@@ -7,7 +7,7 @@ import type { InferType } from 'yup';
 import { SelectWithQuery, SessionForm } from '@/components';
 import { useEspecificRecords } from '@/hooks';
 import type { FilterRecordsType } from '@/types';
-import type { backgroundTableSchema, poslllSchema } from '@/yup';
+import type { backgroundTableSchema } from '@/yup';
 
 type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
 
@@ -16,17 +16,14 @@ interface RequiredFunctionsInterface {
   control: Control<BackgroundTableSchemaInferType>;
 }
 
-type PoslllSchemaInferType = InferType<typeof poslllSchema>;
-
 export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
   const { courseNumber, control } = props;
 
-  const { listPoslll, listCoupleRecordsByNumberCourse, listWorkRecordsByNumberCourse } =
-    useEspecificRecords();
+  const { listCoupleRecordsByNumberCourse, listWorkRecordsByNumberCourse } = useEspecificRecords();
 
   return (
     <div className={twMerge('flex flex-col gap-[16px]', 'w-full pb-[10%]')}>
-      <SessionForm title="Principais funções:">
+      {/* <SessionForm title="Principais funções:">
         <SelectWithQuery
           control={control}
           label="Coordenador(a)"
@@ -66,7 +63,8 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
             }));
           }}
         />
-      </SessionForm>
+      </SessionForm> */}
+
       <SessionForm title="Mesa de fundo:">
         <SelectWithQuery
           control={control}
@@ -81,7 +79,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
             }));
           }}
         />
-        <SelectWithQuery
+        {/* <SelectWithQuery
           control={control}
           label="Casal coordenador de cozinha"
           id="coupleKitchenCoordinator"
@@ -132,7 +130,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
               value: item.id ?? '',
             }));
           }}
-        />
+        /> */}
         <SelectWithQuery
           control={control}
           label="Auxiliar de liturgia"

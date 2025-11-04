@@ -42,10 +42,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           ...token,
-          id: decodedToken.id,
-          name: decodedToken.nome,
-          email: decodedToken.email,
-          loginType: decodedToken.loginType,
+          ...decodedToken,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           accessTokenExpires: expirationTime,
@@ -99,6 +96,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.loginType = token.loginType;
+        session.user.coName = token.coName;
         session.accessToken = token.accessToken;
         session.error = token.error; // Passa o erro para a sessão.
       }

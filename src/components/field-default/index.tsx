@@ -23,6 +23,8 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
   const [showPassword, setShowPassword] = useState(false);
   const [type, setType] = useState(restProps.type ?? 'text');
 
+  const isPassword = restProps.type === 'password';
+
   const handleToggle = () => {
     if (type === 'password') {
       setType('text');
@@ -83,13 +85,17 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
                   restProps.className,
                   hasError && 'border-red-500',
                 )}
+                maxLength={250}
               />
-              {restProps.type === 'password' && (
+              {isPassword && (
                 <span className="absolute top-[14px] right-[10px]" onClick={handleToggle}>
                   {showPassword ? (
-                    <RiEyeFill size={25} color={colors.neutral[400]} />
+                    <RiEyeFill size={25} color={hasError ? colors.red[400] : colors.neutral[400]} />
                   ) : (
-                    <RiEyeCloseFill size={25} color={colors.neutral[400]} />
+                    <RiEyeCloseFill
+                      size={25}
+                      color={hasError ? colors.red[400] : colors.neutral[400]}
+                    />
                   )}
                 </span>
               )}

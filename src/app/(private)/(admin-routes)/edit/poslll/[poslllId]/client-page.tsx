@@ -5,32 +5,45 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
-import { AcceptModal, Button, Container, FieldDefault, FieldTextarea, Heading } from '@/components';
-import { formatMobilePhone } from '@/helpers';
-import { usePoslll, useToggleModal } from '@/hooks';
-import type { RecordPoslllResponseInterface } from '@/types';
+import {
+  AcceptModal,
+  Button,
+  Container,
+  FieldDefault,
+  FieldTextarea,
+  Heading,
+  SelectDefault,
+} from '@/components';
+import { useCreateQuery, usePoslll, useToggleModal, useUsers } from '@/hooks';
+import type { PoslllSchemaInferType } from '@/yup';
 import { poslllSchema } from '@/yup';
 
-export type PoslllInfertype = InferType<typeof poslllSchema>;
-
 interface PoslllClientPageInterface {
-  poslll: RecordPoslllResponseInterface;
+  poslll: PoslllSchemaInferType;
 }
 
 export const PoslllClientPage = (props: PoslllClientPageInterface) => {
   const { poslll } = props;
   const navigate = useRouter();
-  const { updatePoslll, deletePoslll } = usePoslll();
-  const { isOpen, handle } = useToggleModal();
 
-  const { handleSubmit, control } = useForm<PoslllInfertype>({
+  const { updatePoslll, changeStatusPoslll } = usePoslll();
+  const { isOpen, handle } = useToggleModal();
+  const { listParishes } = useUsers();
+
+  const isActive = poslll.active;
+
+  const { handleSubmit, control } = useForm<PoslllSchemaInferType>({
     resolver: yupResolver(poslllSchema),
     defaultValues: poslll,
   });
 
-  const onSubmit = async (data: PoslllInfertype) => {
+  const { data: parishes } = useCreateQuery({
+    queryKey: ['list-parishes'],
+    queryFn: listParishes,
+  });
+
+  const onSubmit = async (data: PoslllSchemaInferType) => {
     const res = await updatePoslll(data);
 
     if (!res?.ok) {
@@ -42,7 +55,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
   };
 
   async function deletePoslllById() {
-    const response = await deletePoslll(poslll.id!);
+    const response = await changeStatusPoslll(poslll.id!);
 
     if (!response?.ok) {
       toast.error(response.data.message);
@@ -62,15 +75,16 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
           <FieldDefault id="candidateName" control={control} label="Nome" />
-          <FieldDefault id="parishChapel" control={control} label="Paróquia/Capela" />
 
-          <FieldDefault
-            id="candidatePhone"
+          <SelectDefault
+            id="parishChapel"
             control={control}
-            onChange={(e) => formatMobilePhone(e)}
-            label="Telefone"
+            label="Paróquia/Capela"
+            options={parishes?.data || []}
           />
+
           <FieldDefault id="instagram" control={control} label="Instagram" />
+
           <div className="flex items-start gap-[10px]">
             <FieldDefault
               id="courseOne"
@@ -99,7 +113,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
 
           <div className="flex gap-[16px]">
             <Button type="button" variant="outline" className="w-full" onClick={handle}>
-              Apagar registro
+              {!isActive ? 'Ativar' : 'Desativar'} registro
             </Button>
             <Button type="submit" className="w-full">
               Atualizar

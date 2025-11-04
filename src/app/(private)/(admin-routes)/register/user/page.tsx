@@ -3,18 +3,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import type { InferType } from 'yup';
 
 import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useUsers } from '@/hooks';
+import type { RegisterUserSchemaInferType } from '@/yup/user-schema';
 import { registerUserSchema } from '@/yup/user-schema';
 
-type RegisterUserSchemaInferType = InferType<typeof registerUserSchema>;
+import { Password } from './components/password';
 
 export default function RegisterUserClientPage() {
   const { registerUser } = useUsers();
 
-  const { handleSubmit, control } = useForm<RegisterUserSchemaInferType>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<RegisterUserSchemaInferType>({
     resolver: yupResolver(registerUserSchema),
   });
 
@@ -29,9 +33,18 @@ export default function RegisterUserClientPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FieldDefault id="name" control={control} label="Paróquia/Capela" />
 
+        <FieldDefault
+          id="coName"
+          control={control}
+          label="Sigla do grupo"
+          onChange={(e) => String(e).replace(' ', '')}
+        />
+
         <FieldDefault id="email" control={control} label="Email" />
 
-        <FieldDefault id="password" control={control} label="Senha" type="password" />
+        <Password control={control} errors={errors} id="password" />
+
+        <FieldDefault id="city" control={control} label="Cidade" />
 
         <SelectDefault
           id="loginType"
@@ -46,8 +59,6 @@ export default function RegisterUserClientPage() {
             { value: 'builder-manager', label: 'Montagem - Pode mexer na mesa de fundo' },
           ]}
         />
-
-        <FieldDefault id="city" control={control} label="Cidade" />
 
         <Button type="submit" className="w-full">
           Cadastrar
