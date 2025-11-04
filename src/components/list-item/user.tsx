@@ -3,18 +3,21 @@
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
+import type { UserSchemaInferType } from '@/yup';
+
 import { Heading } from '../heading';
 import { Text } from '../text';
 
-interface UserListItemInterface {
-  loginType?: string;
-  city?: string;
-  name?: string;
+type SomePropsUserSchemaInferType = Pick<
+  UserSchemaInferType,
+  'coName' | 'loginType' | 'name' | 'active'
+>;
+interface UserListItemInterface extends SomePropsUserSchemaInferType {
   href: string;
 }
 
 export const UserListItem = (props: UserListItemInterface) => {
-  const { city, loginType, name, href } = props;
+  const { coName, loginType, name, href, active } = props;
 
   return (
     <Link href={href}>
@@ -29,8 +32,11 @@ export const UserListItem = (props: UserListItemInterface) => {
           'dark:active:bg-neutral-500',
         )}>
         <Heading as="h3">{name}</Heading>
-        <Text>{city}</Text>
-        <Text as="b">{loginType}</Text>
+        <Text>{coName}</Text>
+        <div className="flex justify-between">
+          <Text as="b">{loginType}</Text>
+          {!active && <b className="!font-bold text-red-500">Inativo</b>}
+        </div>
       </div>
     </Link>
   );

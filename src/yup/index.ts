@@ -6,4 +6,5 @@ export * from './login-schama';
 export * from './posl-schema';
 export * from './posll-schema';
 export * from './poslll-schema';
+export * from './user-schema';
 export * from './work-schema';

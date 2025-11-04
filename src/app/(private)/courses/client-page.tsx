@@ -1,15 +1,16 @@
 'use client';
 
-import type { InferType } from 'yup';
+import { isEmpty } from 'lodash';
+import { useMemo } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { FaSearch } from 'react-icons/fa';
 
-import { Container, Heading, ListItem, Loading } from '@/components';
+import { Button, Container, FieldDefault, Heading, ListItem, Loading, Text } from '@/components';
 import { useCourses, useCreateQuery } from '@/hooks';
 import type { LoginType } from '@/types';
-import type { courseSchema } from '@/yup';
+import type { CourseInferType } from '@/yup';
 
 import { NewCourse } from './components';
-
-type CourseSchemaInferType = InferType<typeof courseSchema>;
 
 interface CoursesClientPageInterface {
   loginType: LoginType;
@@ -19,49 +20,71 @@ export function CoursesClientPage(props: CoursesClientPageInterface) {
   const { loginType } = props;
   const { listCourses } = useCourses();
 
-  const { data, isLoading } = useCreateQuery<CourseSchemaInferType[]>({
+  const { control } = useForm({
+    defaultValues: {
+      search: '',
+    },
+  });
+
+  const search = useWatch({ control, name: 'search' });
+
+  const { data, isLoading, refetch } = useCreateQuery<CourseInferType[]>({
     queryKey: ['cursos'],
     queryFn: listCourses,
   });
 
-  const isEmptyCourse = data && data.length === 0 && !isLoading;
+  const filteredCourses = useMemo(() => {
+    if (data && !isEmpty(search)) {
+      return data.filter(
+        (user) =>
+          user.courseNumber?.toLowerCase().includes(search.toLowerCase()) ||
+          user.typeOfCourse?.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
+    return data;
+  }, [data, search]);
+  const isEmptyCourse = filteredCourses?.length === 0 && !isLoading;
 
   if (isLoading) return <Loading />;
 
-  if (isEmptyCourse) {
-    return (
-      <Container className="flex flex-col items-center justify-center gap-2">
-        <Heading as="h2">Nenhum curso foi cadastrado!</Heading>
-        <NewCourse />
-      </Container>
-    );
-  }
-
   return (
     <Container className="flex flex-col gap-[16px]">
-      <Heading>Cursos</Heading>
+      <div className="flex flex-col gap-[8px]">
+        <div className="flex justify-between">
+          <Heading>Cursos</Heading>
+          <NewCourse />
+        </div>
+        <div className="flex w-full">
+          <FieldDefault id="search" control={control} className="rounded-e-none" />
+          <Button className="w-[40px] rounded-s-none" onClick={() => refetch()}>
+            <FaSearch size={20} />
+          </Button>
+        </div>
+      </div>
 
-      {data?.map((course) => {
-        function url() {
-          if (loginType === 'admin') {
-            return `/courses/${course.courseNumber}/${course.typeOfCourse.toLocaleLowerCase()}?courseId=${course.id}`;
+      {isEmptyCourse && <Text className="text-center">Nenhum curso foi cadastrado!</Text>}
+
+      {!isEmptyCourse &&
+        filteredCourses?.map((course) => {
+          function url() {
+            if (loginType === 'admin') {
+              return `/courses/${course.courseNumber}/${course.typeOfCourse.toLocaleLowerCase()}?courseId=${course.id}`;
+            }
+            return `/courses/${course.courseNumber}/${course.typeOfCourse.toLocaleLowerCase()}`;
           }
-          return `/courses/${course.courseNumber}/${course.typeOfCourse.toLocaleLowerCase()}`;
-        }
+          const endDate = new Date(course.endDate);
+          const now = new Date();
+          const disabled = now > endDate;
 
-        return (
-          <ListItem.course
-            key={course.id}
-            courseNumber={course.courseNumber}
-            endDate={course.endDate}
-            startDate={course.startDate}
-            href={url()}
-            disabled={loginType === 'builder-manager'}
-          />
-        );
-      })}
-
-      <NewCourse />
+          return (
+            <ListItem.course
+              key={course.id}
+              href={url()}
+              disabled={loginType === 'builder-manager' || disabled}
+              {...course}
+            />
+          );
+        })}
     </Container>
   );
 }

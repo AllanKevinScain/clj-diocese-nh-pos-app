@@ -2,12 +2,11 @@ import { isEmpty } from 'lodash';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
-import { formatMobilePhone } from '@/helpers';
-import type { RecordPoslllResponseInterface } from '@/types';
+import type { PoslllSchemaInferType } from '@/yup';
 
 export async function getPoslllRecordServerCall(
   id: string,
-): Promise<{ ok: boolean; data: RecordPoslllResponseInterface }> {
+): Promise<{ ok: boolean; data: PoslllSchemaInferType }> {
   const token = await getServerSession(authOptions);
   if (!token?.accessToken) throw new Error('Token com problema');
 
@@ -20,14 +19,9 @@ export async function getPoslllRecordServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = (await res.json()) as RecordPoslllResponseInterface;
-
-  const formatedData = {
-    ...data,
-    candidatePhone: formatMobilePhone(data.candidatePhone),
-  };
+  const data = await res.json();
 
   if (res.status === 400) return { ok: false, data };
 
-  return { ok: true, data: formatedData };
+  return { ok: true, data };
 }

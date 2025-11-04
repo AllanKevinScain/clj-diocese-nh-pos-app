@@ -9,6 +9,7 @@ declare module 'next-auth' {
     email: string;
     loginType: 'admin' | 'manager' | 'builder-manager';
     nome: string;
+    coName: string;
   }
 
   interface Session {
@@ -27,6 +28,7 @@ declare module 'next-auth/jwt' {
     id: string;
     email: string;
     loginType: 'admin' | 'manager';
+    coName: string;
     nome: string;
     iat?: number;
     exp?: number;

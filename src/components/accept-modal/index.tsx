@@ -17,7 +17,7 @@ export const AcceptModal = (props: AcceptModalInterface) => {
     <DefaultDialog
       isOpen={isOpen}
       handleModal={handle}
-      title="Essa ação é irreversível"
+      title="Essa ação alterará a integração desse registro com o sistema"
       actionsButtons={
         <div className="flex justify-end gap-3">
           <Button

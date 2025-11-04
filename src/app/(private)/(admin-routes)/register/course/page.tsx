@@ -4,17 +4,24 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
-import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
-import { useCourses } from '@/hooks';
+import {
+  Button,
+  Container,
+  FieldDefault,
+  Heading,
+  SelectDefault,
+  SelectWithQuery,
+} from '@/components';
+import { filterPoslll } from '@/helpers';
+import { useCourses, useEspecificRecords } from '@/hooks';
+import type { CourseInferType, PoslllSchemaInferType } from '@/yup';
 import { courseSchema } from '@/yup';
-
-export type CourseInferType = InferType<typeof courseSchema>;
 
 export default function RegisterCoursePage() {
   const navigate = useRouter();
   const { registerCourse } = useCourses();
+  const { listPoslll } = useEspecificRecords();
 
   const { handleSubmit, control } = useForm<CourseInferType>({
     resolver: yupResolver(courseSchema),
@@ -56,6 +63,90 @@ export default function RegisterCoursePage() {
           label="Número do curso"
           type="number"
           maxLength={4}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Coordenador(a)"
+          id="coordinator"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Base"
+          id="base"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Auxiliar de mesa de fundo"
+          id="auxiliar"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Casal coordenador de cozinha"
+          id="coupleKitchenCoordinator"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'older');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Espiritual de cozinha"
+          id="kitchenSpiritual"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Liturgia"
+          id="liturgy"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
+        />
+
+        <SelectWithQuery
+          control={control}
+          label="Secretaria(o)"
+          id="secretary"
+          call={listPoslll}
+          route="poslll"
+          modelData={(data) => {
+            const typedData = data as PoslllSchemaInferType[];
+            return filterPoslll(typedData, 'younger');
+          }}
         />
 
         <Button type="submit" className="w-full">

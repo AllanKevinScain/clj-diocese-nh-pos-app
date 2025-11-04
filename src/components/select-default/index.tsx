@@ -3,14 +3,14 @@
 import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import { SelectDefaultComponent } from './select';
+import type { SelectInputOptionType } from '@/types';
 
-type Option = { label: string; value: string };
+import { SelectDefaultComponent } from './select';
 
 export interface SelectDefaultInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T>;
-  options: Option[];
+  options: SelectInputOptionType[];
   label?: string;
   className?: string;
   isLoading?: boolean;

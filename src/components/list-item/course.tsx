@@ -1,23 +1,28 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { TbCircleNumber1Filled, TbCircleNumber2Filled } from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
+
+import type { CourseInferType } from '@/yup';
 
 import { Button } from '../button';
 import { Text } from '../text';
 
-interface CourseListItemInterface {
+type SomePropsCourseInferType = Partial<
+  Pick<CourseInferType, 'courseNumber' | 'startDate' | 'endDate' | 'typeOfCourse'>
+>;
+
+interface CourseListItemInterface extends SomePropsCourseInferType {
   href: string;
-  courseNumber?: string;
-  startDate?: string;
-  endDate?: string;
   disabled?: boolean;
 }
 
 export const CourseListItem = (props: CourseListItemInterface) => {
-  const { courseNumber, startDate, endDate, href, disabled = false } = props;
+  const { courseNumber, startDate, endDate, href, disabled = false, typeOfCourse } = props;
 
   const existsDates = startDate && endDate;
+  const iconsStyle = twMerge('text-neutral-500', 'dark:text-neutral-300');
 
   return (
     <Button isLink href={href} variant="ghost" className="w-full p-0" disabled={disabled}>
@@ -32,6 +37,8 @@ export const CourseListItem = (props: CourseListItemInterface) => {
           'dark:active:bg-neutral-500',
         )}>
         <div className="flex items-center justify-between gap-[12px]">
+          {typeOfCourse === 'POSl' && <TbCircleNumber1Filled size={24} className={iconsStyle} />}
+          {typeOfCourse === 'POSll' && <TbCircleNumber2Filled size={24} className={iconsStyle} />}
           <Text>Curso Nº {courseNumber}</Text>
           {existsDates && (
             <Text>

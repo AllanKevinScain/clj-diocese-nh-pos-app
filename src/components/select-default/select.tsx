@@ -7,14 +7,14 @@ import { BiCheck, BiChevronUp } from 'react-icons/bi';
 import { VscLoading } from 'react-icons/vsc';
 import { twMerge } from 'tailwind-merge';
 
-import { Text } from '../text';
+import type { SelectInputOptionType } from '@/types';
 
-type Option = { label: string; value: string };
+import { Text } from '../text';
 
 export interface SelectDefaultComponenttInterface {
   value: string;
   onChange: (_?: string) => void;
-  options: Option[];
+  options: SelectInputOptionType[];
   label?: string;
   className?: string;
   isLoading?: boolean;

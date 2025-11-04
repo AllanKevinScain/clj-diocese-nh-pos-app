@@ -71,6 +71,7 @@ export function Button(props: ButtonProps) {
             'active:text-neutral-300 dark:active:bg-neutral-700',
           ),
         className,
+        isLoading && 'pointer-events-none flex-row items-center justify-center',
       )}>
       {isLoading && <FiLoader className="h-5 w-5 animate-spin" />}
       {children}

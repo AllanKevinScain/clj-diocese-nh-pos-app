@@ -10,11 +10,6 @@ export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   const body = (await request.json()) as PoslllSchemaInferType;
 
-  const formatedBody: PoslllSchemaInferType = {
-    ...body,
-    candidatePhone: body.candidatePhone.replace(/[^\d]/g, ''),
-  };
-
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const res = await fetch(`${process.env.BASE_API_URL}/poslll`, {
@@ -23,7 +18,7 @@ export async function POST(request: NextRequest) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token?.accessToken}`,
     },
-    body: JSON.stringify(formatedBody),
+    body: JSON.stringify(body),
   });
 
   const data = await res.json();
@@ -54,7 +49,7 @@ export async function PUT(request: NextRequest) {
   return NextResponse.json({ ok: true, data });
 }
 
-export async function DELETE(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
 
@@ -62,7 +57,7 @@ export async function DELETE(request: NextRequest) {
   if (!poslllId) throw new Error('Curso nao identificado!');
 
   const res = await fetch(`${process.env.BASE_API_URL}/poslll/${poslllId}`, {
-    method: 'DELETE',
+    method: 'PATCH',
     headers: {
       Authorization: `Bearer ${token?.accessToken}`,
     },

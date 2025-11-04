@@ -2,11 +2,11 @@ import { isEmpty } from 'lodash';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
-import type { UserResponseInterface } from '@/types';
+import type { UserSchemaInferType } from '@/yup/user-schema';
 
 export async function getUserServerCall(
   id: string,
-): Promise<{ ok: boolean; data: UserResponseInterface }> {
+): Promise<{ ok: boolean; data: UserSchemaInferType }> {
   const token = await getServerSession(authOptions);
   if (!token?.accessToken) throw new Error('Token com problema');
 
@@ -19,7 +19,7 @@ export async function getUserServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = (await res.json()) as UserResponseInterface;
+  const data = await res.json();
 
   if (res.status === 400) return { ok: false, data };
 
