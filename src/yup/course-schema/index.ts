@@ -47,8 +47,8 @@ export const courseSchema = yup.object().shape({
     .required('Campo obrigatório!')
     .test('is-after-start', 'A data de término deve ser posterior à data de início', testEndDate),
   typeOfCourse: yup
-    .mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>()
-    .oneOf(['POSl', 'POSll', 'WORK', 'COUPLE_WORK'], 'Valor inválido')
+    .mixed<'POSl' | 'POSll' | 'POSlll'>()
+    .oneOf(['POSl', 'POSll', 'POSlll'], 'Valor inválido')
     .required('Campo obrigatório!'),
   courseNumber: yup.string().required('Campo obrigatório!'),
 

@@ -1,22 +1,20 @@
-import type { RecordCoupleType } from './couple.type';
-import type { RecordType } from './generic-types.type';
-import type { RecordPOSlType } from './posl.type';
-import type { RecordPOSllType } from './posll.type';
-import type { RecordWorkType } from './work.type';
+import type { CompleteRecordInterface } from './complete-record.type';
 
-export type ListRecordsType = {
-  id: string;
-  nickname: string;
-  candidateName: string;
-  typeOfRecord: RecordType;
-  candidatePhone: string;
-  updatedAt: string;
-  recordPOSl?: RecordPOSlType;
-  recordPOSll?: RecordPOSllType;
-  recordWork?: RecordWorkType;
-  recordCouple?: RecordCoupleType;
-};
-
+export type ListRecordsType = Pick<
+  CompleteRecordInterface,
+  | 'id'
+  | 'nickname'
+  | 'candidateName'
+  | 'typeOfRecord'
+  | 'candidatePhone'
+  | 'updatedAt'
+  | 'isCoupleWork'
+  | 'isWork'
+  | 'recordPOSl'
+  | 'recordPOSll'
+  | 'recordCouple'
+  | 'recordWork'
+>;
 export interface ListRecordsInterface {
   records?: ListRecordsType[];
   courseNumber: string;

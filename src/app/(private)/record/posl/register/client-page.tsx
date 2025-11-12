@@ -1,6 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
@@ -12,50 +13,53 @@ type PoslSchemaInfertype = InferType<typeof poslSchema>;
 
 const defaultValues: PoslSchemaInfertype = {
   recordNumber: '',
-  parishAcronym: '',
+  // parishAcronym: '',
   candidateName: '',
   nickname: '',
   candidatePhone: '',
   parishChapel: '',
   birthDate: '',
-  instagram: '',
-  spiritualLife: [],
-  observationsDed: '',
-  disease: null,
-  medication: null,
-  allergy: '',
+  // instagram: '',
+  // spiritualLife: [],
+  // observationsDed: '',
+  // disease: null,
+  // medication: null,
+  // allergy: '',
   dataConsent: null,
-  priest: '',
-  hasDisease: null,
-  observationsCoordinator: '',
-  takesMedication: null,
+  isWork: false,
+  isCoupleWork: false,
+  // priest: '',
+  // hasDisease: null,
+  // observationsCoordinator: '',
+  // takesMedication: null,
   recordPOSl: {
     godfatherName: '',
     godfatherPhone: '',
-    godfatherEmail: '',
-    godfatherResponsibility: '',
+    // godfatherEmail: '',
+    // godfatherResponsibility: '',
     candidateSpirit: '',
     candidateDisposition: '',
     candidateParticipation: '',
-    livesWith: [],
-    otherWho: null,
-    parentsReligion: '',
-    otherReligion: null,
-    parentsComment: '',
-    fatherSituation: '',
-    motherSituation: '',
-    attitudeCommunication: '',
-    doctrineCommunication: '',
-    affinityWithGodfather: '',
+    // livesWith: [],
+    // otherWho: null,
+    // parentsReligion: '',
+    // otherReligion: null,
+    // parentsComment: '',
+    // fatherSituation: '',
+    // motherSituation: '',
+    // attitudeCommunication: '',
+    // doctrineCommunication: '',
+    // affinityWithGodfather: '',
   },
 };
 
 interface RegisterRecordPoslClientPageInterface {
   courseNumber: string;
+  session: Session | null;
 }
 
 export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPageInterface) => {
-  const { courseNumber } = props;
+  const { courseNumber, session } = props;
   const { registerRecord, isFetching } = useRecords();
 
   const methods = useForm<PoslSchemaInfertype>({
@@ -69,7 +73,7 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
 
   return (
     <FormProvider {...methods}>
-      <PoslForm onSubmit={onSubmit} isSending={isFetching} />
+      <PoslForm onSubmit={onSubmit} isSending={isFetching} session={session ?? undefined} />
     </FormProvider>
   );
 };

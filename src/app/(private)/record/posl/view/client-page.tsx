@@ -30,6 +30,7 @@ export const ViewRecordPoslClientPage = (props: ViewRecordPoslClientPageInterfac
       </FormProvider>
       <ViewRecordBottomBar
         redirectEditUrl={`/record/posl/edit?courseNumber=${record.courseNumber}&id=${record.id}`}
+        redirectBackUrl={`/courses/${record.courseNumber}/${record.typeOfRecord.toLowerCase()}`}
       />
     </>
   );

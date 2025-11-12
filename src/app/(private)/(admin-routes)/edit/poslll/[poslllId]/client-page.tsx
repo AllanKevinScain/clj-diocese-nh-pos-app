@@ -38,7 +38,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
     defaultValues: poslll,
   });
 
-  const { data: parishes } = useCreateQuery({
+  const { data: parishes, isLoading: isLoadingParishes } = useCreateQuery({
     queryKey: ['list-parishes'],
     queryFn: listParishes,
   });
@@ -81,6 +81,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
             control={control}
             label="Paróquia/Capela"
             options={parishes?.data || []}
+            isLoading={isLoadingParishes}
           />
 
           <FieldDefault id="instagram" control={control} label="Instagram" />

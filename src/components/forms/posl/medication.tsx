@@ -1,15 +1,16 @@
 'use client';
 
-import { isEmpty } from 'lodash';
-import { useFormContext, useWatch } from 'react-hook-form';
+// import { isEmpty } from 'lodash';
+// import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FieldDefault } from '@/components/field-default';
-import { FieldSetRadio } from '@/components/field-set-radio';
+// import { FieldDefault } from '@/components/field-default';
+// import { FieldSetRadio } from '@/components/field-set-radio';
+// import type { PoslSchemaInfertype } from '@/yup';
 
-import type { PoslFormInterface, PoslSchemaInfertype } from '.';
+// import type { PoslFormInterface } from '.';
 
-export const MedicationFields = (props: Pick<PoslFormInterface, 'isDisabled'>) => {
-  const { isDisabled } = props;
+export const MedicationFields = (/* props: Pick<PoslFormInterface, 'isDisabled'> */) => {
+  /* const { isDisabled } = props;
 
   const { control, setValue } = useFormContext<PoslSchemaInfertype>();
 
@@ -42,5 +43,6 @@ export const MedicationFields = (props: Pick<PoslFormInterface, 'isDisabled'>) =
         <FieldDefault disabled={isDisabled} id="medication" control={control} label="Medicação" />
       )}
     </>
-  );
+  ); */
+  return <></>;
 };

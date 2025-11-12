@@ -1,7 +1,7 @@
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
-import type { RecordFilterType, WorkTableWithRecords } from '@/types';
+import type { CompleteRecordInterface, WorkTableWithRecords } from '@/types';
 
 import { generateCandidates } from './candidates';
 import { generateCommunities } from './communities';
@@ -10,7 +10,7 @@ import { generateWorkTablePeaples } from './work-table-peaples';
 
 type GenerateMontagePropsType = {
   workTable: WorkTableWithRecords;
-  candidates: RecordFilterType[];
+  candidates: CompleteRecordInterface[];
 };
 
 export async function generateCourseMontagem(props: GenerateMontagePropsType) {

@@ -1,66 +1,70 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
-import type { InferType } from 'yup';
 
 import { CoupleForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
+import type { RecordType } from '@/types';
+import type { CoupleSchemaInfertype } from '@/yup';
 import { coupleSchema } from '@/yup';
-
-type CoupleSchemaInfertype = InferType<typeof coupleSchema>;
 
 interface RegisterRecordCoupleClientPageInterface {
   courseNumber: string;
+  session: Session | null;
+  typeOfRecord: RecordType;
 }
 
 const defaultValues: CoupleSchemaInfertype = {
   dataConsent: null,
   courseNumber: '',
-  observationsDed: '',
-  observationsCoordinator: '',
-  spiritualLife: [],
-  instagram: '',
+  // observationsDed: '',
+  // observationsCoordinator: '',
+  // spiritualLife: [],
+  // instagram: '',
   candidatePhone: '',
   birthDate: '',
   nickname: '',
   candidateName: '',
   recordNumber: '',
-  parishAcronym: '',
+  // parishAcronym: '',
   parishChapel: '',
-  priest: '',
+  isWork: false,
+  isCoupleWork: true,
+  // priest: '',
   recordCouple: {
     // mulher
-    womanSpiritualLife: [],
+    // womanSpiritualLife: [],
     womanBirthDate: '',
-    womanInstagram: '',
+    // womanInstagram: '',
     womanName: '',
     womanNickname: '',
     womanPhone: '',
 
     // casal
-    coursesOneDone: '',
-    coursesTwoDone: '',
-    coursesThreeDone: '',
-    currentGroupFunction: '',
-    workPreference: null,
-    coursesDone: '',
-    familyLife: null,
-    motivationToParticipate: '',
-    participatedOtherGroups: '',
-    religiousWeddingDate: '',
-    cookCouple: null,
-    externalCouple: null,
-    hasCourseOne: null,
-    hasCourseThree: null,
-    hasCourseTwo: null,
-    participatedInRetreat: null,
-    parishIndication: [],
+    // coursesOneDone: '',
+    // coursesTwoDone: '',
+    // coursesThreeDone: '',
+    // currentGroupFunction: '',
+    // workPreference: null,
+    // coursesDone: '',
+    // familyLife: null,
+    // motivationToParticipate: '',
+    // participatedOtherGroups: '',
+    // religiousWeddingDate: '',
+    // cookCouple: null,
+    // externalCouple: null,
+    // hasCourseOne: null,
+    // hasCourseThree: null,
+    // hasCourseTwo: null,
+    // participatedInRetreat: null,
+    // parishIndication: [],
   },
 };
 
 export const RegisterRecordCoupleClientPage = (props: RegisterRecordCoupleClientPageInterface) => {
-  const { courseNumber } = props;
+  const { courseNumber, session, typeOfRecord } = props;
   const { registerRecord, isFetching } = useRecords();
 
   const methods = useForm<CoupleSchemaInfertype>({
@@ -69,12 +73,12 @@ export const RegisterRecordCoupleClientPage = (props: RegisterRecordCoupleClient
   });
 
   async function onSubmit(record: CoupleSchemaInfertype) {
-    await registerRecord({ typeOfRecord: 'COUPLE_WORK', data: record });
+    await registerRecord({ typeOfRecord, data: record });
   }
 
   return (
     <FormProvider {...methods}>
-      <CoupleForm onSubmit={onSubmit} isSending={isFetching} />
+      <CoupleForm onSubmit={onSubmit} isSending={isFetching} session={session ?? undefined} />
     </FormProvider>
   );
 };

@@ -30,6 +30,7 @@ export const ViewRecordCoupleClientPage = (props: ViewRecordCoupleClientPageInte
       </FormProvider>
       <ViewRecordBottomBar
         redirectEditUrl={`/record/couple-work/edit?courseNumber=${record.courseNumber}&id=${record.id}`}
+        redirectBackUrl={`/courses/${record.courseNumber}/${record.typeOfRecord.toLowerCase()}`}
       />
     </>
   );

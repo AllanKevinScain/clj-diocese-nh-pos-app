@@ -26,7 +26,6 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
   const { options = [], label, className, isLoading = false, error, ref, onChange, value } = props;
   const [open, setOpen] = useState(false);
   const divReference = useRef<HTMLDivElement>(null);
-
   const hasError = !!error;
 
   const selected = useMemo(() => {
@@ -34,9 +33,16 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
     return options.find((opt) => opt.value === value);
   }, [options, value]);
 
+  const labelWithValidation = useMemo(() => {
+    if (isLoading) return <VscLoading className="h-4 w-4 animate-spin text-neutral-400" />;
+    if (selected) return selected.label;
+    return 'Selecione';
+  }, [isLoading, selected]);
+
   const handleToggle = useCallback(() => {
+    if (isLoading) return;
     setOpen((s) => !s);
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -81,15 +87,17 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
             hasError && 'border-red-500',
           )}>
           <Text className={twMerge('text-neutral-400 opacity-70', selected && 'text-neutral-900')}>
-            {selected ? selected.label : 'Selecione'}
+            {labelWithValidation}
           </Text>
-          <BiChevronUp
-            className={twMerge(
-              'h-5 w-5 text-neutral-500',
-              'transition-all duration-200',
-              open && 'rotate-180',
-            )}
-          />
+          {!isLoading && (
+            <BiChevronUp
+              className={twMerge(
+                'h-5 w-5 text-neutral-500',
+                'transition-all duration-200',
+                open && 'rotate-180',
+              )}
+            />
+          )}
         </div>
 
         {/* Dropdown */}

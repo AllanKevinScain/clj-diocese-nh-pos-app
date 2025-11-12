@@ -1,6 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { InferType } from 'yup';
 
@@ -12,44 +13,47 @@ type PosllSchemaInfertype = InferType<typeof posllSchema>;
 
 interface RegisterRecordPosllClientPageInterface {
   courseNumber: string;
+  session: Session | null;
 }
 
 const defaultValues: PosllSchemaInfertype = {
-  takesMedication: null,
-  hasDisease: null,
+  // takesMedication: null,
+  // hasDisease: null,
   dataConsent: null,
-  allergy: '',
-  observationsDed: '',
-  observationsCoordinator: '',
-  spiritualLife: [],
+  // allergy: '',
+  // observationsDed: '',
+  // observationsCoordinator: '',
+  // spiritualLife: [],
   parishChapel: '',
-  priest: '',
-  instagram: '',
+  // priest: '',
+  // instagram: '',
   candidatePhone: '',
   birthDate: '',
   nickname: '',
   candidateName: '',
   recordNumber: '',
-  parishAcronym: '',
+  isWork: false,
+  isCoupleWork: false,
+  // parishAcronym: '',
   recordPOSll: {
-    doingConfirmation: null,
-    hasConfirmation: null,
-    parishChapelActivities: '',
-    currentGroupFunction: '',
-    hideImportantInfo: null,
-    perseveranceInCommunity: '',
-    commitmentToCLJ: '',
-    acceptsChurchDoctrine: '',
-    approachToChrist: '',
-    reasonForCLJII: '',
-    motivationToParticipate: '',
-    courseOneDone: '',
-    notConfirmationBecause: null,
+    // doingConfirmation: null,
+    // hasConfirmation: null,
+    // parishChapelActivities: '',
+    // currentGroupFunction: '',
+    // hideImportantInfo: null,
+    // perseveranceInCommunity: '',
+    // commitmentToCLJ: '',
+    // acceptsChurchDoctrine: '',
+    // approachToChrist: '',
+    // reasonForCLJII: '',
+    // motivationToParticipate: '',
+    // courseOneDone: '',
+    // notConfirmationBecause: null,
   },
 };
 
 export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPageInterface) => {
-  const { courseNumber } = props;
+  const { courseNumber, session } = props;
   const { registerRecord, isFetching } = useRecords();
 
   const methods = useForm<PosllSchemaInfertype>({
@@ -63,7 +67,7 @@ export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPa
 
   return (
     <FormProvider {...methods}>
-      <PosllForm onSubmit={onSubmit} isSending={isFetching} />
+      <PosllForm onSubmit={onSubmit} isSending={isFetching} session={session ?? undefined} />
     </FormProvider>
   );
 };

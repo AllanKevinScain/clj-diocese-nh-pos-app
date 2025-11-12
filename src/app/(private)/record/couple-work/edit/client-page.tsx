@@ -2,22 +2,21 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import type { InferType } from 'yup';
 
 import { EditRecordBottomBar } from '@/components';
 import { CoupleForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { RecordCoupleResponseInterface } from '@/types';
+import type { RecordCoupleResponseInterface, RecordType } from '@/types';
+import type { CoupleSchemaInfertype } from '@/yup';
 import { coupleSchema } from '@/yup';
-
-type CoupleSchemaInfertype = InferType<typeof coupleSchema>;
 
 interface EditRecordCoupleClientPageInterface {
   record: RecordCoupleResponseInterface;
+  typeOfRecord: RecordType;
 }
 
 export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInterface) => {
-  const { record } = props;
+  const { record, typeOfRecord } = props;
   const { editRecord, isFetching } = useRecords();
 
   const methods = useForm<CoupleSchemaInfertype>({
@@ -26,7 +25,7 @@ export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInte
   });
 
   async function onSubmit(record: CoupleSchemaInfertype) {
-    await editRecord({ typeOfRecord: 'COUPLE_WORK', data: record });
+    await editRecord({ typeOfRecord, data: record });
   }
 
   return (
@@ -34,7 +33,7 @@ export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInte
       <FormProvider {...methods}>
         <CoupleForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
-      <EditRecordBottomBar recordId={record.id} recordType="COUPLE_WORK" />
+      <EditRecordBottomBar recordId={record.id} typeOfRecord={typeOfRecord} />
     </>
   );
 };

@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
+import type { RecordType } from '@/types';
 import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
@@ -39,21 +40,44 @@ export function useRecords() {
 
     try {
       if (typeOfRecord === 'POSl') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({ data: validateData, api: '/api/records/posl/work', method: 'POST' });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/posl/couple',
+            method: 'POST',
+          });
+        }
+
         const validateData = await poslSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: validateData, api: '/api/records/posl', method: 'POST' });
       }
       if (typeOfRecord === 'POSll') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/posll/work',
+            method: 'POST',
+          });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/posll/couple',
+            method: 'POST',
+          });
+        }
+
         const validateData = await posllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: validateData, api: '/api/records/posll', method: 'POST' });
       }
-      if (typeOfRecord === 'WORK') {
-        const validateData = await workSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: validateData, api: '/api/records/work', method: 'POST' });
-      }
-      if (typeOfRecord === 'COUPLE_WORK') {
-        const validateData = await coupleSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: validateData, api: '/api/records/couple', method: 'POST' });
-      }
+
       return { ok: false, data: { message: 'Falha no cadastro!' } };
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -76,9 +100,11 @@ export function useRecords() {
       } else {
         toast.success(e.data.message);
         if (e.data.data && dataSession?.user.loginType === 'manager') {
-          router.push(
-            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
-          );
+          const recordType = e.data.data.isCoupleWork
+            ? 'couple-work'
+            : e.data.data.typeOfRecord?.toLowerCase();
+
+          router.push(`/record/${recordType}/view?id=${e.data.data.id}`);
         } else {
           router.push('/courses');
         }
@@ -94,22 +120,40 @@ export function useRecords() {
 
     try {
       if (typeOfRecord === 'POSl') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({ data: validateData, api: '/api/records/posl/work', method: 'PUT' });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/posl/couple',
+            method: 'PUT',
+          });
+        }
+
         await poslSchema.validate(data, { abortEarly: false });
         return _callRecord({ data, api: '/api/records/posl', method: 'PUT' });
       }
       if (typeOfRecord === 'POSll') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({ data: validateData, api: '/api/records/posll/work', method: 'PUT' });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/posll/couple',
+            method: 'PUT',
+          });
+        }
+
         await posllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: data, api: '/api/records/posll', method: 'PUT' });
       }
-      if (typeOfRecord === 'WORK') {
-        await workSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: data, api: '/api/records/work', method: 'PUT' });
-      }
-      if (typeOfRecord === 'COUPLE_WORK') {
-        console.log('🚀 ~ editRecord ~ typeOfRecord:', typeOfRecord);
-        await coupleSchema.validate(data, { abortEarly: false });
-        return _callRecord({ data: data, api: '/api/records/couple', method: 'PUT' });
-      }
+
       return { ok: false, data: { message: 'Falha na atualização!' } };
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -133,7 +177,7 @@ export function useRecords() {
         toast.success(e.data.message);
         if (e.data.data && dataSession?.user.loginType === 'manager') {
           router.push(
-            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord.toLowerCase()}`,
+            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord?.toLowerCase()}`,
           );
         } else {
           router.push('/courses');
@@ -144,10 +188,7 @@ export function useRecords() {
       toast.error(JSON.stringify(e));
     },
   });
-  async function deleteRecordById(
-    recordId: string,
-    typeOfRecord: 'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK',
-  ) {
+  async function deleteRecordById(recordId: string, typeOfRecord: RecordType) {
     const req = await fetch(`/api/records?recordId=${recordId}&typeOfRecord=${typeOfRecord}`, {
       method: 'DELETE',
     });

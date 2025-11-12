@@ -14,11 +14,11 @@ import type { RecordType } from '@/types';
 
 interface EditRecordBottomBarInterface {
   recordId: string;
-  recordType: RecordType;
+  typeOfRecord: RecordType;
 }
 
 export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
-  const { recordId, recordType } = props;
+  const { recordId, typeOfRecord } = props;
   const navigate = useRouter();
   const { data: dataSession } = useSession();
   const { deleteRecordById } = useRecords();
@@ -48,7 +48,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
   }, [dataSession?.user.loginType, handle, navigate]);
 
   const deleteRecord = useCallback(async () => {
-    const response = await deleteRecordById(recordId, recordType);
+    const response = await deleteRecordById(recordId, typeOfRecord);
 
     if (!response?.ok) {
       toast.error(response.data.message);
@@ -56,7 +56,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
       toast.success(response.data.message);
       navigate.push('/courses');
     }
-  }, [deleteRecordById, navigate, recordId, recordType]);
+  }, [deleteRecordById, navigate, recordId, typeOfRecord]);
 
   return (
     <>

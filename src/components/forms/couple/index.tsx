@@ -1,44 +1,35 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import type { Session } from 'next-auth';
+import React, { useCallback, useEffect } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
 import {
   Button,
   Container,
   FieldDefault,
-  FieldSetCheckbox,
   FieldSetConsentCheckbox,
-  FieldSetRadio,
-  FieldTextarea,
   Heading,
   Loading,
   SessionForm,
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { coupleSchema } from '@/yup';
-
-import { CoursesOneDoneFields } from './courses-one-done';
-import { CoursesThreeDoneFields } from './courses-three-done';
-import { CoursesTwoDoneFields } from './courses-two-done';
-import { WorkPreferenceFields } from './work-preference';
-
-export type CoupleSchemaInfertype = InferType<typeof coupleSchema>;
+import type { CoupleSchemaInfertype } from '@/yup';
 
 export interface CoupleFormInterface {
   onSubmit: (_: CoupleSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
+  session?: Session;
 }
 
 export const CoupleForm = (props: CoupleFormInterface) => {
-  const { onSubmit, isDisabled = false, isSending = false } = props;
+  const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit } = useFormContext<CoupleSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<CoupleSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {
@@ -53,6 +44,24 @@ export const CoupleForm = (props: CoupleFormInterface) => {
       }
     });
   }, []);
+
+  const parishValue = useCallback(() => {
+    let value = '';
+
+    if (session) {
+      const {
+        user: { coName, loginType },
+      } = session;
+
+      if (loginType !== 'admin') value = coName;
+    }
+
+    setValue('parishChapel', value);
+  }, [session, setValue]);
+
+  useEffect(() => {
+    parishValue();
+  }, [parishValue]);
 
   return (
     <Container>
@@ -80,30 +89,30 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             type="number"
             maxLength={2}
           />
-          <FieldDefault
+          {/*  <FieldDefault
             id="parishAcronym"
             disabled={isDisabled}
             control={control}
             label="Sigla da paróquia/capela"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={10}
-          />
+          /> */}
           <FieldDefault
-            disabled={isDisabled}
+            disabled={session?.user.loginType !== 'admin'}
             id="parishChapel"
             control={control}
-            label="Paróquia/Capela"
+            label="Sigla do grupo"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="priest"
             control={control}
             label="Pároco"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+          /> */}
         </SessionForm>
 
         <SessionForm title="Dados do tio:">
@@ -134,9 +143,9 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             disabled={isDisabled}
             control={control}
             type="date"
-            label="Data de Nascimento"
+            label="Data de nascimento"
           />
-          <FieldDefault
+          {/* <FieldDefault
             id="instagram"
             disabled={isDisabled}
             control={control}
@@ -156,7 +165,7 @@ export const CoupleForm = (props: CoupleFormInterface) => {
               { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho' },
               { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
             ]}
-          />
+          /> */}
         </SessionForm>
 
         <SessionForm title="Dados da tia:">
@@ -187,9 +196,9 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             disabled={isDisabled}
             control={control}
             type="date"
-            label="Data de Nascimento"
+            label="Data de nascimento"
           />
-          <FieldDefault
+          {/* <FieldDefault
             id="recordCouple.womanInstagram"
             disabled={isDisabled}
             control={control}
@@ -209,10 +218,10 @@ export const CoupleForm = (props: CoupleFormInterface) => {
               { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho' },
               { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
             ]}
-          />
+          /> */}
         </SessionForm>
 
-        <SessionForm title="Dados do casal:">
+        {/* <SessionForm title="Dados do casal:">
           <WorkPreferenceFields isDisabled={isDisabled} />
           <CoursesOneDoneFields isDisabled={isDisabled} />
           <CoursesTwoDoneFields isDisabled={isDisabled} />
@@ -302,7 +311,7 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             label="Observação do Diretor Espiritual Paroquial"
             maxLength={200}
           />
-        </SessionForm>
+        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox

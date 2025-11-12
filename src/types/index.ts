@@ -1,3 +1,4 @@
+export * from './complete-record.type';
 export * from './couple.type';
 export * from './course.type';
 export * from './filter-records.type';

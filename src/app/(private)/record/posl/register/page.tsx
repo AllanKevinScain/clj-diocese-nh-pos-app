@@ -1,3 +1,7 @@
+import { getServerSession } from 'next-auth';
+
+import { authOptions } from '@/auth-config';
+
 import { RegisterRecordPoslClientPage } from './client-page';
 
 interface RegisterRecordPoslPageInterface {
@@ -9,5 +13,7 @@ export default async function RegisterRecordPoslPage(props: RegisterRecordPoslPa
   const { searchParams } = props;
   const { courseNumber } = await searchParams;
 
-  return <RegisterRecordPoslClientPage courseNumber={courseNumber} />;
+  const data = await getServerSession(authOptions);
+
+  return <RegisterRecordPoslClientPage courseNumber={courseNumber} session={data} />;
 }

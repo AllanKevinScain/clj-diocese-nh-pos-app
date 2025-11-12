@@ -7,17 +7,18 @@ import type { InferType } from 'yup';
 import { EditRecordBottomBar } from '@/components';
 import { WorkForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { RecordWorkResponseInterface } from '@/types';
+import type { RecordType, RecordWorkResponseInterface } from '@/types';
 import { workSchema } from '@/yup';
 
 type WorkSchemaInfertype = InferType<typeof workSchema>;
 
 interface EditRecordWorkClientPageInterface {
   record: RecordWorkResponseInterface;
+  typeOfRecord: RecordType;
 }
 
 export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterface) => {
-  const { record } = props;
+  const { record, typeOfRecord } = props;
   const { editRecord, isFetching } = useRecords();
 
   const methods = useForm<WorkSchemaInfertype>({
@@ -26,7 +27,7 @@ export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterfac
   });
 
   async function onSubmit(record: WorkSchemaInfertype) {
-    await editRecord({ typeOfRecord: 'WORK', data: record });
+    await editRecord({ typeOfRecord, data: record });
   }
 
   return (
@@ -34,7 +35,7 @@ export const EditRecordWorkClientPage = (props: EditRecordWorkClientPageInterfac
       <FormProvider {...methods}>
         <WorkForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
-      <EditRecordBottomBar recordId={record.id} recordType="WORK" />
+      <EditRecordBottomBar recordId={record.id} typeOfRecord={typeOfRecord} />
     </>
   );
 };

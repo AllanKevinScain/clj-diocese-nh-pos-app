@@ -33,7 +33,7 @@ export const FilterMobileList = (props: FilterMobileListInterface) => {
         function url() {
           if (record.typeOfRecord === 'POSl' || record.typeOfRecord === 'POSll') {
             return `/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`;
-          } else if (record.typeOfRecord === 'WORK') {
+          } else if (record.isWork) {
             return `/record/work/view?id=${record.id}`;
           }
           return `/record/couple-work/view?id=${record.id}`;
@@ -42,12 +42,7 @@ export const FilterMobileList = (props: FilterMobileListInterface) => {
         return (
           <ListItem.record
             key={record.id}
-            candidateName={record.candidateName}
-            candidatePhone={record.candidatePhone}
-            id={record.id}
-            nickname={record.nickname}
-            typeOfRecord={record.typeOfRecord}
-            courseNumber={record.courseNumber}
+            {...record}
             womanName={record.recordCouple?.womanName}
             selectedId={openMenuId === record.id}
             handleOpenSubMenu={(id) => toggleMenu(id)}

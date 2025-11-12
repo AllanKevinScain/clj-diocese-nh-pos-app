@@ -1,10 +1,10 @@
 import type ExcelJS from 'exceljs';
 
-import type { RecordFilterType } from '@/types';
+import type { CompleteRecordInterface } from '@/types';
 
 type GenerateCandidatePropsType = {
   workbook: ExcelJS.Worksheet;
-  data: RecordFilterType[];
+  data: CompleteRecordInterface[];
 };
 
 export function generateCandidates(props: GenerateCandidatePropsType) {
