@@ -1,22 +1,30 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import { BiHeart } from 'react-icons/bi';
 import { GiKnifeFork } from 'react-icons/gi';
 import { TbCircleNumber1Filled, TbCircleNumber2Filled } from 'react-icons/tb';
 
 import { Button, DefaultDialog } from '@/components';
+import type { CompleteRecordInterface } from '@/types';
 
-interface AddRecordModalInterface {
+type CutCompleteRecordType = Pick<CompleteRecordInterface, 'courseNumber'>;
+
+interface AddRecordModalInterface extends CutCompleteRecordType {
   isOpen: boolean;
   handleModal: () => void;
-  courseNumber: string;
 }
 
 export const AddRecordModal = (props: AddRecordModalInterface) => {
   const { courseNumber, isOpen, handleModal } = props;
+
   const path = usePathname();
-  const isPosll = path.includes('posll');
+
+  const typeOfRecord = useMemo(() => {
+    if (path.includes('posll')) return 'POSll';
+    return 'POSl';
+  }, [path]);
 
   return (
     <DefaultDialog
@@ -31,20 +39,14 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
         </div>
       }>
       <div className="flex flex-col gap-[12px]">
-        {!isPosll && (
-          <Button
-            isLink
-            className="w-full"
-            href={`/record/posl/register?courseNumber=${courseNumber}`}>
+        {typeOfRecord === 'POSl' && (
+          <Button isLink className="w-full" href={`/courses/${courseNumber}/posl/register`}>
             <TbCircleNumber1Filled />
             Candidato a CLJ l
           </Button>
         )}
-        {isPosll && (
-          <Button
-            isLink
-            className="w-full"
-            href={`/record/posll/register?courseNumber=${courseNumber}`}>
+        {typeOfRecord === 'POSll' && (
+          <Button isLink className="w-full" href={`/courses/${courseNumber}/posll/register`}>
             <TbCircleNumber2Filled />
             Candidato a CLJ ll
           </Button>
@@ -52,14 +54,14 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
         <Button
           isLink
           className="w-full"
-          href={`/record/work/register?courseNumber=${courseNumber}`}>
+          href={`/courses/${courseNumber}/${typeOfRecord?.toLowerCase()}/register?FT=WORK`}>
           <GiKnifeFork />
           Trabalho
         </Button>
         <Button
           isLink
           className="w-full"
-          href={`/record/couple-work/register?courseNumber=${courseNumber}`}>
+          href={`/courses/${courseNumber}/${typeOfRecord?.toLowerCase()}/register?FT=COUPLE`}>
           <BiHeart />
           Casal
         </Button>

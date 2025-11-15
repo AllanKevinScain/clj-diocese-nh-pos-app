@@ -1,7 +1,7 @@
 import type { CompleteRecordInterface, RecordType } from '@/types';
 
 export interface UseRecordsInterface {
-  typeOfRecord: RecordType;
+  typeOfRecord?: RecordType;
   data: CompleteRecordInterface;
 }
 

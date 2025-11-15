@@ -1,25 +1,29 @@
 import * as yup from 'yup';
 
 import { fieldNullIsRequired } from '../helpers';
+import { posDefault } from '../pos-default';
 
-export const reportExportWithFilterSchema = yup.object({
+const CutRecordDefault = posDefault.pick([
+  'parishChapel',
+  'candidateName',
+  'nickname',
+  'birthDate',
+  'candidatePhone',
+  'recordNumber',
+  'typeOfRecord',
+]);
+
+export const reportExportWithFilterSchema = CutRecordDefault.shape({
   courseNumber: yup
     .string()
     .nullable()
     .test({ test: fieldNullIsRequired, message: 'Campo obrigatório!' }),
-
-  parishAcronym: yup.string().nullable(),
-  candidateName: yup.string().nullable(),
-  nickname: yup.string().nullable(),
-  birthDate: yup.string().nullable(),
-  candidatePhone: yup.string().nullable(),
-  instagram: yup.string().nullable(),
-  priest: yup.string().nullable(),
-  parishChapel: yup.string().nullable(),
-  recordNumber: yup.string().nullable(),
-  typeOfRecord: yup.mixed<'POSl' | 'POSll' | 'WORK' | 'COUPLE_WORK'>().nullable(),
   search: yup.string().nullable(),
+  instagram: yup.string().nullable(),
 });
+export type ReportExportWithFilterInfertype = yup.InferType<typeof reportExportWithFilterSchema>;
 
 export const filterSchema = reportExportWithFilterSchema.pick(['search']);
+export type SearchFilterInfertype = yup.InferType<typeof filterSchema>;
+
 export const exportWorkTableSchema = reportExportWithFilterSchema.pick(['courseNumber']);

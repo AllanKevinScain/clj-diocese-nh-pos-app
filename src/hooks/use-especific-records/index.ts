@@ -3,21 +3,7 @@ import { usePoslll } from '../use-poslll';
 
 export function useEspecificRecords() {
   const { listPoslll } = usePoslll();
-  const { listAllRecords, listWorkCandidateRecords } = useListRecords();
-
-  async function listWorkRecordsByNumberCourse(courseNumber: string) {
-    return await listAllRecords({
-      courseNumber: courseNumber,
-      typeOfRecord: 'WORK',
-    });
-  }
-
-  async function listCoupleRecordsByNumberCourse(courseNumber: string) {
-    return await listAllRecords({
-      courseNumber: courseNumber,
-      typeOfRecord: 'COUPLE_WORK',
-    });
-  }
+  const { listWorkCandidateRecords } = useListRecords();
 
   async function listCandidatesRecordsByNumberCourse(courseNumber: string) {
     return await listWorkCandidateRecords({
@@ -30,8 +16,6 @@ export function useEspecificRecords() {
 
   return {
     listPoslll,
-    listWorkRecordsByNumberCourse,
-    listCoupleRecordsByNumberCourse,
     listCandidatesRecordsByNumberCourse,
   };
 }

@@ -9,7 +9,12 @@ export async function POST(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = (await request.json()) as CoupleSchemaInfertype;
-  const { typeOfRecord: _, ...rest } = body;
+  const {
+    typeOfRecord: _typeOfRecord,
+    updatedAt: _updatedAt,
+    createdAt: _createdAt,
+    ...rest
+  } = body;
 
   const res = await fetch(`${process.env.BASE_API_URL}/records/posll`, {
     method: 'POST',
@@ -37,7 +42,13 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = (await request.json()) as Partial<CoupleSchemaInfertype>;
-  const { typeOfRecord: _, id, ...rest } = body;
+  const {
+    typeOfRecord: _typeOfRecord,
+    updatedAt: _updatedAt,
+    createdAt: _createdAt,
+    id,
+    ...rest
+  } = body;
 
   if (isEmpty(id)) throw new Error('Precisa de identificação!');
 

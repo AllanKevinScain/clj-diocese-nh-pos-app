@@ -50,7 +50,7 @@ export const courseSchema = yup.object().shape({
     .mixed<'POSl' | 'POSll' | 'POSlll'>()
     .oneOf(['POSl', 'POSll', 'POSlll'], 'Valor inválido')
     .required('Campo obrigatório!'),
-  courseNumber: yup.string().required('Campo obrigatório!'),
+  courseNumber: yup.string(),
 
   base: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
   auxiliar: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),

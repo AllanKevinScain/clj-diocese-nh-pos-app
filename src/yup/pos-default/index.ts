@@ -28,7 +28,7 @@ export const posDefault = yup.object({
 
   // Ficha
   typeOfRecord: yup.mixed<'POSl' | 'POSll' | 'POSlll'>().oneOf(['POSl', 'POSll', 'POSlll']),
-  courseNumber: yup.string(),
+  courseNumber: yup.string().nullable(),
   // parishAcronym: yup.string().max(10, 'Máximo de 6 caracteres!').required('Campo Obrigatório !'),
   recordNumber: yup.string().required('Campo Obrigatório!'),
 

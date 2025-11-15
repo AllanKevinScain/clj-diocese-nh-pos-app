@@ -47,17 +47,13 @@ export const WorkForm = (props: WorkFormInterface) => {
   }, []);
 
   const parishValue = useCallback(() => {
-    let value = '';
-
     if (session) {
       const {
-        user: { coName, loginType },
+        user: { coName },
       } = session;
 
-      if (loginType !== 'admin') value = coName;
+      setValue('parishChapel', coName);
     }
-
-    setValue('parishChapel', value);
   }, [session, setValue]);
 
   useEffect(() => {

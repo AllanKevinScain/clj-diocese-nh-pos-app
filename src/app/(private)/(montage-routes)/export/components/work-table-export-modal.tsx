@@ -89,7 +89,7 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
             const auxesponse = response as CourseInferType[];
             return (
               auxesponse.map((course) => ({
-                value: course.courseNumber,
+                value: course.courseNumber || '',
                 label: `Curso Nº ${course.courseNumber}`,
               })) || []
             );

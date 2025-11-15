@@ -4,9 +4,9 @@ import type { Control } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 import type { InferType } from 'yup';
 
-import { DynamicListSelect, Loading, SessionForm } from '@/components';
-import { useCreateQuery, useEspecificRecords } from '@/hooks';
-import type { FilterRecordsType } from '@/types';
+// import { DynamicListSelect, Loading, SessionForm } from '@/components';
+// import { useCreateQuery, useEspecificRecords } from '@/hooks';
+// import type { FilterRecordsType } from '@/types';
 import type { backgroundTableSchema } from '@/yup';
 
 type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
@@ -17,20 +17,22 @@ interface KitchenInterface {
 }
 
 export const Kitchen = (props: KitchenInterface) => {
-  const { courseNumber, control } = props;
+  const {
+    /* courseNumber, control */
+  } = props;
 
-  const { listWorkRecordsByNumberCourse } = useEspecificRecords();
+  // const { listWorkRecordsByNumberCourse } = useEspecificRecords();
 
-  const { data, isLoading } = useCreateQuery<FilterRecordsType>({
-    queryFn: () => listWorkRecordsByNumberCourse(courseNumber),
-    queryKey: [`work-records-${courseNumber}`],
-  });
+  // const { data, isLoading } = useCreateQuery<FilterRecordsType>({
+  //   queryFn: () => listWorkRecordsByNumberCourse(courseNumber),
+  //   queryKey: [`work-records-${courseNumber}`],
+  // });
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
   return (
     <div className={twMerge('flex flex-col gap-[16px]', 'w-full pb-[10%]')}>
-      <SessionForm title="Copa:">
+      {/* <SessionForm title="Copa:">
         <DynamicListSelect
           control={control}
           id="copeWorkRecords"
@@ -68,7 +70,7 @@ export const Kitchen = (props: KitchenInterface) => {
             })) || []
           }
         />
-      </SessionForm>
+      </SessionForm> */}
     </div>
   );
 };

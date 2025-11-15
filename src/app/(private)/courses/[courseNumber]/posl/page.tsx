@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
 
-import { CourseClientPage } from './client-page';
+import { CoursePoslClientPage } from './client-page';
 
 interface CoursePageInterface {
   params: Promise<{ courseNumber: string }>;
@@ -17,9 +17,10 @@ export default async function CoursePagePosl(props: CoursePageInterface) {
   const session = await getServerSession(authOptions);
 
   return (
-    <CourseClientPage
+    <CoursePoslClientPage
       courseNumber={courseNumber}
       courseId={session?.user.loginType === 'admin' ? courseId : undefined}
+      typeOfRecord="POSl"
     />
   );
 }

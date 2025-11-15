@@ -1,7 +1,7 @@
 'use client';
 
 import type { Session } from 'next-auth';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { type FieldErrors, useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -28,7 +28,7 @@ export interface PosllFormInterface {
 export const PosllForm = (props: PosllFormInterface) => {
   const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit } = useFormContext<PosllSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<PosllSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {
@@ -44,18 +44,19 @@ export const PosllForm = (props: PosllFormInterface) => {
     });
   }, []);
 
-  const parishValue = useMemo(() => {
+  const parishValue = useCallback(() => {
     if (session) {
       const {
-        user: { coName, loginType },
+        user: { coName },
       } = session;
 
-      if (loginType === 'admin') return '';
-
-      return coName;
+      setValue('parishChapel', coName);
     }
-    return '';
-  }, [session]);
+  }, [session, setValue]);
+
+  useEffect(() => {
+    parishValue();
+  }, [parishValue]);
 
   return (
     <Container>
@@ -98,7 +99,6 @@ export const PosllForm = (props: PosllFormInterface) => {
             label="Sigla do grupo"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-            value={parishValue}
           />
         </SessionForm>
 

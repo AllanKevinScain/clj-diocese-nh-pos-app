@@ -57,14 +57,6 @@ export default function RegisterCoursePage() {
           ]}
         />
 
-        <FieldDefault
-          id="courseNumber"
-          control={control}
-          label="Número do curso"
-          type="number"
-          maxLength={4}
-        />
-
         <SelectWithQuery
           control={control}
           label="Coordenador(a)"

@@ -10,15 +10,11 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 import type { ActionButtonTypes } from '@/components';
 import { AcceptModal, ControlButtons } from '@/components';
 import { useRecords, useToggleModal } from '@/hooks';
-import type { RecordType } from '@/types';
+import type { CompleteRecordInterface } from '@/types';
 
-interface EditRecordBottomBarInterface {
-  recordId: string;
-  typeOfRecord: RecordType;
-}
+type EditRecordBottomBarInterface = Pick<CompleteRecordInterface, 'id' | 'typeOfRecord'>;
 
 export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
-  const { recordId, typeOfRecord } = props;
   const navigate = useRouter();
   const { data: dataSession } = useSession();
   const { deleteRecordById } = useRecords();
@@ -36,7 +32,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
     if (dataSession?.user.loginType === 'admin') {
       return [
         {
-          label: 'Excluir',
+          label: 'Desativar',
           icon: <BiTrash size={40} />,
           url: '',
           click: () => handle(),
@@ -48,7 +44,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
   }, [dataSession?.user.loginType, handle, navigate]);
 
   const deleteRecord = useCallback(async () => {
-    const response = await deleteRecordById(recordId, typeOfRecord);
+    const response = await deleteRecordById(props);
 
     if (!response?.ok) {
       toast.error(response.data.message);
@@ -56,7 +52,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
       toast.success(response.data.message);
       navigate.push('/courses');
     }
-  }, [deleteRecordById, navigate, recordId, typeOfRecord]);
+  }, [deleteRecordById, navigate, props]);
 
   return (
     <>

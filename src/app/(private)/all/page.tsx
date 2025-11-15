@@ -2,22 +2,19 @@
 
 import { useForm, useWatch } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
-import type * as yup from 'yup';
 
 import { Button, Container, FieldDefault, Loading } from '@/components';
 import { useCreateQuery, useDevice, useListRecords } from '@/hooks';
 import type { FilterRecordsType } from '@/types';
-import type { filterSchema } from '@/yup';
+import type { SearchFilterInfertype } from '@/yup';
 
 import { FilterMobileList, FilterTable } from './components';
-
-export type FilterRecordsSchemaInfertype = yup.InferType<typeof filterSchema>;
 
 export default function DownloadExcelArchives() {
   const { listAllRecords } = useListRecords();
   const isMobile = useDevice({ breakpoint: 768 });
 
-  const methods = useForm<FilterRecordsSchemaInfertype>({
+  const methods = useForm<SearchFilterInfertype>({
     defaultValues: {
       search: null,
     },

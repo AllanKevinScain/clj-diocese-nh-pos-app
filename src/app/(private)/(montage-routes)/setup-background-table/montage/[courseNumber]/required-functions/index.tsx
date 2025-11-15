@@ -4,9 +4,9 @@ import type { Control } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 import type { InferType } from 'yup';
 
-import { SelectWithQuery, SessionForm } from '@/components';
-import { useEspecificRecords } from '@/hooks';
-import type { FilterRecordsType } from '@/types';
+// import { SelectWithQuery, SessionForm } from '@/components';
+// import { useEspecificRecords } from '@/hooks';
+// import type { FilterRecordsType } from '@/types';
 import type { backgroundTableSchema } from '@/yup';
 
 type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
@@ -17,9 +17,11 @@ interface RequiredFunctionsInterface {
 }
 
 export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
-  const { courseNumber, control } = props;
+  const {
+    /* courseNumber, control */
+  } = props;
 
-  const { listCoupleRecordsByNumberCourse, listWorkRecordsByNumberCourse } = useEspecificRecords();
+  // const { listCoupleRecordsByNumberCourse, listWorkRecordsByNumberCourse } = useEspecificRecords();
 
   return (
     <div className={twMerge('flex flex-col gap-[16px]', 'w-full pb-[10%]')}>
@@ -65,7 +67,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
         />
       </SessionForm> */}
 
-      <SessionForm title="Mesa de fundo:">
+      {/* <SessionForm title="Mesa de fundo:">
         <SelectWithQuery
           control={control}
           label="Casal bem estar"
@@ -79,7 +81,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
             }));
           }}
         />
-        {/* <SelectWithQuery
+        <SelectWithQuery
           control={control}
           label="Casal coordenador de cozinha"
           id="coupleKitchenCoordinator"
@@ -130,7 +132,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
               value: item.id ?? '',
             }));
           }}
-        /> */}
+        /> 
         <SelectWithQuery
           control={control}
           label="Auxiliar de liturgia"
@@ -183,7 +185,7 @@ export const RequiredFunctions = (props: RequiredFunctionsInterface) => {
             }));
           }}
         />
-      </SessionForm>
+      </SessionForm>*/}
     </div>
   );
 };

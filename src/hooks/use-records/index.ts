@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
-import type { RecordType } from '@/types';
+import type { CompleteRecordInterface } from '@/types';
 import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
@@ -14,6 +14,8 @@ import type {
   CallRecordReturnInterface,
   UseRecordsInterface,
 } from './use-records.type';
+
+type DeleteRecordByIdPropType = Pick<CompleteRecordInterface, 'id' | 'typeOfRecord'>;
 
 export function useRecords() {
   const router = useRouter();
@@ -100,26 +102,23 @@ export function useRecords() {
       } else {
         toast.success(e.data.message);
         if (e.data.data && dataSession?.user.loginType === 'manager') {
-          const recordType = e.data.data.isCoupleWork
-            ? 'couple-work'
-            : e.data.data.typeOfRecord?.toLowerCase();
-
-          router.push(`/record/${recordType}/view?id=${e.data.data.id}`);
+          router.push(`/record/view?id=${e.data.data.id}`);
         } else {
           router.push('/courses');
         }
       }
     },
     onError: (e) => {
+      console.log('🚀 ~ useRecords ~ e:', e);
       toast.error(JSON.stringify(e));
     },
   });
 
   async function editRecord(props: UseRecordsInterface): Promise<CallRecordReturnInterface> {
-    const { typeOfRecord, data } = props;
+    const { data } = props;
 
     try {
-      if (typeOfRecord === 'POSl') {
+      if (data.typeOfRecord === 'POSl') {
         if (data.isWork) {
           const validateData = await workSchema.validate(data, { abortEarly: false });
           return _callRecord({ data: validateData, api: '/api/records/posl/work', method: 'PUT' });
@@ -136,7 +135,7 @@ export function useRecords() {
         await poslSchema.validate(data, { abortEarly: false });
         return _callRecord({ data, api: '/api/records/posl', method: 'PUT' });
       }
-      if (typeOfRecord === 'POSll') {
+      if (data.typeOfRecord === 'POSll') {
         if (data.isWork) {
           const validateData = await workSchema.validate(data, { abortEarly: false });
           return _callRecord({ data: validateData, api: '/api/records/posll/work', method: 'PUT' });
@@ -188,8 +187,9 @@ export function useRecords() {
       toast.error(JSON.stringify(e));
     },
   });
-  async function deleteRecordById(recordId: string, typeOfRecord: RecordType) {
-    const req = await fetch(`/api/records?recordId=${recordId}&typeOfRecord=${typeOfRecord}`, {
+  async function deleteRecordById(props: DeleteRecordByIdPropType) {
+    const { id, typeOfRecord } = props;
+    const req = await fetch(`/api/records?recordId=${id}&typeOfRecord=${typeOfRecord}`, {
       method: 'DELETE',
     });
     const res = await req.json();
