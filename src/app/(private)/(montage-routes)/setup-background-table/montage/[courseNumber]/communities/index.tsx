@@ -66,7 +66,7 @@ export const Communities = (props: CommunitiesInterface) => {
         isLoading={isLoading}
         options={
           data?.data.map((item) => {
-            if (item.typeOfRecord === 'COUPLE_WORK') {
+            if (item.isCoupleWork) {
               return {
                 label: `Tios ${item.candidateName} e ${item.recordCouple?.womanName}`,
                 value: item.id ?? '',

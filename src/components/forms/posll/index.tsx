@@ -1,42 +1,34 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import type { Session } from 'next-auth';
+import React, { useCallback, useEffect } from 'react';
 import { type FieldErrors, useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
 import {
   Button,
   Container,
   FieldDefault,
-  FieldSetCheckbox,
   FieldSetConsentCheckbox,
-  FieldSetRadio,
-  FieldTextarea,
   Heading,
   Loading,
   SessionForm,
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { posllSchema } from '@/yup';
-
-import { ConfirmationFields } from './confirmation';
-import { DiseaseFields } from './disease';
-import { MedicationFields } from './medication';
-
-export type PosllSchemaInfertype = InferType<typeof posllSchema>;
+import type { PosllSchemaInfertype } from '@/yup';
 
 export interface PosllFormInterface {
   onSubmit: (_: PosllSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
+  session?: Session;
 }
 
 export const PosllForm = (props: PosllFormInterface) => {
-  const { onSubmit, isDisabled = false, isSending = false } = props;
+  const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit } = useFormContext<PosllSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<PosllSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {
@@ -51,6 +43,20 @@ export const PosllForm = (props: PosllFormInterface) => {
       }
     });
   }, []);
+
+  const parishValue = useCallback(() => {
+    if (session) {
+      const {
+        user: { coName },
+      } = session;
+
+      setValue('parishChapel', coName);
+    }
+  }, [session, setValue]);
+
+  useEffect(() => {
+    parishValue();
+  }, [parishValue]);
 
   return (
     <Container>
@@ -78,13 +84,21 @@ export const PosllForm = (props: PosllFormInterface) => {
             type="number"
             maxLength={2}
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="parishAcronym"
             control={control}
-            label="Sigla da paróquia/capela"
+            label="Sigla do grupo"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={10}
+          /> */}
+          <FieldDefault
+            disabled={session?.user.loginType !== 'admin'}
+            id="parishChapel"
+            control={control}
+            label="Sigla do grupo"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={50}
           />
         </SessionForm>
 
@@ -93,7 +107,7 @@ export const PosllForm = (props: PosllFormInterface) => {
             disabled={isDisabled}
             id="candidateName"
             control={control}
-            label="Nome Cursista"
+            label="Nome"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
           />
@@ -109,41 +123,42 @@ export const PosllForm = (props: PosllFormInterface) => {
             id="candidatePhone"
             control={control}
             onChange={(e) => formatMobilePhone(e)}
-            label="Telefone Cursista"
+            label="Telefone"
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="priest"
             control={control}
             label="Pároco"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+          /> */}
           <FieldDefault
             disabled={isDisabled}
             id="birthDate"
             control={control}
             type="date"
-            label="Data de Nascimento"
+            label="Data de nascimento"
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="instagram"
             control={control}
             label="Instagram"
             maxLength={30}
-          />
-          <FieldDefault
-            disabled={isDisabled}
+          /> */}
+          {/* <FieldDefault
+            disabled={session?.user.loginType !== 'admin'}
             id="parishChapel"
             control={control}
             label="Paróquia/Capela"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+            value={parishValue}
+          /> */}
         </SessionForm>
 
-        <SessionForm title="Consenso ao âmbito do curso:">
+        {/* <SessionForm title="Consenso ao âmbito do curso:">
           <FieldDefault
             disabled={isDisabled}
             id="recordPOSll.courseOneDone"
@@ -193,7 +208,7 @@ export const PosllForm = (props: PosllFormInterface) => {
             control={control}
             label="Você é consciente de que não deve fazer o curso caso não queira perseverar na sua comunidade e no seu grupo?"
             maxLength={50}
-          />
+          /> 
           <FieldSetRadio
             disabled={isDisabled}
             control={control}
@@ -204,9 +219,9 @@ export const PosllForm = (props: PosllFormInterface) => {
               { label: 'Não', value: false },
             ]}
           />
-        </SessionForm>
+        </SessionForm> */}
 
-        <SessionForm title="Sua função na comunidade hoje:">
+        {/*  <SessionForm title="Sua função na comunidade hoje:">
           <FieldDefault
             disabled={isDisabled}
             id="recordPOSll.currentGroupFunction"
@@ -221,9 +236,9 @@ export const PosllForm = (props: PosllFormInterface) => {
             label="Exerce ou já exerceu outra atividade na Paróquia/Capela? Qual?"
             maxLength={100}
           />
-        </SessionForm>
+        </SessionForm> */}
 
-        <SessionForm title="Religiosos:">
+        {/* <SessionForm title="Religiosos:">
           <FieldSetCheckbox
             disabled={isDisabled}
             control={control}
@@ -238,13 +253,13 @@ export const PosllForm = (props: PosllFormInterface) => {
               { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
             ]}
           />
-        </SessionForm>
+        </SessionForm> */}
 
-        <SessionForm title="Crisma:">
+        {/* <SessionForm title="Crisma:">
           <ConfirmationFields isDisabled={isDisabled} />
-        </SessionForm>
+        </SessionForm> */}
 
-        <SessionForm title="Observações:">
+        {/* <SessionForm title="Observações:">
           <FieldTextarea
             disabled={isDisabled}
             id="observationsCoordinator"
@@ -271,7 +286,7 @@ export const PosllForm = (props: PosllFormInterface) => {
             label="Tem algum tipo de alergia (medicamentos, alimentos, etc.)?"
             control={control}
           />
-        </SessionForm>
+        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox

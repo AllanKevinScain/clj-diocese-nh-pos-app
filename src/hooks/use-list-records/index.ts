@@ -1,10 +1,11 @@
 'use client';
 import { isEmpty } from 'lodash';
-import type * as yup from 'yup';
 
-import type { reportExportWithFilterSchema } from '@/yup';
+import type { CompleteRecordInterface } from '@/types';
 
-export type FilterSchemaInfertype = yup.InferType<typeof reportExportWithFilterSchema>;
+export type FilterSchemaInfertype = Partial<
+  Omit<CompleteRecordInterface, 'recordPOSl' | 'recordPOSll' | 'recordWork' | 'recordCouple'>
+> & { search?: string | null };
 
 type FilterListWorkCandidateRecordsType = {
   courseNumber: string;

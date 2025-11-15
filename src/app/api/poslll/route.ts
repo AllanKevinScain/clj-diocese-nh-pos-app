@@ -31,6 +31,7 @@ export async function PUT(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = await request.json();
+  console.log('🚀 ~ PUT ~ body:', body);
 
   const poslllId = request.nextUrl.searchParams.get('poslllId');
   if (!poslllId) throw new Error('Curso não identificado!');

@@ -1,43 +1,36 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import type { Session } from 'next-auth';
+import React, { useCallback, useEffect } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
-import type { InferType } from 'yup';
 
 import {
   Button,
   Container,
   FieldDefault,
-  FieldSetCheckbox,
   FieldSetConsentCheckbox,
-  FieldSetRadio,
-  FieldTextarea,
   Heading,
   Loading,
   SessionForm,
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { workSchema } from '@/yup';
-
-import { ConfirmationFields } from './confirmation';
-import { InstrumentFields } from './instrument';
-
-export type WorkSchemaInfertype = InferType<typeof workSchema>;
+import type { WorkSchemaInfertype } from '@/yup';
 
 export interface WorkFormInterface {
   onSubmit: (_: WorkSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
+  session?: Session;
 }
 
 export const WorkForm = (props: WorkFormInterface) => {
-  const { onSubmit, isDisabled = false, isSending = false } = props;
+  const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit } = useFormContext<WorkSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<WorkSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {
@@ -52,6 +45,20 @@ export const WorkForm = (props: WorkFormInterface) => {
       }
     });
   }, []);
+
+  const parishValue = useCallback(() => {
+    if (session) {
+      const {
+        user: { coName },
+      } = session;
+
+      setValue('parishChapel', coName);
+    }
+  }, [session, setValue]);
+
+  useEffect(() => {
+    parishValue();
+  }, [parishValue]);
 
   return (
     <Container>
@@ -79,13 +86,21 @@ export const WorkForm = (props: WorkFormInterface) => {
             type="number"
             maxLength={2}
           />
-          <FieldDefault
+          {/* <FieldDefault
             id="parishAcronym"
             disabled={isDisabled}
             control={control}
             label="Sigla da paróquia/capela"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={10}
+          /> */}
+          <FieldDefault
+            disabled={session?.user.loginType !== 'admin'}
+            id="parishChapel"
+            control={control}
+            label="Sigla do grupo"
+            onChange={(e) => e.replace(/[0-9]/g, '')}
+            maxLength={50}
           />
         </SessionForm>
 
@@ -110,24 +125,24 @@ export const WorkForm = (props: WorkFormInterface) => {
             disabled={isDisabled}
             control={control}
             onChange={(e) => formatMobilePhone(e)}
-            label="Telefone Cursista"
+            label="Telefone"
           />
-          <FieldDefault
+          {/* <FieldDefault
             id="priest"
             disabled={isDisabled}
             control={control}
             label="Pároco"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+          /> */}
           <FieldDefault
-            id="birthDate"
             disabled={isDisabled}
+            id="birthDate"
             control={control}
             type="date"
-            label="Data de Nascimento"
+            label="Data de nascimento"
           />
-          <FieldDefault
+          {/* <FieldDefault
             id="instagram"
             disabled={isDisabled}
             control={control}
@@ -135,16 +150,17 @@ export const WorkForm = (props: WorkFormInterface) => {
             maxLength={30}
           />
           <FieldDefault
+            disabled={session?.user.loginType !== 'admin'}
             id="parishChapel"
-            disabled={isDisabled}
             control={control}
             label="Paróquia/Capela"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+            value={parishValue}
+          /> */}
         </SessionForm>
 
-        <SessionForm title="Outras Informações:">
+        {/* <SessionForm title="Outras Informações:">
           <FieldDefault
             id="recordWork.courseOneDone"
             disabled={isDisabled}
@@ -303,7 +319,7 @@ export const WorkForm = (props: WorkFormInterface) => {
             label="Observação do Diretor Espiritual Paroquial"
             maxLength={200}
           />
-        </SessionForm>
+        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox

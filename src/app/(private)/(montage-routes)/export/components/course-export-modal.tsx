@@ -6,17 +6,13 @@ import { saveAs } from 'file-saver';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type * as yup from 'yup';
 
 import { Button, DefaultDialog, FieldDefault, Heading } from '@/components';
 import { formatMobilePhone } from '@/helpers';
 import { useListRecords } from '@/hooks';
 import type { FilterRecordsType } from '@/types';
+import type { ReportExportWithFilterInfertype } from '@/yup';
 import { reportExportWithFilterSchema } from '@/yup';
-
-type ReportExportWithFilterSchemaSchemaInfertype = yup.InferType<
-  typeof reportExportWithFilterSchema
->;
 
 interface CourseModalExportInterface {
   isOpen: boolean;
@@ -29,24 +25,23 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
 
   const [isBuildingArchive, setBuildingArchive] = useState(false);
 
-  const { control, reset, handleSubmit } = useForm<ReportExportWithFilterSchemaSchemaInfertype>({
+  const { control, reset, handleSubmit } = useForm<ReportExportWithFilterInfertype>({
     resolver: yupResolver(reportExportWithFilterSchema),
     defaultValues: {
-      courseNumber: null,
-      parishAcronym: null,
-      candidateName: null,
-      nickname: null,
-      birthDate: null,
-      candidatePhone: null,
-      instagram: null,
-      priest: null,
-      parishChapel: null,
-      recordNumber: null,
-      search: null,
+      courseNumber: undefined,
+      candidateName: undefined,
+      nickname: undefined,
+      birthDate: undefined,
+      candidatePhone: undefined,
+      parishChapel: undefined,
+      recordNumber: undefined,
+      search: undefined,
+      instagram: undefined,
+      typeOfRecord: undefined,
     },
   });
 
-  async function generateArchive(values: ReportExportWithFilterSchemaSchemaInfertype) {
+  async function generateArchive(values: ReportExportWithFilterInfertype) {
     setBuildingArchive(true);
     try {
       const allRecordsResponse = await listAllRecords(values);
@@ -64,7 +59,6 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
           { header: 'Apelido', key: 'nickname', width: 20 },
           { header: 'Instagram', key: 'instagram', width: 20 },
           { header: 'Data Nascimento', key: 'birthDate', width: 35 },
-          { header: 'Sigla Grupo', key: 'parishAcronym', width: 12 },
           { header: 'Paróquia/Capela', key: 'parishChapel', width: 35 },
         ];
 
@@ -145,23 +139,9 @@ export const CourseModalExport = (props: CourseModalExportInterface) => {
           maxLength={2}
         />
         <FieldDefault
-          id="parishAcronym"
-          control={control}
-          label="Sigla do grupo"
-          onChange={(e) => e.replace(/[0-9]/g, '')}
-          maxLength={10}
-        />
-        <FieldDefault
           id="parishChapel"
           control={control}
           label="Paróquia/Capela"
-          onChange={(e) => e.replace(/[0-9]/g, '')}
-          maxLength={50}
-        />
-        <FieldDefault
-          id="priest"
-          control={control}
-          label="Pároco"
           onChange={(e) => e.replace(/[0-9]/g, '')}
           maxLength={50}
         />

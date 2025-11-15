@@ -1,14 +1,15 @@
 'use client';
 
-import { useFormContext, useWatch } from 'react-hook-form';
+// import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FieldDefault } from '@/components/field-default';
-import { FieldSetRadio } from '@/components/field-set-radio';
+// import { FieldDefault } from '@/components/field-default';
+// import { FieldSetRadio } from '@/components/field-set-radio';
+// import type { WorkSchemaInfertype } from '@/yup';
 
-import type { WorkFormInterface, WorkSchemaInfertype } from '.';
+// import type { WorkFormInterface } from '.';
 
-export const InstrumentFields = (props: Pick<WorkFormInterface, 'isDisabled'>) => {
-  const { isDisabled } = props;
+export const InstrumentFields = (/* props: Pick<WorkFormInterface, 'isDisabled'> */) => {
+  /* const { isDisabled } = props;
 
   const { control, setValue } = useFormContext<WorkSchemaInfertype>();
 
@@ -42,5 +43,7 @@ export const InstrumentFields = (props: Pick<WorkFormInterface, 'isDisabled'>) =
         />
       )}
     </>
-  );
+  ); */
+
+  return <></>;
 };

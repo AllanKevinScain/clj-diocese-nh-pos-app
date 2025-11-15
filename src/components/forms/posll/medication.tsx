@@ -1,15 +1,15 @@
 'use client';
 
-import { isEmpty } from 'lodash';
-import { useFormContext, useWatch } from 'react-hook-form';
+// import { isEmpty } from 'lodash';
+// import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FieldDefault } from '@/components/field-default';
-import { FieldSetRadio } from '@/components/field-set-radio';
+// import { FieldDefault } from '@/components/field-default';
+// import { FieldSetRadio } from '@/components/field-set-radio';
 
-import type { PosllFormInterface, PosllSchemaInfertype } from '.';
+// import type { PosllFormInterface } from '.';
 
-export const MedicationFields = (props: Pick<PosllFormInterface, 'isDisabled'>) => {
-  const { isDisabled } = props;
+export const MedicationFields = (/* props: Pick<PosllFormInterface, 'isDisabled'> */) => {
+  /* const { isDisabled } = props;
 
   const { control, setValue } = useFormContext<PosllSchemaInfertype>();
 
@@ -48,5 +48,5 @@ export const MedicationFields = (props: Pick<PosllFormInterface, 'isDisabled'>) 
         />
       )}
     </>
-  );
+  ); */
 };

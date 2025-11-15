@@ -18,8 +18,17 @@ type CustomInputInterfaceWithDisplayInterface = {
 };
 
 export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInterface<T>) => {
-  const { control, id, defaultValue, placeholder, disabled, onChangeValue, label, ...restProps } =
-    props;
+  const {
+    control,
+    id,
+    defaultValue,
+    placeholder,
+    disabled,
+    onChangeValue,
+    label,
+    value: outSideValue,
+    ...restProps
+  } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [type, setType] = useState(restProps.type ?? 'text');
 
@@ -38,10 +47,16 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
     <Controller
       name={id}
       control={control}
-      defaultValue={defaultValue as PathValue<T, Path<T>>}
+      defaultValue={(outSideValue ? outSideValue : defaultValue) as PathValue<T, Path<T>>}
       render={({ field, fieldState: { error } }) => {
         const hasError = !!error?.message;
         const { value, onChange, ref, ...restField } = field;
+
+        function currCValue() {
+          if (outSideValue) return outSideValue;
+          if (!isEmpty(value)) return value;
+          return '';
+        }
 
         return (
           <Field className={twMerge('w-full', 'flex flex-col gap-[6px]')}>
@@ -69,7 +84,7 @@ export const FieldDefault = memo(<T extends FieldValues>(props: FieldDefaultInte
                   onChange(formated);
                 }}
                 type={type}
-                value={isEmpty(value) ? '' : value}
+                value={currCValue()}
                 disabled={disabled}
                 placeholder={placeholder ?? 'Digite aqui'}
                 className={twMerge(

@@ -1,13 +1,14 @@
 'use client';
 
-import { useFormContext, useWatch } from 'react-hook-form';
+// import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FieldSetRadio } from '@/components/field-set-radio';
+// import { FieldSetRadio } from '@/components/field-set-radio';
+// import type { CoupleSchemaInfertype } from '@/yup';
 
-import type { CoupleFormInterface, CoupleSchemaInfertype } from '.';
+// import type { CoupleFormInterface } from '.';
 
-export const WorkPreferenceFields = (props: Pick<CoupleFormInterface, 'isDisabled'>) => {
-  const { isDisabled } = props;
+export const WorkPreferenceFields = (/* props: Pick<CoupleFormInterface, 'isDisabled'> */) => {
+  /* const { isDisabled } = props;
 
   const { control, setValue } = useFormContext<CoupleSchemaInfertype>();
 
@@ -60,5 +61,7 @@ export const WorkPreferenceFields = (props: Pick<CoupleFormInterface, 'isDisable
         </>
       )}
     </>
-  );
+  ); */
+
+  return <></>;
 };

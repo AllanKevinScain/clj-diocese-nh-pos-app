@@ -30,28 +30,14 @@ export const FilterMobileList = (props: FilterMobileListInterface) => {
   return (
     <div className={twMerge('flex flex-col gap-[16px]', 'overflow-auto')}>
       {list.data.map((record) => {
-        function url() {
-          if (record.typeOfRecord === 'POSl' || record.typeOfRecord === 'POSll') {
-            return `/record/${record.typeOfRecord?.toLocaleLowerCase()}/view?id=${record.id}`;
-          } else if (record.typeOfRecord === 'WORK') {
-            return `/record/work/view?id=${record.id}`;
-          }
-          return `/record/couple-work/view?id=${record.id}`;
-        }
-
         return (
           <ListItem.record
             key={record.id}
-            candidateName={record.candidateName}
-            candidatePhone={record.candidatePhone}
-            id={record.id}
-            nickname={record.nickname}
-            typeOfRecord={record.typeOfRecord}
-            courseNumber={record.courseNumber}
+            {...record}
             womanName={record.recordCouple?.womanName}
             selectedId={openMenuId === record.id}
             handleOpenSubMenu={(id) => toggleMenu(id)}
-            urlViewRecord={url()}
+            urlViewRecord={`/record/view?id=${record.id}`}
           />
         );
       })}

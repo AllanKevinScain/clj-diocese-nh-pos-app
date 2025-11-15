@@ -3,7 +3,7 @@ import type { Control, ControllerRenderProps, FieldValues, Path } from 'react-ho
 
 type InputPropsType = ComponentProps<'input'>;
 
-type OmitedInputType = Omit<InputPropsType, 'value' | 'onChange' | 'defaultValue'>;
+type OmitedInputType = Omit<InputPropsType, 'onChange' | 'defaultValue'>;
 interface ComumInputsPropertiesInterface<T extends FieldValues> extends OmitedInputType {
   id: Path<T>;
   field: ControllerRenderProps<T, Path<T>>;

@@ -3,32 +3,21 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import type { InferType } from 'yup';
 
-import { posllSchema } from '@/yup';
+import type { posllSchema } from '@/yup';
 
 type PosllSchemaInfertype = InferType<typeof posllSchema>;
 
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
-  const body = (await request.json()) as PosllSchemaInfertype;
 
-  const typedBody = posllSchema.omit([
-    'takesMedication',
-    'hasDisease',
-    'createdAt',
-    'updatedAt',
-    'typeOfRecord',
-    'recordId',
-  ]);
-  const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { dataConsent, candidatePhone, recordPOSll, ...resBody } = parsed;
-  const { hasConfirmation: _, ...restRecordPOSll } = recordPOSll;
-  const formatedBody = {
-    ...resBody,
-    recordPOSll: restRecordPOSll,
-    dataConsent: Boolean(dataConsent),
-    candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
-  };
+  const body = (await request.json()) as PosllSchemaInfertype;
+  const {
+    typeOfRecord: _typeOfRecord,
+    updatedAt: _updatedAt,
+    createdAt: _createdAt,
+    ...rest
+  } = body;
 
   const res = await fetch(`${process.env.BASE_API_URL}/records/posll`, {
     method: 'POST',
@@ -36,7 +25,7 @@ export async function POST(request: NextRequest) {
       Authorization: `Bearer ${token?.accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(formatedBody),
+    body: JSON.stringify(rest),
   });
 
   const data = await res.json();
@@ -49,25 +38,15 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
-  const body = (await request.json()) as PosllSchemaInfertype;
 
-  const typedBody = posllSchema.omit([
-    'takesMedication',
-    'hasDisease',
-    'createdAt',
-    'updatedAt',
-    'typeOfRecord',
-    'recordId',
-  ]);
-  const parsed = await typedBody.validate(body, { stripUnknown: true });
-  const { id, dataConsent, candidatePhone, recordPOSll, ...resRecord } = parsed;
-  const { hasConfirmation: _, ...restRecordPOSll } = recordPOSll;
-  const formatedBody = {
-    ...resRecord,
-    recordPOSll: restRecordPOSll,
-    dataConsent: Boolean(dataConsent),
-    candidatePhone: candidatePhone.replace(/[^\d]/g, ''),
-  };
+  const body = (await request.json()) as PosllSchemaInfertype;
+  const {
+    typeOfRecord: _typeOfRecord,
+    updatedAt: _updatedAt,
+    createdAt: _createdAt,
+    id,
+    ...rest
+  } = body;
 
   if (isEmpty(id)) throw new Error('Precisa de identificação!');
 
@@ -77,7 +56,7 @@ export async function PUT(request: NextRequest) {
       Authorization: `Bearer ${token?.accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(formatedBody),
+    body: JSON.stringify(rest),
   });
 
   const data = await res.json();

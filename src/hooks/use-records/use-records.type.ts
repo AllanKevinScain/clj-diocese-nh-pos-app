@@ -1,15 +1,22 @@
-import type { RecordFilterType, RecordType } from '@/types';
+import type { CompleteRecordInterface, RecordType } from '@/types';
 
 export interface UseRecordsInterface {
-  typeOfRecord: RecordType;
-  data: unknown;
+  typeOfRecord?: RecordType;
+  data: CompleteRecordInterface;
 }
 
-export interface CallRecordInterface extends Pick<UseRecordsInterface, 'data'> {
+export interface CallRecordInterface {
   method: 'POST' | 'PUT';
-  api: '/api/records/posl' | '/api/records/posll' | '/api/records/work' | '/api/records/couple';
+  api:
+    | '/api/records/posl'
+    | '/api/records/posll'
+    | '/api/records/posl/work'
+    | '/api/records/posl/couple'
+    | '/api/records/posll/work'
+    | '/api/records/posll/couple';
+  data: unknown;
 }
 export interface CallRecordReturnInterface {
   ok?: boolean;
-  data: { message: string; data?: RecordFilterType };
+  data: { message: string; data?: CompleteRecordInterface };
 }

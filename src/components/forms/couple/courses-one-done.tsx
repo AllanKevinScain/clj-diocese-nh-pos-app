@@ -1,14 +1,15 @@
 'use client';
 
-import { useFormContext, useWatch } from 'react-hook-form';
+// import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FieldSetRadio } from '@/components/field-set-radio';
-import { FieldTextarea } from '@/components/field-text-area';
+// import { FieldSetRadio } from '@/components/field-set-radio';
+// import { FieldTextarea } from '@/components/field-text-area';
+// import type { CoupleSchemaInfertype } from '@/yup';
 
-import type { CoupleFormInterface, CoupleSchemaInfertype } from '.';
+// import type { CoupleFormInterface } from '.';
 
-export const CoursesOneDoneFields = (props: Pick<CoupleFormInterface, 'isDisabled'>) => {
-  const { isDisabled } = props;
+export const CoursesOneDoneFields = (/* props: Pick<CoupleFormInterface, 'isDisabled'> */) => {
+  /* const { isDisabled } = props;
 
   const { control, setValue } = useFormContext<CoupleSchemaInfertype>();
 
@@ -42,5 +43,7 @@ export const CoursesOneDoneFields = (props: Pick<CoupleFormInterface, 'isDisable
         />
       )}
     </>
-  );
+  ); */
+
+  return <></>;
 };

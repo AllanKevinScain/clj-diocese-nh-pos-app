@@ -2,7 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import {
@@ -17,14 +17,17 @@ import { useCreateQuery, usePoslll, useUsers } from '@/hooks';
 import type { PoslllSchemaInferType } from '@/yup';
 import { poslllSchema } from '@/yup';
 
+import { CoupleField } from './components';
+
 export default function RegisterPoslllPage() {
   const navigate = useRouter();
   const { registerPoslll } = usePoslll();
   const { listParishes } = useUsers();
 
-  const { handleSubmit, control } = useForm<PoslllSchemaInferType>({
+  const methods = useForm<PoslllSchemaInferType>({
     resolver: yupResolver(poslllSchema),
   });
+  const { handleSubmit, control } = methods;
 
   const { data: parishes } = useCreateQuery({
     queryKey: ['list-parishes'],
@@ -46,48 +49,52 @@ export default function RegisterPoslllPage() {
     <Container>
       <Heading as="h2">Cadastrar CLJ lll</Heading>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
-        <FieldDefault id="candidateName" control={control} label="Nome" />
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
+          <FieldDefault id="candidateName" control={control} label="Nome" />
 
-        <SelectDefault
-          id="parishChapel"
-          control={control}
-          label="Paróquia/Capela"
-          options={parishes?.data || []}
-        />
+          <CoupleField />
 
-        <FieldDefault id="instagram" control={control} label="Instagram" />
-
-        <div className="flex items-start gap-[10px]">
-          <FieldDefault
-            id="courseOne"
+          <SelectDefault
+            id="parishChapel"
             control={control}
-            label="Curso CLJ 1 que fez"
-            type="number"
-            maxLength={4}
+            label="Paróquia/Capela"
+            options={parishes?.data || []}
           />
-          <FieldDefault
-            id="courseTwo"
-            control={control}
-            label="Curso CLJ 2 que fez"
-            type="number"
-            maxLength={4}
-          />
-          <FieldDefault
-            id="courseThree"
-            control={control}
-            label="Curso CLJ 3 que fez"
-            type="number"
-            maxLength={4}
-          />
-        </div>
 
-        <FieldTextarea id="formations" control={control} label="Formações" />
+          <FieldDefault id="instagram" control={control} label="Instagram" />
 
-        <Button type="submit" className="w-full">
-          Cadastrar
-        </Button>
-      </form>
+          <div className="flex items-start gap-[10px]">
+            <FieldDefault
+              id="courseOne"
+              control={control}
+              label="Curso CLJ 1 que fez"
+              type="number"
+              maxLength={4}
+            />
+            <FieldDefault
+              id="courseTwo"
+              control={control}
+              label="Curso CLJ 2 que fez"
+              type="number"
+              maxLength={4}
+            />
+            <FieldDefault
+              id="courseThree"
+              control={control}
+              label="Curso CLJ 3 que fez"
+              type="number"
+              maxLength={4}
+            />
+          </div>
+
+          <FieldTextarea id="formations" control={control} label="Formações" />
+
+          <Button type="submit" className="w-full">
+            Cadastrar
+          </Button>
+        </form>
+      </FormProvider>
     </Container>
   );
 }

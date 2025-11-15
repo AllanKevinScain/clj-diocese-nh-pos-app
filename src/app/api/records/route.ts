@@ -8,14 +8,12 @@ function parseRecordName(type: string | null) {
   const aux = type as RecordType;
 
   switch (aux) {
-    case 'POSl':
-      return 'posl';
     case 'POSll':
       return 'posll';
-    case 'WORK':
-      return 'work';
+    case 'POSlll':
+      return 'poslll';
     default:
-      return 'couple';
+      return 'posl';
   }
 }
 

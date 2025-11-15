@@ -1,33 +1,25 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import type { Session } from 'next-auth';
+import React, { useCallback, useEffect } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
 import {
   Button,
   Container,
   FieldDefault,
-  FieldSetCheckbox,
   FieldSetConsentCheckbox,
   FieldSetRadio,
-  FieldTextarea,
   Heading,
   Loading,
   SessionForm,
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { poslSchema } from '@/yup';
+import type { PoslSchemaInfertype } from '@/yup';
 
-import { DiseaseFields } from './disease';
-import { MedicationFields } from './medication';
-import { ParentsFields } from './parents';
-import { ParentsReligionFields } from './parentsReligion';
-
-export type PoslSchemaInfertype = InferType<typeof poslSchema>;
 type PoslSchemaFieldType = keyof PoslSchemaInfertype;
 
 export interface ClearFieldParamsInteface {
@@ -39,12 +31,13 @@ export interface PoslFormInterface {
   onSubmit: (_: PoslSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
+  session?: Session;
 }
 
 export const PoslForm = (props: PoslFormInterface) => {
-  const { onSubmit, isDisabled = false, isSending = false } = props;
+  const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit } = useFormContext<PoslSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<PoslSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {
@@ -59,6 +52,20 @@ export const PoslForm = (props: PoslFormInterface) => {
       }
     });
   }, []);
+
+  const parishValue = useCallback(() => {
+    if (session) {
+      const {
+        user: { coName },
+      } = session;
+
+      setValue('parishChapel', coName);
+    }
+  }, [session, setValue]);
+
+  useEffect(() => {
+    parishValue();
+  }, [parishValue]);
 
   return (
     <Container>
@@ -87,12 +94,12 @@ export const PoslForm = (props: PoslFormInterface) => {
             maxLength={2}
           />
           <FieldDefault
-            disabled={isDisabled}
-            id="parishAcronym"
+            disabled={session?.user.loginType !== 'admin'}
+            id="parishChapel"
             control={control}
-            label="Sigla da paróquia/capela"
+            label="Sigla do grupo"
             onChange={(e) => e.replace(/[0-9]/g, '')}
-            maxLength={10}
+            maxLength={50}
           />
         </SessionForm>
 
@@ -101,7 +108,7 @@ export const PoslForm = (props: PoslFormInterface) => {
             disabled={isDisabled}
             id="candidateName"
             control={control}
-            label="Nome Cursista"
+            label="Nome"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
           />
@@ -117,38 +124,30 @@ export const PoslForm = (props: PoslFormInterface) => {
             id="candidatePhone"
             control={control}
             onChange={(e) => formatMobilePhone(e)}
-            label="Telefone Cursista"
+            label="Telefone"
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="priest"
             control={control}
             label="Pároco"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
-          />
+          /> */}
           <FieldDefault
             disabled={isDisabled}
             id="birthDate"
             control={control}
             type="date"
-            label="Data de Nascimento"
+            label="Data de nascimento"
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="instagram"
             control={control}
             label="Instagram"
             maxLength={30}
-          />
-          <FieldDefault
-            disabled={isDisabled}
-            id="parishChapel"
-            control={control}
-            label="Paróquia/Capela"
-            onChange={(e) => e.replace(/[0-9]/g, '')}
-            maxLength={50}
-          />
+          /> */}
         </SessionForm>
 
         <SessionForm title="Padrinho:">
@@ -156,7 +155,7 @@ export const PoslForm = (props: PoslFormInterface) => {
             disabled={isDisabled}
             id="recordPOSl.godfatherName"
             control={control}
-            label="Nome Padrinho"
+            label="Nome do padrinho"
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
           />
@@ -165,15 +164,15 @@ export const PoslForm = (props: PoslFormInterface) => {
             id="recordPOSl.godfatherPhone"
             control={control}
             onChange={(e) => formatMobilePhone(e)}
-            label="Telefone Padrinho"
+            label="Telefone do padrinho"
           />
-          <FieldDefault
+          {/* <FieldDefault
             disabled={isDisabled}
             id="recordPOSl.godfatherEmail"
             control={control}
             label="Email Padrinho"
-          />
-          <FieldDefault
+          /> */}
+          {/* <FieldDefault
             disabled={isDisabled}
             id="recordPOSl.affinityWithGodfather"
             control={control}
@@ -201,7 +200,7 @@ export const PoslForm = (props: PoslFormInterface) => {
             control={control}
             label="O padrinho sabe que não pode ocultar nada importante nesta ficha?"
             maxLength={50}
-          />
+          /> */}
         </SessionForm>
 
         <SessionForm title="Informações Pessoais:">
@@ -238,7 +237,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               { value: 'totalParticipacao', label: 'Total Participação' },
             ]}
           />
-          <FieldSetRadio
+          {/* <FieldSetRadio
             disabled={isDisabled}
             control={control}
             id="recordPOSl.fatherSituation"
@@ -273,9 +272,10 @@ export const PoslForm = (props: PoslFormInterface) => {
             placeholder="Comentário dos Pais"
             className="border border-neutral-200"
             maxLength={200}
-          />
+          /> */}
         </SessionForm>
 
+        {/* 
         <SessionForm title="Religiosos: ">
           <FieldSetCheckbox
             disabled={isDisabled}
@@ -294,7 +294,7 @@ export const PoslForm = (props: PoslFormInterface) => {
                 confissão religiosa, procurar, junto do pároco, antes do curso, a Profissão de Fé."
           />
         </SessionForm>
-
+        
         <SessionForm title="Observações:">
           <FieldTextarea
             disabled={isDisabled}
@@ -325,7 +325,7 @@ export const PoslForm = (props: PoslFormInterface) => {
             control={control}
             maxLength={100}
           />
-        </SessionForm>
+        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox
