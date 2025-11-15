@@ -18,12 +18,7 @@ interface RegisterRecordWorkClientPageInterface extends CutCompleteRecordType {
 
 const defaultValues: WorkSchemaInfertype = {
   dataConsent: null,
-  // observationsDed: '',
-  // observationsCoordinator: '',
-  // spiritualLife: [],
   parishChapel: '',
-  // priest: '',
-  // instagram: '',
   candidatePhone: '',
   birthDate: '',
   nickname: '',
@@ -31,26 +26,7 @@ const defaultValues: WorkSchemaInfertype = {
   recordNumber: '',
   isWork: true,
   isCoupleWork: false,
-  // parishAcronym: '',
-  recordWork: {
-    // courseOneDone: '',
-    // courseTwoDone: '',
-    // courseThreeDone: '',
-    // workedInWhichCourses: '',
-    // graceStateAwareness: '',
-    // notFalsifyData: null,
-    // showLifeTestimony: '',
-    // currentGroupFunction: '',
-    // parishActivities: '',
-    // instrument: '',
-    // reasonToWork: '',
-    // workPreference: '',
-    // willingToOtherFunction: null,
-    // parishIndication: [],
-    // doingConfirmation: null,
-    // notConfirmationBecause: null,
-    // hasConfirmation: null,
-  },
+  recordWork: {},
 };
 
 export const RegisterRecordWorkClientPage = (props: RegisterRecordWorkClientPageInterface) => {

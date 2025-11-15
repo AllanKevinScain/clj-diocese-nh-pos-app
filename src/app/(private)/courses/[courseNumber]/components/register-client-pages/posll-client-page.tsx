@@ -15,16 +15,8 @@ interface RegisterRecordPosllClientPageInterface {
 }
 
 const defaultValues: PosllSchemaInfertype = {
-  // takesMedication: null,
-  // hasDisease: null,
   dataConsent: null,
-  // allergy: '',
-  // observationsDed: '',
-  // observationsCoordinator: '',
-  // spiritualLife: [],
   parishChapel: '',
-  // priest: '',
-  // instagram: '',
   candidatePhone: '',
   birthDate: '',
   nickname: '',
@@ -32,22 +24,7 @@ const defaultValues: PosllSchemaInfertype = {
   recordNumber: '',
   isWork: false,
   isCoupleWork: false,
-  // parishAcronym: '',
-  recordPOSll: {
-    // doingConfirmation: null,
-    // hasConfirmation: null,
-    // parishChapelActivities: '',
-    // currentGroupFunction: '',
-    // hideImportantInfo: null,
-    // perseveranceInCommunity: '',
-    // commitmentToCLJ: '',
-    // acceptsChurchDoctrine: '',
-    // approachToChrist: '',
-    // reasonForCLJII: '',
-    // motivationToParticipate: '',
-    // courseOneDone: '',
-    // notConfirmationBecause: null,
-  },
+  recordPOSll: {},
 };
 
 export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPageInterface) => {
