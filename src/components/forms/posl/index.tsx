@@ -126,14 +126,6 @@ export const PoslForm = (props: PoslFormInterface) => {
             onChange={(e) => formatMobilePhone(e)}
             label="Telefone"
           />
-          {/* <FieldDefault
-            disabled={isDisabled}
-            id="priest"
-            control={control}
-            label="Pároco"
-            onChange={(e) => e.replace(/[0-9]/g, '')}
-            maxLength={50}
-          /> */}
           <FieldDefault
             disabled={isDisabled}
             id="birthDate"
@@ -141,13 +133,6 @@ export const PoslForm = (props: PoslFormInterface) => {
             type="date"
             label="Data de nascimento"
           />
-          {/* <FieldDefault
-            disabled={isDisabled}
-            id="instagram"
-            control={control}
-            label="Instagram"
-            maxLength={30}
-          /> */}
         </SessionForm>
 
         <SessionForm title="Padrinho:">
@@ -166,41 +151,6 @@ export const PoslForm = (props: PoslFormInterface) => {
             onChange={(e) => formatMobilePhone(e)}
             label="Telefone do padrinho"
           />
-          {/* <FieldDefault
-            disabled={isDisabled}
-            id="recordPOSl.godfatherEmail"
-            control={control}
-            label="Email Padrinho"
-          /> */}
-          {/* <FieldDefault
-            disabled={isDisabled}
-            id="recordPOSl.affinityWithGodfather"
-            control={control}
-            label="A quanto tempo conhece o afilhado(a)?"
-            maxLength={50}
-          />
-          <FieldDefault
-            disabled={isDisabled}
-            id="recordPOSl.attitudeCommunication"
-            control={control}
-            label="Comunicou ao candidato sobre as atitudes que deverá ter na participação do curso?"
-            maxLength={50}
-          />
-          <FieldDefault
-            disabled={isDisabled}
-            id="recordPOSl.doctrineCommunication"
-            control={control}
-            label="Comunicou ao candidato que aceitar participar do curso significa aceitar
-                integralmente a Doutrina da Igreja Católica?"
-            maxLength={50}
-          />
-          <FieldDefault
-            disabled={isDisabled}
-            id="recordPOSl.godfatherResponsibility"
-            control={control}
-            label="O padrinho sabe que não pode ocultar nada importante nesta ficha?"
-            maxLength={50}
-          /> */}
         </SessionForm>
 
         <SessionForm title="Informações Pessoais:">
@@ -237,95 +187,7 @@ export const PoslForm = (props: PoslFormInterface) => {
               { value: 'totalParticipacao', label: 'Total Participação' },
             ]}
           />
-          {/* <FieldSetRadio
-            disabled={isDisabled}
-            control={control}
-            id="recordPOSl.fatherSituation"
-            label="Quanto ao Pai"
-            options={[
-              { value: 'presente', label: 'Presente' },
-              { value: 'falecido', label: 'Falecido' },
-              { value: 'separadoDivorciado', label: 'Separado/Divorciado' },
-              { value: 'padrasto', label: 'Padrasto' },
-            ]}
-          />
-          <FieldSetRadio
-            disabled={isDisabled}
-            control={control}
-            id="recordPOSl.motherSituation"
-            label="Quanto à Mãe"
-            options={[
-              { value: 'presente', label: 'Presente' },
-              { value: 'falecida', label: 'Falecida' },
-              { value: 'separadaDivorciada', label: 'Separada/Divorciada' },
-              { value: 'madrasta', label: 'Madrasta' },
-            ]}
-          />
-          <ParentsFields isDisabled={isDisabled} />
-          <ParentsReligionFields isDisabled={isDisabled} />
-
-          <FieldTextarea
-            id="recordPOSl.parentsComment"
-            label="Comentário dos pais"
-            control={control}
-            disabled={isDisabled}
-            placeholder="Comentário dos Pais"
-            className="border border-neutral-200"
-            maxLength={200}
-          /> */}
         </SessionForm>
-
-        {/* 
-        <SessionForm title="Religiosos: ">
-          <FieldSetCheckbox
-            disabled={isDisabled}
-            control={control}
-            id="spiritualLife"
-            label="Sacramentos"
-            options={[
-              { id: 'batismo', label: 'Batismo' },
-              { id: 'comumhao', label: 'Comunhão' },
-              { id: 'crisma', label: 'Crisma' },
-              { id: 'confissaoFrequente', label: 'Confissão Frequente' },
-              { id: 'missaDominicalFrequente', label: 'Missa Dominical Frequente' },
-            ]}
-            observation="OBS: Caso não tenha feito a 1ª Eucaristia, fazê-la antes do Curso, juntamente com
-                Diretor Espiritual Paroquial . Caso pratica ou tenha praticado outra religião ou
-                confissão religiosa, procurar, junto do pároco, antes do curso, a Profissão de Fé."
-          />
-        </SessionForm>
-        
-        <SessionForm title="Observações:">
-          <FieldTextarea
-            disabled={isDisabled}
-            id="observationsCoordinator"
-            control={control}
-            label="Observações do coordenador:"
-            placeholder="Observações do coordenador"
-            maxLength={200}
-          />
-          <FieldTextarea
-            disabled={isDisabled}
-            id="observationsDed"
-            control={control}
-            label="Diretor Espiritual"
-            placeholder="Observações do Diretor Espiritual"
-            maxLength={200}
-          />
-        </SessionForm>
-
-        <SessionForm title="Saúde:">
-          <DiseaseFields isDisabled={isDisabled} />
-          <MedicationFields isDisabled={isDisabled} />
-
-          <FieldDefault
-            disabled={isDisabled}
-            id="allergy"
-            label="Se tiver algum tipo de alergia, qual? (medicamentos, alimentos, etc.)"
-            control={control}
-            maxLength={100}
-          />
-        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox

@@ -85,14 +85,6 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             type="number"
             maxLength={2}
           />
-          {/*  <FieldDefault
-            id="parishAcronym"
-            disabled={isDisabled}
-            control={control}
-            label="Sigla da paróquia/capela"
-            onChange={(e) => e.replace(/[0-9]/g, '')}
-            maxLength={10}
-          /> */}
           <FieldDefault
             disabled={session?.user.loginType !== 'admin'}
             id="parishChapel"
@@ -101,14 +93,6 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             onChange={(e) => e.replace(/[0-9]/g, '')}
             maxLength={50}
           />
-          {/* <FieldDefault
-            disabled={isDisabled}
-            id="priest"
-            control={control}
-            label="Pároco"
-            onChange={(e) => e.replace(/[0-9]/g, '')}
-            maxLength={50}
-          /> */}
         </SessionForm>
 
         <SessionForm title="Dados do tio:">
@@ -141,27 +125,6 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             type="date"
             label="Data de nascimento"
           />
-          {/* <FieldDefault
-            id="instagram"
-            disabled={isDisabled}
-            control={control}
-            label="Instagram"
-            maxLength={30}
-          />
-          <FieldSetCheckbox
-            id="spiritualLife"
-            disabled={isDisabled}
-            control={control}
-            label="Vida Espiritual: (Assinale somente as alternativas que praticas com frequência)"
-            options={[
-              { id: 'oracaoDiaria', label: 'Oração Diária' },
-              { id: 'missaDominicalSemanal', label: 'Missa Dominical' },
-              { id: 'confissaoFrequente', label: 'Confissão' },
-              { id: 'visitaAoSacrario', label: 'Visita ao Sacrário' },
-              { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho' },
-              { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
-            ]}
-          /> */}
         </SessionForm>
 
         <SessionForm title="Dados da tia:">
@@ -194,120 +157,7 @@ export const CoupleForm = (props: CoupleFormInterface) => {
             type="date"
             label="Data de nascimento"
           />
-          {/* <FieldDefault
-            id="recordCouple.womanInstagram"
-            disabled={isDisabled}
-            control={control}
-            label="Instagram"
-            maxLength={30}
-          />
-          <FieldSetCheckbox
-            id="recordCouple.womanSpiritualLife"
-            disabled={isDisabled}
-            control={control}
-            label="Vida Espiritual: (Assinale somente as alternativas que praticas com frequência)"
-            options={[
-              { id: 'oracaoDiaria', label: 'Oração Diária' },
-              { id: 'missaDominicalSemanal', label: 'Missa Dominical' },
-              { id: 'confissaoFrequente', label: 'Confissão' },
-              { id: 'visitaAoSacrario', label: 'Visita ao Sacrário' },
-              { id: 'leituraDoEvangelioDiaria', label: 'Leitura do Evangelho' },
-              { id: 'reuniaoDeComunidade', label: 'Reunião de Comunidade' },
-            ]}
-          /> */}
         </SessionForm>
-
-        {/* <SessionForm title="Dados do casal:">
-          <WorkPreferenceFields isDisabled={isDisabled} />
-          <CoursesOneDoneFields isDisabled={isDisabled} />
-          <CoursesTwoDoneFields isDisabled={isDisabled} />
-          <CoursesThreeDoneFields isDisabled={isDisabled} />
-
-          <FieldTextarea
-            id="recordCouple.coursesDone"
-            disabled={isDisabled}
-            control={control}
-            label="Referente ao trabalho em Cursos, número do Curso e função exercida"
-            maxLength={200}
-          />
-          <FieldTextarea
-            id="recordCouple.currentGroupFunction"
-            disabled={isDisabled}
-            control={control}
-            label="Departamento que faz parte no grupo"
-            maxLength={200}
-          />
-          <FieldTextarea
-            id="recordCouple.participatedOtherGroups"
-            disabled={isDisabled}
-            control={control}
-            label="Participa de algum movimento de casais? Qual?"
-            maxLength={200}
-          />
-          <FieldSetRadio
-            id="recordCouple.familyLife"
-            control={control}
-            disabled={isDisabled}
-            label="Preferência de trabalho neste curso"
-            options={[
-              { value: 'boa', label: 'Boa' },
-              { value: 'regular', label: 'Regular' },
-              { value: 'inexistente', label: 'Inexistente' },
-            ]}
-          />
-          <FieldDefault
-            id="recordCouple.religiousWeddingDate"
-            disabled={isDisabled}
-            control={control}
-            type="date"
-            label="Data de casamento religioso"
-          />
-          <FieldSetRadio
-            id="recordCouple.participatedInRetreat"
-            control={control}
-            disabled={isDisabled}
-            label="Já participou do retiro de tios?"
-            options={[
-              { label: 'Sim', value: true },
-              { label: 'Regular', value: false },
-            ]}
-          />
-          <FieldTextarea
-            id="recordCouple.motivationToParticipate"
-            disabled={isDisabled}
-            control={control}
-            label="O que os motiva a participar do Movimento CLJ?"
-            maxLength={200}
-          />
-        </SessionForm>
-
-        <SessionForm title="Coordenação Paroquial:">
-          <FieldSetCheckbox
-            id="recordCouple.parishIndication"
-            disabled={isDisabled}
-            control={control}
-            label="Indicações"
-            options={[
-              { id: 'assistente', label: 'Casal Assistente' },
-              { id: 'bem-estar', label: 'Casal Bem-Estar' },
-              { id: 'cozinha', label: 'Casal Coord. Cozinha' },
-            ]}
-          />
-          <FieldTextarea
-            id="observationsCoordinator"
-            disabled={isDisabled}
-            control={control}
-            label="Observação do Depto. de Pós e Coordenação paroquial"
-            maxLength={200}
-          />
-          <FieldTextarea
-            id="observationsDed"
-            disabled={isDisabled}
-            control={control}
-            label="Observação do Diretor Espiritual Paroquial"
-            maxLength={200}
-          />
-        </SessionForm> */}
 
         <SessionForm title="Consentimento de dados:">
           <FieldSetConsentCheckbox
