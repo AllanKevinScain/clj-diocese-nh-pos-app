@@ -18,17 +18,15 @@ import {
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { PoslSchemaInfertype } from '@/yup';
-
-type PoslSchemaFieldType = keyof PoslSchemaInfertype;
+import type { CandidatePoslSchemaInfertype } from '@/yup';
 
 export interface ClearFieldParamsInteface {
-  field: PoslSchemaFieldType;
+  field: CandidatePoslSchemaInfertype;
   value: string | boolean;
 }
 
 export interface PoslFormInterface {
-  onSubmit: (_: PoslSchemaInfertype) => void;
+  onSubmit: (_: CandidatePoslSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
   session?: Session;
@@ -37,7 +35,7 @@ export interface PoslFormInterface {
 export const PoslForm = (props: PoslFormInterface) => {
   const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit, setValue } = useFormContext<PoslSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<CandidatePoslSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {

@@ -6,10 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { PoslForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { PoslSchemaInfertype } from '@/yup';
-import { poslSchema } from '@/yup';
+import type { CandidatePoslSchemaInfertype } from '@/yup';
+import { candidatePoslSchema } from '@/yup';
 
-const defaultValues: PoslSchemaInfertype = {
+const defaultValues: CandidatePoslSchemaInfertype = {
   recordNumber: '',
   candidateName: '',
   nickname: '',
@@ -37,12 +37,12 @@ export const RegisterRecordPoslClientPage = (props: RegisterRecordPoslClientPage
   const { courseNumber, session } = props;
   const { registerRecord, isFetching } = useRecords();
 
-  const methods = useForm<PoslSchemaInfertype>({
-    resolver: yupResolver(poslSchema),
+  const methods = useForm<CandidatePoslSchemaInfertype>({
+    resolver: yupResolver(candidatePoslSchema),
     defaultValues: { ...defaultValues, courseNumber },
   });
 
-  async function onSubmit(record: PoslSchemaInfertype) {
+  async function onSubmit(record: CandidatePoslSchemaInfertype) {
     await registerRecord({ typeOfRecord: 'POSl', data: record });
   }
 

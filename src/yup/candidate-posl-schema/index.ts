@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 import { posDefault } from '../pos-default';
 
-export const poslSchemaBase = yup.object({
+export const candidatePoslSchemaBase = yup.object({
   recordPOSl: yup.object({
     recordId: yup.string().optional(),
 
@@ -20,7 +20,7 @@ export const poslSchemaBase = yup.object({
     candidateParticipation: yup.string().required('Campo Obrigatório!'),
   }),
 });
-export type PoslSchemaBaseInfertype = yup.InferType<typeof poslSchemaBase>;
+export type CandidatePoslSchemaBaseInfertype = yup.InferType<typeof candidatePoslSchemaBase>;
 
-export const poslSchema = posDefault.concat(poslSchemaBase);
-export type PoslSchemaInfertype = yup.InferType<typeof poslSchema>;
+export const candidatePoslSchema = posDefault.concat(candidatePoslSchemaBase);
+export type CandidatePoslSchemaInfertype = yup.InferType<typeof candidatePoslSchema>;

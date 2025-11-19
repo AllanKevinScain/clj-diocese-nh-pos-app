@@ -7,8 +7,8 @@ import { EditRecordBottomBar } from '@/components';
 import { PoslForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
 import type { CompleteRecordInterface } from '@/types';
-import type { PoslSchemaInfertype } from '@/yup';
-import { poslSchema } from '@/yup';
+import type { CandidatePoslSchemaInfertype } from '@/yup';
+import { candidatePoslSchema } from '@/yup';
 
 interface EditRecordPoslClientPageInterface {
   record: CompleteRecordInterface;
@@ -18,12 +18,12 @@ export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterfac
   const { record } = props;
   const { editRecord, isFetching } = useRecords();
 
-  const methods = useForm<PoslSchemaInfertype>({
-    resolver: yupResolver(poslSchema),
+  const methods = useForm<CandidatePoslSchemaInfertype>({
+    resolver: yupResolver(candidatePoslSchema),
     defaultValues: record,
   });
 
-  async function onSubmit(record: PoslSchemaInfertype) {
+  async function onSubmit(record: CandidatePoslSchemaInfertype) {
     await editRecord({ typeOfRecord: 'POSl', data: record });
   }
 

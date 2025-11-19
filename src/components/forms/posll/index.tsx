@@ -16,10 +16,10 @@ import {
   Text,
 } from '@/components';
 import { formatMobilePhone } from '@/helpers';
-import type { PosllSchemaInfertype } from '@/yup';
+import type { CandidatePosllSchemaInfertype } from '@/yup';
 
 export interface PosllFormInterface {
-  onSubmit: (_: PosllSchemaInfertype) => void;
+  onSubmit: (_: CandidatePosllSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;
   session?: Session;
@@ -28,7 +28,7 @@ export interface PosllFormInterface {
 export const PosllForm = (props: PosllFormInterface) => {
   const { onSubmit, isDisabled = false, isSending = false, session } = props;
 
-  const { control, handleSubmit, setValue } = useFormContext<PosllSchemaInfertype>();
+  const { control, handleSubmit, setValue } = useFormContext<CandidatePosllSchemaInfertype>();
 
   const showErrors = useCallback((errors: FieldErrors, pathPrefix = '') => {
     Object.entries(errors).forEach(([key, value]) => {

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
 import type { CompleteRecordInterface } from '@/types';
-import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
+import { candidatePosllSchema, candidatePoslSchema, coupleSchema, workSchema } from '@/yup';
 
 import type {
   CallRecordInterface,
@@ -55,7 +55,7 @@ export function useRecords() {
           });
         }
 
-        const validateData = await poslSchema.validate(data, { abortEarly: false });
+        const validateData = await candidatePoslSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: validateData, api: '/api/records/posl', method: 'POST' });
       }
       if (typeOfRecord === 'POSll') {
@@ -76,7 +76,7 @@ export function useRecords() {
           });
         }
 
-        const validateData = await posllSchema.validate(data, { abortEarly: false });
+        const validateData = await candidatePosllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: validateData, api: '/api/records/posll', method: 'POST' });
       }
 
@@ -132,7 +132,7 @@ export function useRecords() {
           });
         }
 
-        await poslSchema.validate(data, { abortEarly: false });
+        await candidatePoslSchema.validate(data, { abortEarly: false });
         return _callRecord({ data, api: '/api/records/posl', method: 'PUT' });
       }
       if (data.typeOfRecord === 'POSll') {
@@ -149,7 +149,7 @@ export function useRecords() {
           });
         }
 
-        await posllSchema.validate(data, { abortEarly: false });
+        await candidatePosllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: data, api: '/api/records/posll', method: 'PUT' });
       }
 
