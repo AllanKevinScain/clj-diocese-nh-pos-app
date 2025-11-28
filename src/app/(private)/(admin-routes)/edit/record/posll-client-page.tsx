@@ -32,7 +32,7 @@ export const EditRecordPosllClientPage = (props: EditRecordPosllClientPageInterf
       <FormProvider {...methods}>
         <PosllForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
-      <EditRecordBottomBar id={record.id} typeOfRecord="POSll" />
+      <EditRecordBottomBar id={record.id} />
     </>
   );
 };

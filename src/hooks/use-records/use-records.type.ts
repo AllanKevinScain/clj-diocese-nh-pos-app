@@ -13,7 +13,10 @@ export interface CallRecordInterface {
     | '/api/records/posl/work'
     | '/api/records/posl/couple'
     | '/api/records/posll/work'
-    | '/api/records/posll/couple';
+    | '/api/records/posll/couple'
+    | '/api/records/poslll'
+    | '/api/records/poslll/work'
+    | '/api/records/poslll/couple';
   data: unknown;
 }
 export interface CallRecordReturnInterface {

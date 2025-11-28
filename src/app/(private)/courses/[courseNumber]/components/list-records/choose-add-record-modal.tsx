@@ -4,7 +4,11 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { BiHeart } from 'react-icons/bi';
 import { GiKnifeFork } from 'react-icons/gi';
-import { TbCircleNumber1Filled, TbCircleNumber2Filled } from 'react-icons/tb';
+import {
+  TbCircleNumber1Filled,
+  TbCircleNumber2Filled,
+  TbCircleNumber3Filled,
+} from 'react-icons/tb';
 
 import { Button, DefaultDialog } from '@/components';
 import type { CompleteRecordInterface } from '@/types';
@@ -22,6 +26,7 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
   const path = usePathname();
 
   const typeOfRecord = useMemo(() => {
+    if (path.includes('poslll')) return 'POSlll';
     if (path.includes('posll')) return 'POSll';
     return 'POSl';
   }, [path]);
@@ -49,6 +54,12 @@ export const AddRecordModal = (props: AddRecordModalInterface) => {
           <Button isLink className="w-full" href={`/courses/${courseNumber}/posll/register`}>
             <TbCircleNumber2Filled />
             Candidato a CLJ ll
+          </Button>
+        )}
+        {typeOfRecord === 'POSlll' && (
+          <Button isLink className="w-full" href={`/courses/${courseNumber}/poslll/register`}>
+            <TbCircleNumber3Filled />
+            Candidato a CLJ lll
           </Button>
         )}
         <Button

@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
+import { posDefault } from '../candidate-pos-default';
 import { fieldNullIsRequired } from '../helpers';
-import { posDefault } from '../pos-default';
 
 const CutRecordDefault = posDefault.pick([
   'parishChapel',

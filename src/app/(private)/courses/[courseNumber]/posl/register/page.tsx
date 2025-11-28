@@ -7,7 +7,7 @@ import {
   RegisterRecordCoupleClientPage,
   RegisterRecordPoslClientPage,
   RegisterRecordWorkClientPage,
-} from '../../components/register-client-pages';
+} from '../../components';
 
 interface RegisterRecordPageInterface {
   params: Promise<{ courseNumber: string }>;

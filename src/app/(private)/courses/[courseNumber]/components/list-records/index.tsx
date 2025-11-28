@@ -21,6 +21,7 @@ export const ListRecords = (props: ListRecordsInterface) => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const typeOfRecord = useMemo(() => {
+    if (path.includes('poslll')) return 'Pós CLJ 3';
     if (path.includes('posll')) return 'Pós CLJ 2';
     return 'Pós CLJ 1';
   }, [path]);

@@ -5,7 +5,7 @@ import type { FunctionType } from '@/types';
 
 import {
   RegisterRecordCoupleClientPage,
-  RegisterRecordPosllClientPage,
+  RegisterRecordPoslllClientPage,
   RegisterRecordWorkClientPage,
 } from '../../components';
 
@@ -26,7 +26,7 @@ export default async function RegisterRecordPage(props: RegisterRecordPageInterf
       <RegisterRecordWorkClientPage
         courseNumber={courseNumber}
         session={data}
-        typeOfRecord="POSll"
+        typeOfRecord="POSlll"
       />
     );
   }
@@ -36,10 +36,10 @@ export default async function RegisterRecordPage(props: RegisterRecordPageInterf
       <RegisterRecordCoupleClientPage
         courseNumber={courseNumber}
         session={data}
-        typeOfRecord="POSll"
+        typeOfRecord="POSlll"
       />
     );
   }
 
-  return <RegisterRecordPosllClientPage courseNumber={courseNumber} session={data} />;
+  return <RegisterRecordPoslllClientPage courseNumber={courseNumber} session={data} />;
 }

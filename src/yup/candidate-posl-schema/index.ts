@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { posDefault } from '../pos-default';
+import { posDefault } from '../candidate-pos-default';
 
 export const poslSchemaBase = yup.object({
   recordPOSl: yup.object({

@@ -32,7 +32,7 @@ export const EditRecordCoupleClientPage = (props: EditRecordCoupleClientPageInte
       <FormProvider {...methods}>
         <CoupleForm onSubmit={onSubmit} isSending={isFetching} />
       </FormProvider>
-      <EditRecordBottomBar id={record.id} typeOfRecord={record.typeOfRecord} />
+      <EditRecordBottomBar id={record.id} />
     </>
   );
 };
