@@ -1,7 +1,11 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { TbCircleNumber1Filled, TbCircleNumber2Filled } from 'react-icons/tb';
+import {
+  TbCircleNumber1Filled,
+  TbCircleNumber2Filled,
+  TbCircleNumber3Filled,
+} from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
 
 import type { CourseInferType } from '@/yup';
@@ -39,6 +43,7 @@ export const CourseListItem = (props: CourseListItemInterface) => {
         <div className="flex items-center justify-between gap-[12px]">
           {typeOfCourse === 'POSl' && <TbCircleNumber1Filled size={24} className={iconsStyle} />}
           {typeOfCourse === 'POSll' && <TbCircleNumber2Filled size={24} className={iconsStyle} />}
+          {typeOfCourse === 'POSlll' && <TbCircleNumber3Filled size={24} className={iconsStyle} />}
           <Text>Curso Nº {courseNumber}</Text>
           {existsDates && (
             <Text>

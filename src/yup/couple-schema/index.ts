@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { posDefault } from '../pos-default';
+import { posDefault } from '../candidate-pos-default';
 
 const coupleSchemaBase = yup.object({
   recordCouple: yup.object({

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { ValidationError } from 'yup';
 
 import type { CompleteRecordInterface } from '@/types';
-import { coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
+import { candidatePoslllSchema, coupleSchema, posllSchema, poslSchema, workSchema } from '@/yup';
 
 import type {
   CallRecordInterface,
@@ -15,7 +15,7 @@ import type {
   UseRecordsInterface,
 } from './use-records.type';
 
-type DeleteRecordByIdPropType = Pick<CompleteRecordInterface, 'id' | 'typeOfRecord'>;
+type DeleteRecordByIdPropType = Pick<CompleteRecordInterface, 'id'>;
 
 export function useRecords() {
   const router = useRouter();
@@ -78,6 +78,27 @@ export function useRecords() {
 
         const validateData = await posllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: validateData, api: '/api/records/posll', method: 'POST' });
+      }
+      if (typeOfRecord === 'POSlll') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/poslll/work',
+            method: 'POST',
+          });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/poslll/couple',
+            method: 'POST',
+          });
+        }
+
+        const validateData = await candidatePoslllSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: validateData, api: '/api/records/poslll', method: 'POST' });
       }
 
       return { ok: false, data: { message: 'Falha no cadastro!' } };
@@ -152,6 +173,27 @@ export function useRecords() {
         await posllSchema.validate(data, { abortEarly: false });
         return _callRecord({ data: data, api: '/api/records/posll', method: 'PUT' });
       }
+      if (data.typeOfRecord === 'POSlll') {
+        if (data.isWork) {
+          const validateData = await workSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/poslll/work',
+            method: 'PUT',
+          });
+        }
+        if (data.isCoupleWork) {
+          const validateData = await coupleSchema.validate(data, { abortEarly: false });
+          return _callRecord({
+            data: validateData,
+            api: '/api/records/poslll/couple',
+            method: 'PUT',
+          });
+        }
+
+        await candidatePoslllSchema.validate(data, { abortEarly: false });
+        return _callRecord({ data: data, api: '/api/records/poslll', method: 'PUT' });
+      }
 
       return { ok: false, data: { message: 'Falha na atualização!' } };
     } catch (error) {
@@ -188,8 +230,8 @@ export function useRecords() {
     },
   });
   async function deleteRecordById(props: DeleteRecordByIdPropType) {
-    const { id, typeOfRecord } = props;
-    const req = await fetch(`/api/records?recordId=${id}&typeOfRecord=${typeOfRecord}`, {
+    const { id } = props;
+    const req = await fetch(`/api/records?recordId=${id}`, {
       method: 'DELETE',
     });
     const res = await req.json();

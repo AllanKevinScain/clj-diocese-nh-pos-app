@@ -54,6 +54,7 @@ export default function RegisterCoursePage() {
           options={[
             { value: 'POSl', label: 'Curso de Liderança - Pós 1' },
             { value: 'POSll', label: 'Curso de Liderança - Pós 2' },
+            { value: 'POSlll', label: 'Curso de Liderança - Pós 3' },
           ]}
         />
 

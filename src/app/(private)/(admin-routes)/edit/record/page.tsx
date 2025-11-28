@@ -3,6 +3,7 @@ import { getRecordByIdServerCall } from '@/server-calls';
 import { EditRecordCoupleClientPage } from './couple-work-client-page';
 import { EditRecordPoslClientPage } from './posl-client-page';
 import { EditRecordPosllClientPage } from './posll-client-page';
+import { EditRecordPoslllClientPage } from './poslll-client-page';
 import { EditRecordWorkClientPage } from './work-client-page';
 
 interface EditRecordPageInterface {
@@ -20,6 +21,9 @@ export default async function EditRecordPage(props: EditRecordPageInterface) {
   if (record.data.isWork) return <EditRecordWorkClientPage record={record.data} />;
   if (record.data.typeOfRecord === 'POSll') {
     return <EditRecordPosllClientPage record={record.data} />;
+  }
+  if (record.data.typeOfRecord === 'POSlll') {
+    return <EditRecordPoslllClientPage record={record.data} />;
   }
 
   return <EditRecordPoslClientPage record={record.data} />;

@@ -12,7 +12,7 @@ import { AcceptModal, ControlButtons } from '@/components';
 import { useRecords, useToggleModal } from '@/hooks';
 import type { CompleteRecordInterface } from '@/types';
 
-type EditRecordBottomBarInterface = Pick<CompleteRecordInterface, 'id' | 'typeOfRecord'>;
+type EditRecordBottomBarInterface = Pick<CompleteRecordInterface, 'id'>;
 
 export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
   const navigate = useRouter();
