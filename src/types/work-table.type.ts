@@ -1,3 +1,7 @@
+import type { Control } from 'react-hook-form';
+
+import type { BackgroundTableSchemaInferType, CourseInferType } from '@/yup';
+
 type MembersType = {
   communityId: string;
   recordId: string;
@@ -6,6 +10,7 @@ type MembersType = {
 export type CommunityType<T> = {
   id: string;
   number: string;
+  workTableId: string;
   members: T[];
 };
 
@@ -55,3 +60,8 @@ export interface WorkTableRecordsResponseInterface {
 }
 
 export type WorkTableWithRecords = { ok: boolean; data: WorkTableRecordsResponseInterface };
+
+export interface TabComponentWorkTableInterface {
+  course: CourseInferType;
+  control: Control<BackgroundTableSchemaInferType>;
+}

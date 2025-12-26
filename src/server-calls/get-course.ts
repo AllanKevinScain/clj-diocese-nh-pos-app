@@ -3,11 +3,11 @@ import { isEmpty } from 'lodash';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth-config';
-import type { CourseResponseInterface } from '@/types';
+import type { CourseInferType } from '@/yup';
 
 export async function getCourseServerCall(
   id: string,
-): Promise<{ ok: boolean; data: CourseResponseInterface }> {
+): Promise<{ ok: boolean; data: CourseInferType }> {
   const token = await getServerSession(authOptions);
   if (!token?.accessToken) throw new Error('Token com problema');
 
@@ -20,7 +20,7 @@ export async function getCourseServerCall(
     headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
-  const data = (await res.json()) as CourseResponseInterface;
+  const data = (await res.json()) as CourseInferType;
 
   const formatedData = {
     ...data,

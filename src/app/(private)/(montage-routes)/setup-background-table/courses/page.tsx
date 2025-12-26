@@ -17,20 +17,27 @@ export default function SetupBackgroundTablePage() {
   });
   const noResults = data?.length === 0;
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
 
   return (
     <Container className="flex flex-col gap-[16px]">
       {!noResults && <Heading>Montagem</Heading>}
-      {data?.map((course) => (
-        <ListItem.course
-          key={course.id}
-          courseNumber={course.courseNumber}
-          href={`/setup-background-table/montage/${course.courseNumber}`}
-        />
-      ))}
+
+      {data?.map((course) => {
+        const endDate = new Date(course.endDate);
+        const now = new Date();
+        const disabled = now > endDate;
+
+        return (
+          <ListItem.course
+            key={course.id}
+            courseNumber={course.courseNumber}
+            href={`/setup-background-table/montage/${course.id}`}
+            disabled={disabled}
+            {...course}
+          />
+        );
+      })}
 
       {noResults && <Empty className="h-[50vh]" title="Nenhum curso cadastrado" />}
     </Container>

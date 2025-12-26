@@ -25,9 +25,8 @@ export const authOptions: NextAuthOptions = {
 
         const user: User = await res.json();
 
-        if (!res.ok || !user) {
-          return null;
-        }
+        if (res.status !== 200) throw new Error(user.message);
+        if (!res.ok || !user) throw new Error('Erro ao fazer login!');
 
         return user;
       },

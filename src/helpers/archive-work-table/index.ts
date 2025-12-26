@@ -13,24 +13,24 @@ type GenerateMontagePropsType = {
   candidates: CompleteRecordInterface[];
 };
 
-export async function generateCourseMontagem(props: GenerateMontagePropsType) {
+export async function generateCourseMontage(props: GenerateMontagePropsType) {
   const { workTable, candidates } = props;
   const workbook = new ExcelJS.Workbook();
 
   const candidatesSheet = workbook.addWorksheet('Cursistas');
-  candidatesSheet.columns = [{ width: 50 }];
+  candidatesSheet.columns = [{ width: 80 }];
   generateCandidates({ workbook: candidatesSheet, data: candidates });
 
   const montageSheet = workbook.addWorksheet('Equipe de sala');
-  montageSheet.columns = [{ width: 50 }];
+  montageSheet.columns = [{ width: 80 }];
   generateWorkTablePeaples({ workbook: montageSheet, data: workTable.data });
 
   const kitchenSheet = workbook.addWorksheet('Equipe da Cozinha');
-  kitchenSheet.columns = [{ width: 50 }];
+  kitchenSheet.columns = [{ width: 80 }];
   generateKitchen({ workbook: kitchenSheet, data: workTable.data });
 
   const communitiesSheet = workbook.addWorksheet('Comunidades');
-  communitiesSheet.columns = [{ width: 50 }];
+  communitiesSheet.columns = [{ width: 80 }];
   generateCommunities({ workbook: communitiesSheet, data: workTable.data.communities });
 
   const buffer = await workbook.xlsx.writeBuffer();

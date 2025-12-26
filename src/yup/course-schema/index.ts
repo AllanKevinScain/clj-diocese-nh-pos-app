@@ -10,10 +10,7 @@ const testEndDate: yup.TestFunction<string, yup.AnyObject> = (value, { parent })
   return end.isAfter(start);
 };
 
-const existInCourseData: yup.TestFunction<string | undefined, yup.AnyObject> = function (
-  value,
-  context,
-) {
+const existInCourseData: yup.TestFunction<string, yup.AnyObject> = function (value, context) {
   const { parent, path, createError } = context;
 
   const fields = [
@@ -32,7 +29,7 @@ const existInCourseData: yup.TestFunction<string | undefined, yup.AnyObject> = f
   if (value && otherValues.includes(value)) {
     return createError({
       path,
-      message: 'Não é permitido repetir usuários!',
+      message: 'Esse usuário já tem função!',
     });
   }
 
@@ -52,14 +49,15 @@ export const courseSchema = yup.object().shape({
     .required('Campo obrigatório!'),
   courseNumber: yup.string(),
 
-  base: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
-  auxiliar: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
-  coordinator: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
-  liturgy: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
-  secretary: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
-  kitchenSpiritual: yup.string().test({ test: existInCourseData, message: 'Campo obrigatório!' }),
+  base: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
+  auxiliar: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
+  coordinator: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
+  liturgy: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
+  secretary: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
+  kitchenSpiritual: yup.string().required('Campo obrigatório!').test({ test: existInCourseData }),
   coupleKitchenCoordinator: yup
     .string()
-    .test({ test: existInCourseData, message: 'Campo obrigatório!' }),
+    .required('Campo obrigatório!')
+    .test({ test: existInCourseData }),
 });
 export type CourseInferType = yup.InferType<typeof courseSchema>;

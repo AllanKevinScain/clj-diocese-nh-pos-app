@@ -17,8 +17,13 @@ export function generateCandidates(props: GenerateCandidatePropsType) {
   currentRow++;
 
   data.forEach((record) => {
-    workbook.getRow(currentRow).getCell(1).value =
-      `${record.candidateName} - ${record.parishChapel}`;
+    if (record.isCoupleWork) {
+      workbook.getRow(currentRow).getCell(1).value =
+        `Tios ${record.candidateName} e ${record.recordCouple?.womanName} - ${record.parishChapel}`;
+    } else {
+      workbook.getRow(currentRow).getCell(1).value =
+        `${record.candidateName} - ${record.parishChapel}`;
+    }
     currentRow++;
   });
 }

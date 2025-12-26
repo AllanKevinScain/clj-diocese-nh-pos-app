@@ -1,7 +1,6 @@
 export * from './use-courses';
 export * from './use-create-query';
 export * from './use-device';
-export * from './use-especific-records';
 export * from './use-list-records';
 export * from './use-poslll';
 export * from './use-records';

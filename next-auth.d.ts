@@ -10,6 +10,7 @@ declare module 'next-auth' {
     loginType: 'admin' | 'manager' | 'builder-manager';
     nome: string;
     coName: string;
+    message?: string;
   }
 
   interface Session {

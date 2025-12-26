@@ -3,7 +3,6 @@ export * from './button';
 export * from './container';
 export * from './control-buttons';
 export * from './default-dialog';
-export * from './dinamic-list-select';
 export * from './divider';
 export * from './edit-record-bottom-bar';
 export * from './empty';

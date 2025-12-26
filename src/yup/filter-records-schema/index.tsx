@@ -4,6 +4,7 @@ import { posDefault } from '../candidate-pos-default';
 import { fieldNullIsRequired } from '../helpers';
 
 const CutRecordDefault = posDefault.pick([
+  'id',
   'parishChapel',
   'candidateName',
   'nickname',
@@ -26,4 +27,4 @@ export type ReportExportWithFilterInfertype = yup.InferType<typeof reportExportW
 export const filterSchema = reportExportWithFilterSchema.pick(['search']);
 export type SearchFilterInfertype = yup.InferType<typeof filterSchema>;
 
-export const exportWorkTableSchema = reportExportWithFilterSchema.pick(['courseNumber']);
+export const exportWorkTableSchema = reportExportWithFilterSchema.pick(['id']);

@@ -49,24 +49,6 @@ export const CommunityListSelect = (props: CommunityListSelectInterface) => {
         const handleRemoveCommunity = (communityId: string) => {
           onChange((value || []).filter((c) => c.id !== communityId));
         };
-        const handleAddMember = (communityId: string, memberId: string) => {
-          let changedValues: BackgroundTableCommunitySchemaInferType[] = [];
-          if (!isEmpty(value) && value) {
-            changedValues = value.map((community) => {
-              const noExistsMember = isEmpty(
-                community.members.find((member) => member.recordId === memberId),
-              );
-              if (community.id === communityId && noExistsMember) {
-                return {
-                  ...community,
-                  members: [...community.members, { communityId, recordId: memberId }],
-                };
-              }
-              return community;
-            });
-          }
-          onChange(changedValues);
-        };
         const handleRemoveMember = (communityId: string, memberId: string) => {
           onChange(
             (value || []).map((c) => {
@@ -79,6 +61,29 @@ export const CommunityListSelect = (props: CommunityListSelectInterface) => {
               return c;
             }),
           );
+        };
+        const handleAddMember = (communityId: string, memberId: string) => {
+          let changedValues: BackgroundTableCommunitySchemaInferType[] = [];
+          const existMember = value
+            ?.map((community) => {
+              return !isEmpty(community.members.find((member) => member.recordId === memberId));
+            })
+            .some(Boolean);
+
+          if (existMember) return handleRemoveMember(communityId, memberId);
+
+          if (!isEmpty(value) && value) {
+            changedValues = value.map((community) => {
+              if (community.id === communityId) {
+                return {
+                  ...community,
+                  members: [...community.members, { communityId, recordId: memberId }],
+                };
+              }
+              return community;
+            });
+          }
+          onChange(changedValues);
         };
 
         return (
@@ -107,7 +112,7 @@ export const CommunityListSelect = (props: CommunityListSelectInterface) => {
                   <div className={twMerge('flex flex-col gap-2', 'mb-[12px]')}>
                     {community.members &&
                       community.members.map((member) => {
-                        const findedMember = options.find(
+                        const findedMember = options?.find(
                           (option) => option.value === member.recordId,
                         );
                         return (

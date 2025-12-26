@@ -46,7 +46,13 @@ export const Select = (props: DynamicListSelectInterface) => {
       </div>
 
       {open && (
-        <div className={twMerge('bg-neutral-200', 'rounded-b-[10px]', 'dark:bg-neutral-600')}>
+        <div
+          className={twMerge(
+            'bg-neutral-200',
+            'rounded-b-[10px]',
+            'dark:bg-neutral-600',
+            'max-h-[300px] overflow-auto',
+          )}>
           {!isLoading &&
             options.map((item) => (
               <div
