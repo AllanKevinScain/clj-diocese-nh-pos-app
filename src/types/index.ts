@@ -1,6 +1,5 @@
 export * from './complete-record.type';
 export * from './couple.type';
-export * from './course.type';
 export * from './filter-records.type';
 export * from './generic-types.type';
 export * from './posl.type';

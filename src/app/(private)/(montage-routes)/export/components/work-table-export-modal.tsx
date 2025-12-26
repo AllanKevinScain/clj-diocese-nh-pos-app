@@ -1,13 +1,14 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import type * as yup from 'yup';
 
-import { Button, DefaultDialog, Heading, SelectWithQuery } from '@/components';
-import { generateCourseMontagem } from '@/helpers';
+import { Button, DefaultDialog, Heading, SelectDefault } from '@/components';
+import { generateCourseMontage } from '@/helpers';
 import type { CourseInferType } from '@/hooks';
 import { useCourses, useListRecords, useWorkTable } from '@/hooks';
 import type { WorkTableWithRecords } from '@/types';
@@ -22,8 +23,8 @@ interface WorkTableModalExportInterface {
 
 export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
   const { isOpen, handleModal } = props;
-  const { listRecordsByCourseNumber } = useListRecords();
-  const { getWorkTableByCourseNumber } = useWorkTable();
+  const { listRecordByCourseId } = useListRecords();
+  const { getWorkTableByCourseId } = useWorkTable();
   const { listCourses } = useCourses();
 
   const [isBuildingArchive, setBuildingArchive] = useState(false);
@@ -31,7 +32,29 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
   const { control, reset, handleSubmit } = useForm<ReportExportWithFilterSchemaSchemaInfertype>({
     resolver: yupResolver(exportWorkTableSchema),
     defaultValues: {
-      courseNumber: null,
+      id: undefined,
+    },
+  });
+
+  const { data: courses } = useQuery({
+    queryKey: ['courses'],
+    queryFn: listCourses,
+    select: (response) => {
+      const auxesponse = response as CourseInferType[];
+
+      const allowedCourses = auxesponse.filter((course) => {
+        const endDate = new Date(course.endDate);
+        const now = new Date();
+        const disabled = now > endDate;
+        return !disabled;
+      });
+
+      return (
+        allowedCourses.map((course) => ({
+          value: course.id || '',
+          label: `Curso Nº ${course.courseNumber} - ${course.typeOfCourse}`,
+        })) || []
+      );
     },
   });
 
@@ -43,14 +66,14 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
   async function generateArchive(values: ReportExportWithFilterSchemaSchemaInfertype) {
     setBuildingArchive(true);
     try {
-      if (values.courseNumber) {
-        const recordsByCourse = await listRecordsByCourseNumber(values.courseNumber);
-        const workTableResponse = await getWorkTableByCourseNumber(values);
+      if (values.id) {
+        const recordsByCourse = await listRecordByCourseId(values.id);
+        const workTableResponse = await getWorkTableByCourseId(values);
 
         if (workTableResponse.ok) {
           if (workTableResponse?.data) {
             const workTable = workTableResponse as WorkTableWithRecords;
-            await generateCourseMontagem({ workTable, candidates: recordsByCourse });
+            await generateCourseMontage({ workTable, candidates: recordsByCourse });
             toast.success('Download concluido');
           }
         } else {
@@ -68,6 +91,7 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
       isOpen={isOpen}
       handleModal={handleModal}
       title="Exportar informações em geral"
+      size="full"
       actionsButtons={
         <div className="flex items-center justify-between">
           <Button variant="outline" disabled={isBuildingArchive} onClick={closeModal}>
@@ -81,20 +105,7 @@ export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
       <Heading>Escolha o curso:</Heading>
 
       <div className="p-[2px] pb-[50px]">
-        <SelectWithQuery
-          id="courseNumber"
-          control={control}
-          call={listCourses}
-          modelData={(response) => {
-            const auxesponse = response as CourseInferType[];
-            return (
-              auxesponse.map((course) => ({
-                value: course.courseNumber || '',
-                label: `Curso Nº ${course.courseNumber}`,
-              })) || []
-            );
-          }}
-        />
+        <SelectDefault control={control} id="id" options={courses || []} />
       </div>
     </DefaultDialog>
   );

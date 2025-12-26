@@ -20,6 +20,7 @@ export const backgroundTableSchema = yup.object().shape({
   base: yup.string().uuid().nullable().test({ test: fieldNullIsRequired }),
   auxiliar: yup.string().uuid().nullable().test({ test: fieldNullIsRequired }),
   courseNumber: yup.string().nullable(),
+  courseId: yup.string().nullable(),
 
   coupleSafeToBe: yup.string().uuid().nullable(),
   coupleKitchenCoordinator: yup.string().uuid().nullable(),
@@ -36,3 +37,5 @@ export const backgroundTableSchema = yup.object().shape({
   kitchenWorkRecords: yup.array().of(yup.string().uuid()),
   communities: yup.array().of(backgroundTableCommunitySchema),
 });
+
+export type BackgroundTableSchemaInferType = yup.InferType<typeof backgroundTableSchema>;

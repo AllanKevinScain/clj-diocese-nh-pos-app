@@ -12,6 +12,7 @@ import { Container, ControlButtons, Heading, Tab } from '@/components';
 import { useWorkTable } from '@/hooks';
 import { TabProvider } from '@/providers/tab';
 import type { WorkTableResponseInterface } from '@/types';
+import type { CourseInferType } from '@/yup';
 import { backgroundTableSchema } from '@/yup';
 
 import { Communities } from './communities';
@@ -19,7 +20,7 @@ import { Kitchen } from './kitchen';
 import { RequiredFunctions } from './required-functions';
 
 interface MontageClientPageInterface {
-  courseNumber: string;
+  course: CourseInferType;
   workTable: WorkTableResponseInterface | null;
 }
 
@@ -46,15 +47,24 @@ const workTableInitiate: BackgroundTableSchemaInferType = {
 };
 
 export function MontageClientPage(props: MontageClientPageInterface) {
-  const { courseNumber, workTable } = props;
+  const { course, workTable } = props;
+
+  const {
+    endDate: _endDate,
+    startDate: _startDate,
+    typeOfCourse: _typeOfCourse,
+    id,
+    ...restCourse
+  } = course;
   const { updateWorkTable, registerWorkTable } = useWorkTable();
 
   const { control, getValues } = useForm<BackgroundTableSchemaInferType>({
     resolver: yupResolver(backgroundTableSchema),
     defaultValues: {
+      courseId: id,
       ...workTableInitiate,
       ...workTable,
-      courseNumber,
+      ...restCourse,
     },
   });
 
@@ -79,7 +89,9 @@ export function MontageClientPage(props: MontageClientPageInterface) {
   return (
     <>
       <Container className="flex flex-col gap-[16px]">
-        <Heading>Montagem do curso {courseNumber}</Heading>
+        <Heading>
+          Montagem do curso {course.courseNumber} - {course.typeOfCourse}
+        </Heading>
 
         <TabProvider>
           <Tab.header>
@@ -90,13 +102,13 @@ export function MontageClientPage(props: MontageClientPageInterface) {
 
           <Tab.body>
             <Tab.bi value={0}>
-              <RequiredFunctions control={control} courseNumber={courseNumber} />
+              <RequiredFunctions control={control} />
             </Tab.bi>
             <Tab.bi value={1}>
-              <Kitchen control={control} courseNumber={courseNumber} />
+              <Kitchen control={control} />
             </Tab.bi>
             <Tab.bi value={2}>
-              <Communities control={control} courseNumber={courseNumber} />
+              <Communities control={control} />
             </Tab.bi>
           </Tab.body>
         </TabProvider>

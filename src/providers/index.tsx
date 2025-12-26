@@ -6,7 +6,15 @@ import { Toaster } from 'react-hot-toast';
 
 import { DarkModeProvider } from './dark-mode';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,3 +27,5 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     </SessionProvider>
   );
 };
+
+export * from './montage';

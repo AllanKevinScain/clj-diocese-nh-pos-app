@@ -9,7 +9,6 @@ import { FaCross } from 'react-icons/fa';
 import { FaUsers } from 'react-icons/fa6';
 import { GiThreeFriends } from 'react-icons/gi';
 import { LuPaperclip } from 'react-icons/lu';
-import { MdAddCircle } from 'react-icons/md';
 import { SiBlockbench } from 'react-icons/si';
 import { TbWorldPlus } from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
@@ -77,18 +76,6 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                           <ButtonItem isLink ended={() => setIsOpen(false)} href="/all">
                             <TbWorldPlus size={30} />
                             Todas as fichas
-                          </ButtonItem>
-                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/course">
-                            <MdAddCircle size={30} />
-                            Cadastrar curso
-                          </ButtonItem>
-                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/user">
-                            <MdAddCircle size={30} />
-                            Cadastrar usuário
-                          </ButtonItem>
-                          <ButtonItem isLink ended={() => setIsOpen(false)} href="/register/poslll">
-                            <MdAddCircle size={30} />
-                            Cadastrar CLJ lll
                           </ButtonItem>
                         </>
                       )}

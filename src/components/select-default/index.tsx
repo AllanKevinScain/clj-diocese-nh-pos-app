@@ -14,6 +14,7 @@ export interface SelectDefaultInterface<T extends FieldValues> {
   label?: string;
   className?: string;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export const SelectDefault = <T extends FieldValues>(props: SelectDefaultInterface<T>) => {

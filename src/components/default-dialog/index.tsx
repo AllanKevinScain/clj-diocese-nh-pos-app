@@ -13,16 +13,22 @@ interface DefaultDialogInterface {
   title: string;
   children: React.ReactNode;
   actionsButtons: React.ReactNode;
+  size?: 'dinamic' | 'full';
 }
 
 export const DefaultDialog = (props: DefaultDialogInterface) => {
-  const { isOpen, handleModal, title, children, actionsButtons } = props;
+  const { isOpen, handleModal, title, children, actionsButtons, size = 'dinamic' } = props;
 
   return (
     <Dialog open={isOpen} as="div" className="relative z-10" onClose={handleModal}>
       <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
 
-      <div className={twMerge('fixed inset-0', 'flex items-center justify-center', 'px-[16px]')}>
+      <div
+        className={twMerge(
+          'fixed inset-0',
+          'flex items-center justify-center',
+          size === 'full' ? 'px-0' : 'px-[16px]',
+        )}>
         <DialogPanel
           className={twMerge(
             'relative',
@@ -31,6 +37,7 @@ export const DefaultDialog = (props: DefaultDialogInterface) => {
             'overflow-hidden',
             'bg-white',
             'dark:bg-neutral-600',
+            size === 'full' && 'h-screen w-screen',
           )}>
           {/* Botão de fechar */}
           <Button
@@ -52,7 +59,13 @@ export const DefaultDialog = (props: DefaultDialogInterface) => {
             </Text>
           </DialogTitle>
           {/* container */}
-          <div className={twMerge('relative', 'max-h-[70vh] overflow-auto', 'p-[24px]')}>
+          <div
+            className={twMerge(
+              'relative',
+              'overflow-auto',
+              'p-[24px]',
+              size === 'full' ? 'h-[84vh]' : 'max-h-[70vh]',
+            )}>
             {children}
           </div>
 

@@ -14,14 +14,14 @@ import {
   SelectWithQuery,
 } from '@/components';
 import { filterPoslll } from '@/helpers';
-import { useCourses, useEspecificRecords } from '@/hooks';
+import { useCourses, usePoslll } from '@/hooks';
 import type { CourseInferType, PoslllSchemaInferType } from '@/yup';
 import { courseSchema } from '@/yup';
 
 export default function RegisterCoursePage() {
   const navigate = useRouter();
   const { registerCourse } = useCourses();
-  const { listPoslll } = useEspecificRecords();
+  const { listPoslll } = usePoslll();
 
   const { handleSubmit, control } = useForm<CourseInferType>({
     resolver: yupResolver(courseSchema),

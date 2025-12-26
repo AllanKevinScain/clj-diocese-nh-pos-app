@@ -24,8 +24,8 @@ export function useWorkTable() {
     const res = await req.json();
     return res;
   }
-  async function getWorkTableByCourseNumber(props: ExportWorkTableSchemaInferType) {
-    const req = await fetch(`/api/work-table/archive-data/${props.courseNumber}`, {
+  async function getWorkTableByCourseId(props: ExportWorkTableSchemaInferType) {
+    const req = await fetch(`/api/work-table/archive-data/${props.id}`, {
       method: 'GET',
     });
     const res = await req.json();
@@ -35,6 +35,6 @@ export function useWorkTable() {
   return {
     registerWorkTable,
     updateWorkTable,
-    getWorkTableByCourseNumber,
+    getWorkTableByCourseId,
   };
 }

@@ -39,7 +39,7 @@ export function ClientPage() {
     });
 
     if (!res?.ok) {
-      toast.error('Usuário não cadastrado!');
+      toast.error(res?.error || 'Usuário não cadastrado!');
     } else {
       toast.success('Login efetuado com sucesso!');
       navigate.push('/courses');

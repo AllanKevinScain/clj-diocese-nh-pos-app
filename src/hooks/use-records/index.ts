@@ -123,7 +123,9 @@ export function useRecords() {
       } else {
         toast.success(e.data.message);
         if (e.data.data && dataSession?.user.loginType === 'manager') {
-          router.push(`/record/view?id=${e.data.data.id}`);
+          router.push(
+            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord?.toLowerCase()}`,
+          );
         } else {
           router.push('/courses');
         }

@@ -12,7 +12,18 @@ export async function POST(request: NextRequest) {
   if (!token?.accessToken) throw new Error('Token com problema');
 
   const body = (await request.json()) as BackgroundTableSchemaInferType;
-  if (isEmpty(body.courseNumber)) throw new Error('O número do curso precisa ser passado');
+  if (isEmpty(body.courseId)) throw new Error('Identificação do curso necessária!');
+
+  const {
+    coordinator: _coordinator,
+    auxiliar: _auxiliar,
+    base: _base,
+    coupleKitchenCoordinator: _coupleKitchenCoordinator,
+    kitchenSpiritual: _kitchenSpiritual,
+    liturgy: _liturgy,
+    secretary: _secretary,
+    ...restBody
+  } = body;
 
   const res = await fetch(`${process.env.BASE_API_URL}/work-table`, {
     method: 'POST',
@@ -20,7 +31,7 @@ export async function POST(request: NextRequest) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token?.accessToken}`,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(restBody),
   });
 
   const data = await res.json();

@@ -20,10 +20,21 @@ export interface SelectDefaultComponenttInterface {
   isLoading?: boolean;
   error?: string;
   ref?: React.Ref<HTMLInputElement>;
+  disabled?: boolean;
 }
 
 export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) => {
-  const { options = [], label, className, isLoading = false, error, ref, onChange, value } = props;
+  const {
+    options = [],
+    label,
+    className,
+    isLoading = false,
+    error,
+    ref,
+    onChange,
+    value,
+    disabled,
+  } = props;
   const [open, setOpen] = useState(false);
   const divReference = useRef<HTMLDivElement>(null);
   const hasError = !!error;
@@ -55,7 +66,9 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
   }, []);
 
   return (
-    <Field className={twMerge('w-full', 'flex flex-col gap-[6px]', 'cursor-pointer')}>
+    <Field
+      className={twMerge('w-full', 'flex flex-col gap-[6px]', 'cursor-pointer')}
+      disabled={disabled}>
       {!!label && (
         <Label
           className={twMerge(
@@ -68,22 +81,21 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
         </Label>
       )}
 
-      <input ref={ref} readOnly className="sr-only" />
+      <input ref={ref} readOnly className="sr-only" disabled={disabled} />
 
       <div ref={divReference} className={twMerge('relative', className)}>
         {/* Botão */}
         <div
-          onClick={handleToggle}
+          onClick={!disabled ? handleToggle : () => null}
           className={twMerge(
             'flex items-center justify-between',
             'border border-neutral-700',
             'h-[50px] w-full rounded-[10px] bg-neutral-50 px-[10px]',
             'focus:border-transparent focus:ring-2 focus:ring-neutral-500 focus:outline-none',
-            'disabled:cursor-not-allowed disabled:opacity-50',
             'placeholder:text-neutral-400',
             'transition-all',
             'dark:bg-neutral-800 dark:text-neutral-200 dark:focus:ring-neutral-300',
-            'dark:disabled:bg-neutral-700',
+            disabled && 'cursor-not-allowed opacity-50 dark:disabled:bg-neutral-700',
             hasError && 'border-red-500',
           )}>
           <Text className={twMerge('text-neutral-400 opacity-70', selected && 'text-neutral-900')}>
@@ -124,9 +136,9 @@ export const SelectDefaultComponent = (props: SelectDefaultComponenttInterface) 
 
             {!isEmpty(options) &&
               !isLoading &&
-              options.map((opt) => (
+              options.map((opt, index) => (
                 <li
-                  key={opt.value}
+                  key={`${opt.value}-${index}`}
                   onClick={() => {
                     if (value === opt.value) {
                       onChange(undefined);

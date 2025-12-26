@@ -4,8 +4,8 @@ import type { Control, FieldValues, Path } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { BiPlus, BiTrash } from 'react-icons/bi';
 
-import { Button } from '../button';
-import { SelectDefaultComponent } from '../select-default/select';
+import { Button } from '@/components';
+import { SelectDefaultComponent } from '@/components/select-default/select';
 
 type Option = { value: string; label: string };
 
@@ -25,7 +25,6 @@ export const DynamicListSelect = <T extends FieldValues>(props: DynamicListSelec
       name={id}
       render={({ field }) => {
         const { onChange, value = [] } = field;
-
         const handleSelectChange = (index: number, newValue: string) => {
           const updated = [...(value as string[])];
           updated[index] = newValue;
@@ -38,6 +37,7 @@ export const DynamicListSelect = <T extends FieldValues>(props: DynamicListSelec
 
         const handleRemove = (index: number) => {
           const updated = value.filter((_: string, i: number) => i !== index);
+
           onChange(updated.length ? updated : []);
         };
 

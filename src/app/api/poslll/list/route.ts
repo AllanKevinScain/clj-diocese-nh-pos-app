@@ -8,9 +8,7 @@ export async function GET(request: NextRequest) {
 
   const res = await fetch(`${process.env.BASE_API_URL}/poslll`, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token?.accessToken}`,
-    },
+    headers: { Authorization: `Bearer ${token?.accessToken}` },
   });
 
   if (res.status === 204) return NextResponse.json([]);

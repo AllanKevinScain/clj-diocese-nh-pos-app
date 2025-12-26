@@ -1,10 +1,10 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import toast from 'react-hot-toast';
 
 import { Container } from '@/components';
-import { useCreateQuery, useListRecords } from '@/hooks';
+import { useListRecords } from '@/hooks';
 import type { CompleteRecordInterface, FilterRecordsType } from '@/types';
 
 import { ListRecords } from '../components';
@@ -20,16 +20,13 @@ export const CoursePoslllClientPage = (props: CourseClientPageInterface) => {
   const { courseNumber, courseId, typeOfRecord } = props;
   const { listAllRecords } = useListRecords();
 
-  const { data, isLoading, isFetching } = useCreateQuery<FilterRecordsType>({
+  const { data, isLoading, isFetching } = useQuery<FilterRecordsType>({
     queryKey: ['listAllRecords', courseNumber, typeOfRecord],
     queryFn: () =>
       listAllRecords({
         courseNumber,
         typeOfRecord,
       }),
-    onError: (error) => {
-      toast.error(String(error.data?.message));
-    },
   });
 
   return (
