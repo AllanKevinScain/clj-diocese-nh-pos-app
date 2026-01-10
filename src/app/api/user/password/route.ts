@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
+import type { ReturnHandlerApiType } from '@/types';
+import type { RegisterUserSchemaInferType } from '@/yup';
+
 export async function PUT(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
@@ -19,7 +22,10 @@ export async function PUT(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
-  if (res.status !== 200) return NextResponse.json({ ok: false, data: data });
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<RegisterUserSchemaInferType>;
+  if (res.status !== 200) {
+    return NextResponse.json({ ok: false, ...data });
+  }
+
+  return NextResponse.json({ ok: true, ...data });
 }

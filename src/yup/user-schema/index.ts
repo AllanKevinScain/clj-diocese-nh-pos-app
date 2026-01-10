@@ -13,14 +13,15 @@ const testPasswordIsEqual: yup.TestFunction<string, yup.AnyObject> = (value, { p
 
 export const userSchema = yup.object().shape({
   id: yup.string().uuid(),
-  email: yup.string().email('Email inválido').required('Email é obrigatório'),
+  email: yup.string().trim().email('Email inválido').required('Email é obrigatório'),
   loginType: yup
     .mixed<'admin' | 'manager' | 'builder-manager'>()
     .oneOf(['admin', 'manager', 'builder-manager'])
     .required('Tipo de login é obrigatório'),
-  name: yup.string().required('Nome é obrigatório'),
-  coName: yup.string().required('Nome é obrigatório'),
-  city: yup.string().required('Cidade é obrigatória'),
+  name: yup.string().trim().required('Nome é obrigatório'),
+  coName: yup.string().trim().required('Nome é obrigatório'),
+  city: yup.string().trim().required('Cidade é obrigatória'),
+
   active: yup.boolean().optional(),
   createdAt: yup.string().optional(),
   updatedAt: yup.string().optional(),
@@ -28,7 +29,7 @@ export const userSchema = yup.object().shape({
 export type UserSchemaInferType = yup.InferType<typeof userSchema>;
 
 export const registerUserSchema = userSchema.shape({
-  password: yup.string().required('Senha é obrigatória').test({
+  password: yup.string().trim().required('Senha é obrigatória').test({
     test: testPassword,
     message: 'Essa senha não é válida!',
   }),
@@ -36,12 +37,13 @@ export const registerUserSchema = userSchema.shape({
 export type RegisterUserSchemaInferType = yup.InferType<typeof registerUserSchema>;
 
 export const userPasswordSchema = registerUserSchema.pick(['password', 'id']).shape({
-  newPassword: yup.string().required('Senha é obrigatória').test({
+  newPassword: yup.string().trim().required('Senha é obrigatória').test({
     test: testPassword,
     message: 'Essa senha não é válida!',
   }),
   confirmNewPassword: yup
     .string()
+    .trim()
     .required('Campo orbigatório!')
     .test({ test: testPasswordIsEqual, message: 'Senhas divergentes!' }),
 });

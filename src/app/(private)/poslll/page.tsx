@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
@@ -8,7 +9,7 @@ import { FaSearch } from 'react-icons/fa';
 import type { InferType } from 'yup';
 
 import { Button, Container, FieldDefault, Heading, Loading, NewTodo, Text } from '@/components';
-import { useCreateQuery, usePoslll } from '@/hooks';
+import { usePoslll } from '@/hooks';
 import type { poslllSchema } from '@/yup';
 
 type PoslllSchemaInferType = InferType<typeof poslllSchema>;
@@ -25,7 +26,7 @@ export default function PosCLJlllPage() {
 
   const search = useWatch({ control, name: 'search' });
 
-  const { data, isLoading, refetch } = useCreateQuery<PoslllSchemaInferType[]>({
+  const { data, isLoading, refetch } = useQuery<PoslllSchemaInferType[]>({
     queryKey: ['listPoslll'],
     queryFn: listPoslll,
   });
@@ -53,7 +54,7 @@ export default function PosCLJlllPage() {
       <div className="flex flex-col gap-[8px]">
         <div className="flex justify-between">
           <Heading>CLJ lll</Heading>
-          <NewTodo content="Cadastrar novo CLJ lll" href="/register/poslll" />
+          <NewTodo content="Cadastrar CLJ lll" href="/register/poslll" className="w-[200px]" />
         </div>
         <div className="flex w-full">
           <FieldDefault id="search" control={control} className="rounded-e-none" />

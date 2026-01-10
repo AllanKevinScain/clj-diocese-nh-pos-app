@@ -1,8 +1,8 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -15,7 +15,8 @@ import {
   Heading,
   SelectDefault,
 } from '@/components';
-import { useCreateQuery, usePoslll, useToggleModal, useUsers } from '@/hooks';
+import { usePoslll, useToggleModal, useUsers } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
 import type { PoslllSchemaInferType } from '@/yup';
 import { poslllSchema } from '@/yup';
 
@@ -27,8 +28,9 @@ interface PoslllClientPageInterface {
 
 export const PoslllClientPage = (props: PoslllClientPageInterface) => {
   const { poslll } = props;
-  const navigate = useRouter();
 
+  const navigate = useRouter();
+  const client = useQueryClient();
   const { updatePoslll, changeStatusPoslll } = usePoslll();
   const { isOpen, handle } = useToggleModal();
   const { listParishes } = useUsers();
@@ -41,36 +43,40 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
   });
   const { handleSubmit, control } = methods;
 
-  const { data: parishes, isLoading: isLoadingParishes } = useCreateQuery({
+  const { data: parishes, isLoading: isLoadingParishes } = useQuery({
     queryKey: ['list-parishes'],
     queryFn: listParishes,
   });
 
   const onSubmit = async (data: PoslllSchemaInferType) => {
-    const res = await updatePoslll(data);
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      navigate.push('/poslll');
-    }
+    await updatePoslll.mutateAsync(data, {
+      onSuccess: (data: ReturnHandlerApiType<PoslllSchemaInferType>) => {
+        toast.success(data.message);
+        client.invalidateQueries({ queryKey: ['listPoslll'] });
+        navigate.push('/poslll');
+      },
+      onError: (data) => toast.error(data.message),
+    });
   };
 
   async function deletePoslllById() {
-    const response = await changeStatusPoslll(poslll.id!);
-
-    if (!response?.ok) {
-      toast.error(response.data.message);
-    } else {
-      toast.success(response.data.message);
-      navigate.push('/poslll');
-    }
+    await changeStatusPoslll.mutateAsync(poslll.id!, {
+      onSuccess: (data) => {
+        toast.success(data.data.message);
+        navigate.push('/poslll');
+      },
+      onError: (data) => toast.error(data.message),
+    });
   }
 
   return (
     <>
-      <AcceptModal isOpen={isOpen} handle={handle} accept={deletePoslllById} />
+      <AcceptModal
+        isOpen={isOpen}
+        handle={handle}
+        accept={deletePoslllById}
+        isLoading={changeStatusPoslll.isPending}
+      />
 
       <Container>
         <Heading>Edição do CLJ lll {poslll.candidateName}</Heading>
@@ -119,10 +125,15 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
             <FieldTextarea id="formations" control={control} label="Formações" />
 
             <div className="flex gap-[16px]">
-              <Button type="button" variant="outline" className="w-full" onClick={handle}>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handle}
+                isLoading={updatePoslll.isPending}>
                 {!isActive ? 'Ativar' : 'Desativar'} registro
               </Button>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" isLoading={updatePoslll.isPending}>
                 Atualizar
               </Button>
             </div>

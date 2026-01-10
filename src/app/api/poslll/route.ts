@@ -1,16 +1,13 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import type { InferType } from 'yup';
 
-import type { poslllSchema } from '@/yup';
-
-type PoslllSchemaInferType = InferType<typeof poslllSchema>;
+import type { ReturnHandlerApiType } from '@/types';
+import type { PoslllSchemaInferType } from '@/yup';
 
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
-  const body = (await request.json()) as PoslllSchemaInferType;
-
   if (!token?.accessToken) throw new Error('Token com problema');
+  const body = (await request.json()) as PoslllSchemaInferType;
 
   const res = await fetch(`${process.env.BASE_API_URL}/poslll`, {
     method: 'POST',
@@ -21,17 +18,18 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
+  if (res.status !== 200) {
+    return NextResponse.json({ ok: false, ...data });
+  }
 
-  return NextResponse.json({ ok: true, data });
+  return NextResponse.json({ ok: true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
   const token = await getToken({ req: request });
   if (!token?.accessToken) throw new Error('Token com problema');
-
-  const body = await request.json();
-  console.log('🚀 ~ PUT ~ body:', body);
+  const body = (await request.json()) as PoslllSchemaInferType;
 
   const poslllId = request.nextUrl.searchParams.get('poslllId');
   if (!poslllId) throw new Error('Curso não identificado!');
@@ -45,9 +43,12 @@ export async function PUT(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
+  if (res.status !== 200) {
+    return NextResponse.json({ ok: false, ...data });
+  }
 
-  return NextResponse.json({ ok: true, data });
+  return NextResponse.json({ ok: true, ...data });
 }
 
 export async function PATCH(request: NextRequest) {
@@ -64,7 +65,10 @@ export async function PATCH(request: NextRequest) {
     },
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
+  if (res.status !== 200) {
+    return NextResponse.json({ ok: false, ...data });
+  }
 
-  return NextResponse.json({ ok: true, data });
+  return NextResponse.json({ ok: true, ...data });
 }

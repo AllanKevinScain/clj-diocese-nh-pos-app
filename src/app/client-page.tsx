@@ -2,7 +2,6 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -17,28 +16,17 @@ export function ClientPage() {
 
   const { control, handleSubmit } = useForm<LoginSchemaInferType>({
     resolver: yupResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: { email: '', password: '' },
   });
 
   async function onSubmit(values: LoginSchemaInferType) {
-    const { email, password } = values;
-
-    const res = await login.mutateAsync(
-      {
-        email: email.toLowerCase().trim(),
-        password: password.trim(),
+    await login.mutateAsync(values, {
+      onSuccess: () => {
+        toast.success('Login efetuado com sucesso!');
+        navigate.push('/courses');
       },
-      {
-        onSuccess: () => {
-          toast.success('Login efetuado com sucesso!');
-          navigate.push('/courses');
-        },
-        onError: () => toast.error(res?.error || 'Usuário não cadastrado!'),
-      },
-    );
+      onError: (e) => toast.error(e.message || 'Usuário não cadastrado!'),
+    });
   }
 
   return (

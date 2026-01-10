@@ -1,17 +1,22 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useUsers } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
 import type { RegisterUserSchemaInferType } from '@/yup/user-schema';
 import { registerUserSchema } from '@/yup/user-schema';
 
 import { Password } from './components/password';
 
 export default function RegisterUserClientPage() {
+  const router = useRouter();
+  const client = useQueryClient();
   const { registerUser } = useUsers();
 
   const {
@@ -23,7 +28,14 @@ export default function RegisterUserClientPage() {
   });
 
   const onSubmit = async (data: RegisterUserSchemaInferType) => {
-    await registerUser(data);
+    await registerUser.mutateAsync(data, {
+      onSuccess: (data: ReturnHandlerApiType<RegisterUserSchemaInferType>) => {
+        toast.success(data.message);
+        client.invalidateQueries({ queryKey: ['users'] });
+        router.push('/view/users');
+      },
+      onError: (data) => toast.error(data.message),
+    });
   };
 
   return (
@@ -60,7 +72,7 @@ export default function RegisterUserClientPage() {
           ]}
         />
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" isLoading={registerUser.isPending}>
           Cadastrar
         </Button>
       </form>

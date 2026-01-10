@@ -1,42 +1,28 @@
 'use client';
 
+import { useMutation } from '@tanstack/react-query';
+
 import type { PoslllSchemaInferType } from '@/yup';
 
+import { changeStatusPoslll, registerPoslll, updatePoslll } from './crud';
+import { listPoslll } from './listners';
+
 export function usePoslll() {
-  async function listPoslll() {
-    const req = await fetch('/api/poslll/list', {
-      method: 'GET',
-    });
-    const res = await req.json();
+  const registerPoslllMutation = useMutation({
+    mutationKey: ['registerPoslll'],
+    mutationFn: registerPoslll,
+  });
 
-    return res;
-  }
-  async function registerPoslll(props: PoslllSchemaInferType) {
-    const req = await fetch('/api/poslll', {
-      method: 'POST',
-      body: JSON.stringify(props),
-    });
-    const res = await req.json();
-    return res;
-  }
-  async function updatePoslll(props: PoslllSchemaInferType) {
-    const { id, ...rest } = props;
-    const req = await fetch(`/api/poslll?poslllId=${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(rest),
-    });
+  const updatePoslllMutation = useMutation({
+    mutationKey: ['updatePoslll'],
+    mutationFn: updatePoslll,
+  });
 
-    const res = await req.json();
+  const changeStatusPoslllMutation = useMutation({
+    mutationKey: ['changeStatusPoslll'],
+    mutationFn: changeStatusPoslll,
+  });
 
-    return res;
-  }
-  async function changeStatusPoslll(poslllId: string) {
-    const req = await fetch(`/api/poslll?poslllId=${poslllId}`, {
-      method: 'PATCH',
-    });
-    const res = await req.json();
-    return res;
-  }
   async function getPoslllById(id: string): Promise<{ ok: boolean; data: PoslllSchemaInferType }> {
     const req = await fetch(`/api/poslll/${id}`, {
       method: 'GET',
@@ -47,9 +33,9 @@ export function usePoslll() {
 
   return {
     listPoslll,
-    registerPoslll,
-    updatePoslll,
-    changeStatusPoslll,
+    registerPoslll: registerPoslllMutation,
+    updatePoslll: updatePoslllMutation,
+    changeStatusPoslll: changeStatusPoslllMutation,
     getPoslllById,
   };
 }
