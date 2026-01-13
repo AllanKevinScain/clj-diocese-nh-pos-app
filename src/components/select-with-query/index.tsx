@@ -1,7 +1,7 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import type { FieldValues } from 'react-hook-form';
 
-import { useCreateQuery } from '@/hooks';
 import type { RouteType } from '@/types';
 
 import { SelectDefault, type SelectDefaultInterface } from '../select-default';
@@ -16,13 +16,11 @@ interface SelectWithQueryType<T extends FieldValues>
 export const SelectWithQuery = <T extends FieldValues>(props: SelectWithQueryType<T>) => {
   const { control, id, label, call, modelData, route } = props;
 
-  const { data, isLoading, isFetching } = useCreateQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: [`select-${route ? route : id}`],
     queryFn: call,
-    queryOptions: {
-      select: modelData,
-      enabled: !!call,
-    },
+    select: modelData,
+    enabled: !!call,
   });
 
   return (

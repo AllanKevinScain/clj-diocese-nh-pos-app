@@ -1,10 +1,10 @@
 'use client';
 
 import { useLinkStatus } from 'next/link';
-import { FiLoader } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 
 import type { ButtonProps } from '.';
+import { LoadingButton } from './loading';
 
 export function LinkButton(props: ButtonProps) {
   const { children, variant = 'solid', className, disabled = false } = props;
@@ -43,7 +43,7 @@ export function LinkButton(props: ButtonProps) {
         className,
         loadingLink.pending && 'pointer-events-none flex-row items-center justify-center',
       )}>
-      {loadingLink.pending ? <FiLoader className="h-5 w-5 animate-spin" /> : children}
+      {loadingLink.pending ? <LoadingButton /> : children}
     </div>
   );
 }

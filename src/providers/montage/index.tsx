@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext } from 'react';
 
-import { useListRecords } from '@/hooks';
+import { useRecords } from '@/hooks';
 import type { CompleteRecordInterface, SelectInputOptionType } from '@/types';
 
 type RecordsType = SelectInputOptionType &
@@ -25,7 +25,7 @@ interface MontageProviderInterface {
 }
 
 export const MontageProvider = ({ courseId, children }: MontageProviderInterface) => {
-  const { listRecordByCourseId } = useListRecords();
+  const { listRecordByCourseId } = useRecords();
 
   const { data, isLoading, isFetching } = useQuery({
     queryFn: () => listRecordByCourseId(courseId),

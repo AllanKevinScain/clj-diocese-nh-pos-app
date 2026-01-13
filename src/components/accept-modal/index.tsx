@@ -6,12 +6,13 @@ import { Text } from '../text';
 
 interface AcceptModalInterface {
   isOpen: boolean;
+  isLoading: boolean;
   accept: () => void;
   handle: () => void;
 }
 
 export const AcceptModal = (props: AcceptModalInterface) => {
-  const { isOpen, accept, handle } = props;
+  const { isOpen, accept, handle, isLoading = false } = props;
 
   return (
     <DefaultDialog
@@ -22,13 +23,14 @@ export const AcceptModal = (props: AcceptModalInterface) => {
         <div className="flex justify-end gap-3">
           <Button
             className="w-[80px]"
+            isLoading={isLoading}
             onClick={() => {
               accept();
               handle();
             }}>
             Sim
           </Button>
-          <Button variant="outline" className="w-[80px]" onClick={handle}>
+          <Button variant="outline" className="w-[80px]" onClick={handle} isLoading={isLoading}>
             Não
           </Button>
         </div>
