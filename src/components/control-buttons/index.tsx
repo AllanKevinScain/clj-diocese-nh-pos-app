@@ -1,7 +1,6 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';

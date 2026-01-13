@@ -1,54 +1,30 @@
 'use client';
 
-import type { InferType } from 'yup';
+import { useMutation } from '@tanstack/react-query';
 
-import type { courseSchema } from '@/yup';
-
-export type CourseInferType = InferType<typeof courseSchema>;
+import { deleteCourse, registerCourse, updateCourse } from './crud';
+import { listCourses } from './listners';
 
 export function useCourses() {
-  async function listCourses() {
-    const req = await fetch('/api/course/list', {
-      method: 'GET',
-    });
-    const res = await req.json();
+  const mutationRegisterCourse = useMutation({
+    mutationFn: registerCourse,
+    mutationKey: ['registerCourse'],
+  });
 
-    return res;
-  }
+  const mutationUpdateCourse = useMutation({
+    mutationFn: updateCourse,
+    mutationKey: ['updateCourse'],
+  });
 
-  async function registerCourse(props: CourseInferType) {
-    const req = await fetch('/api/course', {
-      method: 'POST',
-      body: JSON.stringify(props),
-    });
-    const res = await req.json();
-    return res;
-  }
-
-  async function updateCourse(props: CourseInferType) {
-    const { id, ...rest } = props;
-    const req = await fetch(`/api/course?courseId=${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(rest),
-    });
-
-    const res = await req.json();
-
-    return res;
-  }
-
-  async function deleteCourse(courseId: string) {
-    const req = await fetch(`/api/course?courseId=${courseId}`, {
-      method: 'DELETE',
-    });
-    const res = await req.json();
-    return res;
-  }
+  const mutationDeleteCourse = useMutation({
+    mutationFn: deleteCourse,
+    mutationKey: ['deleteCourse'],
+  });
 
   return {
     listCourses,
-    registerCourse,
-    deleteCourse,
-    updateCourse,
+    registerCourse: mutationRegisterCourse.mutateAsync,
+    updateCourse: mutationUpdateCourse.mutateAsync,
+    deleteCourse: mutationDeleteCourse.mutateAsync,
   };
 }
