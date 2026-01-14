@@ -1,5 +1,6 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
@@ -15,7 +16,9 @@ import type { CompleteRecordInterface } from '@/types';
 type EditRecordBottomBarInterface = Pick<CompleteRecordInterface, 'id'>;
 
 export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
-  const navigate = useRouter();
+  const router = useRouter();
+  const client = useQueryClient();
+
   const { data: dataSession } = useSession();
   const { deleteRecordById } = useRecords();
   const { isOpen, handle } = useToggleModal();
@@ -26,7 +29,7 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
         label: 'Voltar',
         icon: <HiArrowUturnLeft size={40} />,
         url: '',
-        click: () => navigate.back(),
+        click: () => router.back(),
       },
     ];
     if (dataSession?.user.loginType === 'admin') {
@@ -41,22 +44,27 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
       ];
     }
     return permissionsFuntions;
-  }, [dataSession?.user.loginType, handle, navigate]);
+  }, [dataSession?.user.loginType, handle, router]);
 
   const deleteRecord = useCallback(async () => {
-    const response = await deleteRecordById(props);
-
-    if (!response?.ok) {
-      toast.error(response.data.message);
-    } else {
-      toast.success(response.data.message);
-      navigate.push('/courses');
-    }
-  }, [deleteRecordById, navigate, props]);
+    await deleteRecordById.mutateAsync(props, {
+      onSuccess: (data) => {
+        toast.success(data.message);
+        // client.invalidateQueries({ queryKey: ['users'] });
+        // router.push('/view/users');
+      },
+      onError: (e) => toast.error(JSON.stringify(e)),
+    });
+  }, [deleteRecordById, props]);
 
   return (
     <>
-      <AcceptModal isOpen={isOpen} handle={handle} accept={deleteRecord} />
+      <AcceptModal
+        isOpen={isOpen}
+        handle={handle}
+        accept={deleteRecord}
+        isLoading={deleteRecordById.isPending}
+      />
       <ControlButtons buttons={actionButtons} />
     </>
   );

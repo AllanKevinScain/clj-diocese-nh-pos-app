@@ -1,6 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -15,6 +16,7 @@ import {
 } from '@/components';
 import { filterPoslll } from '@/helpers';
 import { useCourses, usePoslll } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
 import type { CourseInferType, PoslllSchemaInferType } from '@/yup';
 import { courseSchema } from '@/yup';
 
@@ -24,7 +26,10 @@ interface EditCourseClientPageInterface {
 
 export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
   const { course } = props;
+
   const navigate = useRouter();
+  const client = useQueryClient();
+
   const { updateCourse } = useCourses();
   const { listPoslll } = usePoslll();
 
@@ -34,14 +39,14 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
   });
 
   const onSubmit = async (data: CourseInferType) => {
-    const res = await updateCourse(data);
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      navigate.push('/courses');
-    }
+    await updateCourse.mutateAsync(data, {
+      onSuccess: (data: ReturnHandlerApiType<CourseInferType>) => {
+        toast.success(data.message);
+        client.invalidateQueries({ queryKey: ['cursos'] });
+        navigate.push('/courses');
+      },
+      onError: (e) => toast.error(e.message),
+    });
   };
 
   return (

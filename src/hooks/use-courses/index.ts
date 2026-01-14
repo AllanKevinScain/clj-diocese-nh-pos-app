@@ -23,8 +23,8 @@ export function useCourses() {
 
   return {
     listCourses,
-    registerCourse: mutationRegisterCourse.mutateAsync,
-    updateCourse: mutationUpdateCourse.mutateAsync,
-    deleteCourse: mutationDeleteCourse.mutateAsync,
+    registerCourse: mutationRegisterCourse,
+    updateCourse: mutationUpdateCourse,
+    deleteCourse: mutationDeleteCourse,
   };
 }

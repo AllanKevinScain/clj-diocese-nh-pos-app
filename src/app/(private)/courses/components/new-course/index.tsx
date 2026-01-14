@@ -9,7 +9,7 @@ export const NewCourse = () => {
 
   if (session.data?.user.loginType === 'admin') {
     return (
-      <Button isLink href="/register/course" className="w-full">
+      <Button isLink href="/register/course" className="w-[135px]">
         Cadastrar curso
       </Button>
     );

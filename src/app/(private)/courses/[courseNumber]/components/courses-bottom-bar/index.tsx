@@ -1,5 +1,6 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
@@ -10,6 +11,8 @@ import { HiArrowUturnLeft } from 'react-icons/hi2';
 import type { ActionButtonTypes } from '@/components';
 import { AcceptModal, ControlButtons } from '@/components';
 import { useCourses, useToggleModal } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
+import type { CourseInferType } from '@/yup';
 
 interface CoursesBottomBarInterface {
   courseId?: string;
@@ -19,6 +22,8 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
   const { courseId = '' } = props;
   const { data } = useSession();
   const navigate = useRouter();
+  const client = useQueryClient();
+
   const { isOpen, handle } = useToggleModal();
   const { deleteCourse } = useCourses();
 
@@ -49,19 +54,24 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
   }, [courseId, data?.user.loginType, handle, navigate]);
 
   async function deleteCourseById() {
-    const response = await deleteCourse(courseId);
-
-    if (!response?.ok) {
-      toast.error(response.data.message);
-    } else {
-      toast.success(response.data.message);
-      navigate.push('/courses');
-    }
+    await deleteCourse.mutateAsync(courseId, {
+      onSuccess: async (data: ReturnHandlerApiType<CourseInferType>) => {
+        toast.success(data.message);
+        await client.invalidateQueries({ queryKey: ['cursos'] });
+        navigate.push('/courses');
+      },
+      onError: (e) => toast.error(e.message),
+    });
   }
 
   return (
     <>
-      <AcceptModal isOpen={isOpen} handle={handle} accept={deleteCourseById} />
+      <AcceptModal
+        isOpen={isOpen}
+        handle={handle}
+        accept={deleteCourseById}
+        isLoading={deleteCourse.isPending}
+      />
       <ControlButtons buttons={actionButtons} />
     </>
   );

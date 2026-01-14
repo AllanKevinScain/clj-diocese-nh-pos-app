@@ -21,13 +21,7 @@ export const AcceptModal = (props: AcceptModalInterface) => {
       title="Essa ação alterará a integração desse registro com o sistema"
       actionsButtons={
         <div className="flex justify-end gap-3">
-          <Button
-            className="w-[80px]"
-            isLoading={isLoading}
-            onClick={() => {
-              accept();
-              handle();
-            }}>
+          <Button className="w-[80px]" isLoading={isLoading} onClick={accept}>
             Sim
           </Button>
           <Button variant="outline" className="w-[80px]" onClick={handle} isLoading={isLoading}>

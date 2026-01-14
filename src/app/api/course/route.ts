@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
+import type { ReturnHandlerApiType } from '@/types';
+import type { CourseInferType } from '@/yup';
+
 export async function POST(request: NextRequest) {
   const token = await getToken({ req: request });
   const body = await request.json();
@@ -16,9 +19,12 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as ReturnHandlerApiType<CourseInferType>;
+  if (res.status !== 200) {
+    return NextResponse.json({ ok: false, ...data });
+  }
 
-  return NextResponse.json({ ok: true, data });
+  return NextResponse.json({ ok: true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -57,8 +63,6 @@ export async function DELETE(request: NextRequest) {
       Authorization: `Bearer ${token?.accessToken}`,
     },
   });
-
-  const data = await res.json();
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<CourseInferType>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }

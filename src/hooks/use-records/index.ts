@@ -57,12 +57,17 @@ export function useRecords() {
     },
   });
 
+  const mutationdeleteRecord = useMutation({
+    mutationKey: ['deleteRecordById'],
+    mutationFn: deleteRecordById,
+  });
+
   return {
     listAllRecords,
     listRecordByCourseId,
     registerRecord: mutationRegisterRecord.mutateAsync,
     editRecord: mutationEditRecord.mutateAsync,
-    deleteRecordById,
+    deleteRecordById: mutationdeleteRecord,
     isFetching: mutationRegisterRecord.isPending || mutationEditRecord.isPending || false,
   };
 }
