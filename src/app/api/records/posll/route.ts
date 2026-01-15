@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import type { InferType } from 'yup';
 
+import type { CompleteRecordInterface, ReturnHandlerApiType } from '@/types';
 import type { posllSchema } from '@/yup';
 
 type PosllSchemaInfertype = InferType<typeof posllSchema>;
@@ -28,11 +29,8 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(rest),
   });
 
-  const data = await res.json();
-
-  if (res.status !== 200) return NextResponse.json({ ok: false, data });
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<CompleteRecordInterface>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -59,9 +57,6 @@ export async function PUT(request: NextRequest) {
     body: JSON.stringify(rest),
   });
 
-  const data = await res.json();
-
-  if (res.status !== 200) return NextResponse.json({ ok: false, data });
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<CompleteRecordInterface>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }

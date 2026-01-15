@@ -20,11 +20,7 @@ export async function POST(request: NextRequest) {
   });
 
   const data = (await res.json()) as ReturnHandlerApiType<CourseInferType>;
-  if (res.status !== 200) {
-    return NextResponse.json({ ok: false, ...data });
-  }
-
-  return NextResponse.json({ ok: true, ...data });
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -45,9 +41,8 @@ export async function PUT(request: NextRequest) {
     body: JSON.stringify(body),
   });
 
-  const data = await res.json();
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<CourseInferType>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function DELETE(request: NextRequest) {

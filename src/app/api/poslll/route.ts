@@ -19,11 +19,7 @@ export async function POST(request: NextRequest) {
   });
 
   const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
-  if (res.status !== 200) {
-    return NextResponse.json({ ok: false, ...data });
-  }
-
-  return NextResponse.json({ ok: true, ...data });
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -44,11 +40,7 @@ export async function PUT(request: NextRequest) {
   });
 
   const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
-  if (res.status !== 200) {
-    return NextResponse.json({ ok: false, ...data });
-  }
-
-  return NextResponse.json({ ok: true, ...data });
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function PATCH(request: NextRequest) {
@@ -66,9 +58,5 @@ export async function PATCH(request: NextRequest) {
   });
 
   const data = (await res.json()) as ReturnHandlerApiType<PoslllSchemaInferType>;
-  if (res.status !== 200) {
-    return NextResponse.json({ ok: false, ...data });
-  }
-
-  return NextResponse.json({ ok: true, ...data });
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
