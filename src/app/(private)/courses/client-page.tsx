@@ -21,11 +21,7 @@ export function CoursesClientPage(props: CoursesClientPageInterface) {
   const { loginType } = props;
   const { listCourses } = useCourses();
 
-  const { control } = useForm({
-    defaultValues: {
-      search: '',
-    },
-  });
+  const { control } = useForm({ defaultValues: { search: '' } });
 
   const search = useWatch({ control, name: 'search' });
 

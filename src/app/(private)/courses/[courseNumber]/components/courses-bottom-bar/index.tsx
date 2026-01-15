@@ -55,9 +55,9 @@ export const CoursesBottomBar = (props: CoursesBottomBarInterface) => {
 
   async function deleteCourseById() {
     await deleteCourse.mutateAsync(courseId, {
-      onSuccess: async (data: ReturnHandlerApiType<CourseInferType>) => {
+      onSuccess: (data: ReturnHandlerApiType<CourseInferType>) => {
         toast.success(data.message);
-        await client.invalidateQueries({ queryKey: ['cursos'] });
+        client.refetchQueries({ queryKey: ['cursos'] });
         navigate.push('/courses');
       },
       onError: (e) => toast.error(e.message),

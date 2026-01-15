@@ -42,7 +42,7 @@ export const EditCourseClientPage = (props: EditCourseClientPageInterface) => {
     await updateCourse.mutateAsync(data, {
       onSuccess: (data: ReturnHandlerApiType<CourseInferType>) => {
         toast.success(data.message);
-        client.invalidateQueries({ queryKey: ['cursos'] });
+        client.refetchQueries({ queryKey: ['cursos'] });
         navigate.push('/courses');
       },
       onError: (e) => toast.error(e.message),
