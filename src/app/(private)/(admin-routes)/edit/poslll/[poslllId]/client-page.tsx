@@ -52,10 +52,10 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
     await updatePoslll.mutateAsync(data, {
       onSuccess: (data: ReturnHandlerApiType<PoslllSchemaInferType>) => {
         toast.success(data.message);
-        client.invalidateQueries({ queryKey: ['listPoslll'] });
+        client.refetchQueries({ queryKey: ['listPoslll'] });
         navigate.push('/poslll');
       },
-      onError: (data) => toast.error(data.message),
+      onError: (e) => toast.error(e.message),
     });
   };
 
@@ -65,7 +65,7 @@ export const PoslllClientPage = (props: PoslllClientPageInterface) => {
         toast.success(data.data.message);
         navigate.push('/poslll');
       },
-      onError: (data) => toast.error(data.message),
+      onError: (e) => toast.error(e.message),
     });
   }
 

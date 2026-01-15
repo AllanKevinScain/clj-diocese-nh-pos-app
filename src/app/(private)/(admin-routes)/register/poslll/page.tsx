@@ -41,10 +41,10 @@ export default function RegisterPoslllPage() {
     await registerPoslll.mutateAsync(data, {
       onSuccess: (data: ReturnHandlerApiType<PoslllSchemaInferType>) => {
         toast.success(data.message);
-        client.invalidateQueries({ queryKey: ['listPoslll'] });
+        client.refetchQueries({ queryKey: ['listPoslll'] });
         navigate.push('/poslll');
       },
-      onError: (data) => toast.error(data.message),
+      onError: (e) => toast.error(e.message),
     });
   };
 
