@@ -25,7 +25,7 @@ export function ClientPage() {
         toast.success('Login efetuado com sucesso!');
         navigate.push('/courses');
       },
-      onError: (e) => toast.error(e.message || 'Usuário não cadastrado!'),
+      onError: (e) => toast.error(e.message),
     });
   }
 

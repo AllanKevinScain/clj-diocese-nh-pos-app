@@ -31,10 +31,10 @@ export default function RegisterUserClientPage() {
     await registerUser.mutateAsync(data, {
       onSuccess: (data: ReturnHandlerApiType<RegisterUserSchemaInferType>) => {
         toast.success(data.message);
-        client.invalidateQueries({ queryKey: ['users'] });
+        client.refetchQueries({ queryKey: ['users'] });
         router.push('/view/users');
       },
-      onError: (data) => toast.error(data.message),
+      onError: (e) => toast.error(e.message),
     });
   };
 

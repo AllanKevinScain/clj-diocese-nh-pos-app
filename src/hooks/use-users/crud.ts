@@ -1,3 +1,4 @@
+import { identifyStatusError } from '@/helpers';
 import type {
   RegisterUserSchemaInferType,
   UserPasswordSchemaInferType,
@@ -10,6 +11,7 @@ export async function registerUser(props: RegisterUserSchemaInferType) {
     body: JSON.stringify(props),
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }
 
@@ -20,6 +22,7 @@ export async function updateUser(props: UserSchemaInferType) {
     body: JSON.stringify(rest),
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }
 
@@ -28,6 +31,7 @@ export async function changeStatusUser(userId: string) {
     method: 'PATCH',
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }
 
@@ -38,5 +42,6 @@ export async function updateUserPassword(props: UserPasswordSchemaInferType) {
     body: JSON.stringify(rest),
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }

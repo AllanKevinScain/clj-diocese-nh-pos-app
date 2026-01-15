@@ -35,10 +35,10 @@ export default function EditPasswordUserPage() {
       {
         onSuccess: (data: ReturnHandlerApiType<UserSchemaInferType>) => {
           toast.success(data.message);
-          client.invalidateQueries({ queryKey: ['users'] });
+          client.refetchQueries({ queryKey: ['users'] });
           router.push('/view/users');
         },
-        onError: (e) => toast.error(JSON.stringify(e)),
+        onError: (e) => toast.error(e.message),
       },
     );
   };
