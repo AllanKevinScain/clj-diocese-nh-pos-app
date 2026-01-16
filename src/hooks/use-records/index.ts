@@ -1,60 +1,43 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import toast from 'react-hot-toast';
 
-import { deleteRecordById, editRecord, registerRecord } from './crud';
+import {
+  deleteRecordById,
+  editPoslllRecord,
+  editPosllRecord,
+  editPoslRecord,
+  registerPoslllRecord,
+  registerPosllRecord,
+  registerPoslRecord,
+} from './crud';
 import { listAllRecords, listRecordByCourseId } from './listners';
 
 export function useRecords() {
-  const router = useRouter();
-  const { data: dataSession } = useSession();
-
-  const mutationRegisterRecord = useMutation({
-    mutationKey: ['registerRecord'],
-    mutationFn: registerRecord,
-    onSuccess: (e) => {
-      if (!e?.ok) {
-        toast.error(e.data.message);
-      } else {
-        toast.success(e.data.message);
-        if (e.data.data && dataSession?.user.loginType === 'manager') {
-          router.push(
-            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord?.toLowerCase()}`,
-          );
-        } else {
-          router.push('/courses');
-        }
-      }
-    },
-    onError: (e) => {
-      console.log('🚀 ~ useRecords ~ e:', e);
-      toast.error(JSON.stringify(e));
-    },
+  const mutationRegisterPoslRecord = useMutation({
+    mutationKey: ['registerPoslRecord'],
+    mutationFn: registerPoslRecord,
+  });
+  const mutationRegisterPosllRecord = useMutation({
+    mutationKey: ['registerPosllRecord'],
+    mutationFn: registerPosllRecord,
+  });
+  const mutationRegisterPoslllRecord = useMutation({
+    mutationKey: ['registerPoslllRecord'],
+    mutationFn: registerPoslllRecord,
   });
 
-  const mutationEditRecord = useMutation({
-    mutationKey: ['editRecord'],
-    mutationFn: editRecord,
-    onSuccess: (e) => {
-      if (!e?.ok) {
-        toast.error(e.data.message);
-      } else {
-        toast.success(e.data.message);
-        if (e.data.data && dataSession?.user.loginType === 'manager') {
-          router.push(
-            `/courses/${e.data.data.courseNumber}/${e.data.data.typeOfRecord?.toLowerCase()}`,
-          );
-        } else {
-          router.push('/courses');
-        }
-      }
-    },
-    onError: (e) => {
-      toast.error(JSON.stringify(e));
-    },
+  const mutationEditPoslRecord = useMutation({
+    mutationKey: ['editPoslRecord'],
+    mutationFn: editPoslRecord,
+  });
+  const mutationEditPosllRecord = useMutation({
+    mutationKey: ['editPosllRecord'],
+    mutationFn: editPosllRecord,
+  });
+  const mutationEditPoslllRecord = useMutation({
+    mutationKey: ['editPoslllRecord'],
+    mutationFn: editPoslllRecord,
   });
 
   const mutationdeleteRecord = useMutation({
@@ -65,9 +48,12 @@ export function useRecords() {
   return {
     listAllRecords,
     listRecordByCourseId,
-    registerRecord: mutationRegisterRecord.mutateAsync,
-    editRecord: mutationEditRecord.mutateAsync,
+    registerPoslRecord: mutationRegisterPoslRecord,
+    registerPosllRecord: mutationRegisterPosllRecord,
+    registerPoslllRecord: mutationRegisterPoslllRecord,
+    editPoslRecord: mutationEditPoslRecord,
+    editPosllRecord: mutationEditPosllRecord,
+    editPoslllRecord: mutationEditPoslllRecord,
     deleteRecordById: mutationdeleteRecord,
-    isFetching: mutationRegisterRecord.isPending || mutationEditRecord.isPending || false,
   };
 }

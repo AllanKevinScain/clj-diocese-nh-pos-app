@@ -21,11 +21,7 @@ export const CoursePoslClientPage = (props: CourseClientPageInterface) => {
 
   const { data, isLoading, isFetching } = useQuery<FilterRecordsType>({
     queryKey: ['listAllRecords', courseNumber, typeOfRecord],
-    queryFn: () =>
-      listAllRecords({
-        courseNumber,
-        typeOfRecord,
-      }),
+    queryFn: () => listAllRecords({ courseNumber, typeOfRecord }),
   });
 
   return (

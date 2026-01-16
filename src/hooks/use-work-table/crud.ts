@@ -1,3 +1,4 @@
+import { identifyStatusError } from '@/helpers';
 import type { BackgroundTableSchemaInferType, ExportWorkTableSchemaInferType } from '@/yup';
 
 export async function registerWorkTable(props: BackgroundTableSchemaInferType) {
@@ -6,6 +7,7 @@ export async function registerWorkTable(props: BackgroundTableSchemaInferType) {
     body: JSON.stringify(props),
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }
 export async function updateWorkTable(props: BackgroundTableSchemaInferType) {
@@ -14,6 +16,7 @@ export async function updateWorkTable(props: BackgroundTableSchemaInferType) {
     body: JSON.stringify(props),
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }
 export async function getWorkTableByCourseId(props: ExportWorkTableSchemaInferType) {
@@ -21,5 +24,6 @@ export async function getWorkTableByCourseId(props: ExportWorkTableSchemaInferTy
     method: 'GET',
   });
   const res = await req.json();
+  identifyStatusError(res);
   return res;
 }

@@ -1,3 +1,6 @@
+import { getServerSession } from 'next-auth';
+
+import { authOptions } from '@/auth-config';
 import { getRecordByIdServerCall } from '@/server-calls';
 
 import { EditRecordCoupleClientPage } from './couple-work-client-page';
@@ -15,16 +18,19 @@ export default async function EditRecordPage(props: EditRecordPageInterface) {
   const { searchParams } = props;
   const { id } = await searchParams;
 
+  const session = await getServerSession(authOptions);
   const record = await getRecordByIdServerCall(id);
 
-  if (record.data.isCoupleWork) return <EditRecordCoupleClientPage record={record.data} />;
-  if (record.data.isWork) return <EditRecordWorkClientPage record={record.data} />;
+  if (record.data.isCoupleWork)
+    return <EditRecordCoupleClientPage record={record.data} session={session} />;
+  if (record.data.isWork)
+    return <EditRecordWorkClientPage record={record.data} session={session} />;
   if (record.data.typeOfRecord === 'POSll') {
-    return <EditRecordPosllClientPage record={record.data} />;
+    return <EditRecordPosllClientPage record={record.data} session={session} />;
   }
   if (record.data.typeOfRecord === 'POSlll') {
-    return <EditRecordPoslllClientPage record={record.data} />;
+    return <EditRecordPoslllClientPage record={record.data} session={session} />;
   }
 
-  return <EditRecordPoslClientPage record={record.data} />;
+  return <EditRecordPoslClientPage record={record.data} session={session} />;
 }

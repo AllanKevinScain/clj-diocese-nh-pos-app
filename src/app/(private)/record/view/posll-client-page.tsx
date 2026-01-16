@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ViewRecordBottomBar } from '@/components';
 import { PosllForm } from '@/components/forms';
 import type { CompleteRecordInterface } from '@/types';
-import type { PosllSchemaInfertype } from '@/yup';
+import type { CandidatePosllSchemaInfertype } from '@/yup';
 import { posllSchema } from '@/yup';
 
 interface ViewRecordPosllClientPageInterface {
@@ -16,7 +16,7 @@ interface ViewRecordPosllClientPageInterface {
 export const ViewRecordPosllClientPage = (props: ViewRecordPosllClientPageInterface) => {
   const { record } = props;
 
-  const methods = useForm<PosllSchemaInfertype>({
+  const methods = useForm<CandidatePosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
     defaultValues: record,
   });

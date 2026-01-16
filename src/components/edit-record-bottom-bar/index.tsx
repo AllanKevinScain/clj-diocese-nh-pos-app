@@ -50,12 +50,12 @@ export const EditRecordBottomBar = (props: EditRecordBottomBarInterface) => {
     await deleteRecordById.mutateAsync(props, {
       onSuccess: (data) => {
         toast.success(data.message);
-        // client.invalidateQueries({ queryKey: ['users'] });
-        // router.push('/view/users');
+        client.refetchQueries({ queryKey: ['users'] });
+        router.push('/view/users');
       },
       onError: (e) => toast.error(JSON.stringify(e)),
     });
-  }, [deleteRecordById, props]);
+  }, [client, deleteRecordById, props, router]);
 
   return (
     <>

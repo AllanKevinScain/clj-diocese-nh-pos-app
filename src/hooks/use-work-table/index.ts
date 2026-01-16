@@ -15,8 +15,8 @@ export function useWorkTable() {
   });
 
   return {
-    registerWorkTable: mutationRegisterWorkTable.mutateAsync,
-    updateWorkTable: mutationUpdateWorkTable.mutateAsync,
+    registerWorkTable: mutationRegisterWorkTable,
+    updateWorkTable: mutationUpdateWorkTable,
     getWorkTableByCourseId,
   };
 }

@@ -1,12 +1,16 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { PosllForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { PosllSchemaInfertype } from '@/yup';
+import type { ReturnHandlerApiType } from '@/types';
+import type { CandidatePosllSchemaInfertype } from '@/yup';
 import { posllSchema } from '@/yup';
 
 interface RegisterRecordPosllClientPageInterface {
@@ -14,7 +18,7 @@ interface RegisterRecordPosllClientPageInterface {
   session: Session | null;
 }
 
-const defaultValues: PosllSchemaInfertype = {
+const defaultValues: CandidatePosllSchemaInfertype = {
   dataConsent: null,
   parishChapel: '',
   candidatePhone: '',
@@ -29,20 +33,38 @@ const defaultValues: PosllSchemaInfertype = {
 
 export const RegisterRecordPosllClientPage = (props: RegisterRecordPosllClientPageInterface) => {
   const { courseNumber, session } = props;
-  const { registerRecord, isFetching } = useRecords();
 
-  const methods = useForm<PosllSchemaInfertype>({
+  const router = useRouter();
+  const client = useQueryClient();
+  const { registerPosllRecord } = useRecords();
+
+  const methods = useForm<CandidatePosllSchemaInfertype>({
     resolver: yupResolver(posllSchema),
     defaultValues: { ...defaultValues, courseNumber },
   });
 
-  async function onSubmit(record: PosllSchemaInfertype) {
-    await registerRecord({ typeOfRecord: 'POSll', data: record });
+  async function onSubmit(record: CandidatePosllSchemaInfertype) {
+    await registerPosllRecord.mutateAsync(record, {
+      onSuccess: (data: ReturnHandlerApiType<CandidatePosllSchemaInfertype>) => {
+        toast.success(data.message);
+        client.refetchQueries({ queryKey: ['listAllRecords'] });
+        if (data.data && session?.user.loginType === 'manager') {
+          router.push(`/courses/${data.data.courseNumber}/posll`);
+        } else {
+          router.push('/courses');
+        }
+      },
+      onError: (e) => toast.error(e.message),
+    });
   }
 
   return (
     <FormProvider {...methods}>
-      <PosllForm onSubmit={onSubmit} isSending={isFetching} session={session ?? undefined} />
+      <PosllForm
+        onSubmit={onSubmit}
+        isSending={registerPosllRecord.isPending}
+        session={session ?? undefined}
+      />
     </FormProvider>
   );
 };
