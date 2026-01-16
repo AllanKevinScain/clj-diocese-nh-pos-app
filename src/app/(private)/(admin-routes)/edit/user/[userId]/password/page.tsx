@@ -1,13 +1,15 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { Button, Container } from '@/components';
 import { useUsers } from '@/hooks';
-import type { UserPasswordSchemaInferType } from '@/yup/user-schema';
+import type { ReturnHandlerApiType } from '@/types';
+import type { UserPasswordSchemaInferType, UserSchemaInferType } from '@/yup/user-schema';
 import { userPasswordSchema } from '@/yup/user-schema';
 
 import { Password } from './components/password';
@@ -15,6 +17,7 @@ import { Password } from './components/password';
 export default function EditPasswordUserPage() {
   const params = useParams<{ userId: string }>();
   const router = useRouter();
+  const client = useQueryClient();
 
   const { updateUserPassword } = useUsers();
 
@@ -27,7 +30,17 @@ export default function EditPasswordUserPage() {
   });
 
   const onSubmit = async (data: UserPasswordSchemaInferType) => {
-    await updateUserPassword({ ...data, id: params.userId });
+    await updateUserPassword.mutateAsync(
+      { ...data, id: params.userId },
+      {
+        onSuccess: (data: ReturnHandlerApiType<UserSchemaInferType>) => {
+          toast.success(data.message);
+          client.refetchQueries({ queryKey: ['users'] });
+          router.push('/view/users');
+        },
+        onError: (e) => toast.error(e.message),
+      },
+    );
   };
 
   return (
@@ -51,10 +64,15 @@ export default function EditPasswordUserPage() {
         />
 
         <div className="flex gap-[16px]">
-          <Button type="button" variant="outline" className="w-full" onClick={router.back}>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={router.back}
+            isLoading={updateUserPassword.isPending}>
             Cancelar
           </Button>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" isLoading={updateUserPassword.isPending}>
             Atualizar
           </Button>
         </div>

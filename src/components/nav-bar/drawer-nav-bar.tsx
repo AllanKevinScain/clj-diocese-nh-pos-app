@@ -2,7 +2,7 @@
 
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { isEmpty } from 'lodash';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Fragment, useState } from 'react';
 import { BiMenu } from 'react-icons/bi';
 import { FaCross } from 'react-icons/fa';
@@ -12,6 +12,8 @@ import { LuPaperclip } from 'react-icons/lu';
 import { SiBlockbench } from 'react-icons/si';
 import { TbWorldPlus } from 'react-icons/tb';
 import { twMerge } from 'tailwind-merge';
+
+import { useAuth } from '@/hooks';
 
 import { Button } from '../button';
 import { Divider } from '../divider';
@@ -25,6 +27,7 @@ interface NavBarDrawerInterface {
 export function NavBarDrawer(props: NavBarDrawerInterface) {
   const { showDrawer } = props;
   const { data } = useSession();
+  const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = !isEmpty(data) && data.user.loginType === 'admin';
@@ -100,7 +103,8 @@ export function NavBarDrawer(props: NavBarDrawerInterface) {
                   <Button
                     variant="outline"
                     className="w-full"
-                    onClick={() => signOut({ callbackUrl: '/' })}>
+                    isLoading={logout.isPending}
+                    onClick={async () => await logout.mutateAsync()}>
                     Sair
                   </Button>
                 </DialogPanel>

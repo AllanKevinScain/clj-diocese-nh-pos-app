@@ -1,6 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -13,7 +14,8 @@ import {
   Heading,
   SelectDefault,
 } from '@/components';
-import { useCreateQuery, usePoslll, useUsers } from '@/hooks';
+import { usePoslll, useUsers } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
 import type { PoslllSchemaInferType } from '@/yup';
 import { poslllSchema } from '@/yup';
 
@@ -21,6 +23,7 @@ import { CoupleField } from './components';
 
 export default function RegisterPoslllPage() {
   const navigate = useRouter();
+  const client = useQueryClient();
   const { registerPoslll } = usePoslll();
   const { listParishes } = useUsers();
 
@@ -29,20 +32,20 @@ export default function RegisterPoslllPage() {
   });
   const { handleSubmit, control } = methods;
 
-  const { data: parishes } = useCreateQuery({
+  const { data: parishes } = useQuery({
     queryKey: ['list-parishes'],
     queryFn: listParishes,
   });
 
   const onSubmit = async (data: PoslllSchemaInferType) => {
-    const res = await registerPoslll(data);
-
-    if (!res?.ok) {
-      toast.error(res.data.message);
-    } else {
-      toast.success(res.data.message);
-      navigate.push('/poslll');
-    }
+    await registerPoslll.mutateAsync(data, {
+      onSuccess: (data: ReturnHandlerApiType<PoslllSchemaInferType>) => {
+        toast.success(data.message);
+        client.refetchQueries({ queryKey: ['listPoslll'] });
+        navigate.push('/poslll');
+      },
+      onError: (e) => toast.error(e.message),
+    });
   };
 
   return (
@@ -90,7 +93,7 @@ export default function RegisterPoslllPage() {
 
           <FieldTextarea id="formations" control={control} label="Formações" />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" isLoading={registerPoslll.isPending}>
             Cadastrar
           </Button>
         </form>

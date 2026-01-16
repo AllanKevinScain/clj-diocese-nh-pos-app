@@ -2,6 +2,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash';
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -11,7 +12,7 @@ import type { InferType } from 'yup';
 import { Container, ControlButtons, Heading, Tab } from '@/components';
 import { useWorkTable } from '@/hooks';
 import { TabProvider } from '@/providers/tab';
-import type { WorkTableResponseInterface } from '@/types';
+import type { ReturnHandlerApiType, WorkTableResponseInterface } from '@/types';
 import type { CourseInferType } from '@/yup';
 import { backgroundTableSchema } from '@/yup';
 
@@ -49,6 +50,8 @@ const workTableInitiate: BackgroundTableSchemaInferType = {
 export function MontageClientPage(props: MontageClientPageInterface) {
   const { course, workTable } = props;
 
+  const router = useRouter();
+
   const {
     endDate: _endDate,
     startDate: _startDate,
@@ -70,21 +73,24 @@ export function MontageClientPage(props: MontageClientPageInterface) {
 
   const handleWorkTable = useCallback(async () => {
     const isCreated = !isEmpty(workTable);
-
-    let callResponse = {} as { ok: boolean; data: { message: string; data: unknown } };
-
     if (isCreated) {
-      callResponse = await updateWorkTable(getValues());
+      await updateWorkTable.mutateAsync(getValues(), {
+        onSuccess: (data: ReturnHandlerApiType<BackgroundTableSchemaInferType>) => {
+          toast.success(data.message);
+          router.push('/setup-background-table/courses');
+        },
+        onError: (e) => toast.error(e.message),
+      });
     } else {
-      callResponse = await registerWorkTable(getValues());
+      await registerWorkTable.mutateAsync(getValues(), {
+        onSuccess: (data: ReturnHandlerApiType<BackgroundTableSchemaInferType>) => {
+          toast.success(data.message);
+          router.push('/setup-background-table/courses');
+        },
+        onError: (e) => toast.error(e.message),
+      });
     }
-
-    if (callResponse.ok) {
-      return toast.success(callResponse.data.message);
-    }
-
-    return toast.error(JSON.stringify(callResponse.data));
-  }, [registerWorkTable, updateWorkTable, getValues, workTable]);
+  }, [workTable, updateWorkTable, getValues, router, registerWorkTable]);
 
   return (
     <>
@@ -119,6 +125,7 @@ export function MontageClientPage(props: MontageClientPageInterface) {
             label: 'Salvar',
             icon: <BiEdit size={40} />,
             click: async () => await handleWorkTable(),
+            isLoading: updateWorkTable.isPending || registerWorkTable.isPending,
           },
         ]}
       />

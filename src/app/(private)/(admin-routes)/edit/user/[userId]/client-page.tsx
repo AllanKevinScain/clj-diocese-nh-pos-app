@@ -1,11 +1,14 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { AcceptModal, Button, Container, FieldDefault, Heading, SelectDefault } from '@/components';
 import { useToggleModal, useUsers } from '@/hooks';
+import type { ReturnHandlerApiType } from '@/types';
 import type { UserSchemaInferType } from '@/yup/user-schema';
 import { userSchema } from '@/yup/user-schema';
 
@@ -16,6 +19,8 @@ interface EditUserClientPageInterface {
 export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   const { user } = props;
 
+  const router = useRouter();
+  const client = useQueryClient();
   const { updateUser, changeStatusUser } = useUsers();
   const { isOpen, handle } = useToggleModal();
 
@@ -27,16 +32,35 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
   });
 
   const onSubmit = async (data: UserSchemaInferType) => {
-    await updateUser(data);
+    await updateUser.mutateAsync(data, {
+      onSuccess: (data: ReturnHandlerApiType<UserSchemaInferType>) => {
+        toast.success(data.message);
+        client.refetchQueries({ queryKey: ['users'] });
+        router.push('/view/users');
+      },
+      onError: (e) => toast.error(e.message),
+    });
   };
 
   async function deleteUserById() {
-    await changeStatusUser(user.id!);
+    await changeStatusUser.mutateAsync(user.id!, {
+      onSuccess: (data: ReturnHandlerApiType<UserSchemaInferType>) => {
+        toast.success(data.message);
+        client.invalidateQueries({ queryKey: ['users'] });
+        router.push('/view/users');
+      },
+      onError: (e) => toast.error(JSON.stringify(e)),
+    });
   }
 
   return (
     <>
-      <AcceptModal isOpen={isOpen} handle={handle} accept={deleteUserById} />
+      <AcceptModal
+        isOpen={isOpen}
+        handle={handle}
+        accept={deleteUserById}
+        isLoading={changeStatusUser.isPending}
+      />
 
       <Container>
         <Heading>Edição do usuário {user.name}</Heading>
@@ -74,10 +98,15 @@ export const EditUserClientPage = (props: EditUserClientPageInterface) => {
           </Button>
 
           <div className="flex gap-[16px]">
-            <Button type="button" variant="outline" className="w-full" onClick={handle}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handle}
+              isLoading={updateUser.isPending}>
               {isActive ? 'Desativar' : 'Ativar'} usuário
             </Button>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" isLoading={updateUser.isPending}>
               Atualizar
             </Button>
           </div>

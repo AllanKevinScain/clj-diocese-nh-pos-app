@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
 import { useMemo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -15,7 +16,7 @@ import {
   NewTodo,
   Text,
 } from '@/components';
-import { useCreateQuery, useUsers } from '@/hooks';
+import { useUsers } from '@/hooks';
 import type { ListUsersReturnInterface } from '@/hooks/use-users/use-users.type';
 
 export default function UserClientPage() {
@@ -29,7 +30,7 @@ export default function UserClientPage() {
 
   const search = useWatch({ control, name: 'search' });
 
-  const { data, isLoading, refetch } = useCreateQuery<ListUsersReturnInterface>({
+  const { data, isLoading, refetch } = useQuery<ListUsersReturnInterface>({
     queryKey: ['users'],
     queryFn: listUsers,
   });
@@ -55,7 +56,7 @@ export default function UserClientPage() {
       <div className="flex flex-col gap-[8px]">
         <div className="flex justify-between">
           <Heading>Usuários</Heading>
-          <NewTodo content="Cadastrar usuário" href="/register/user" />
+          <NewTodo content="Cadastrar usuário" href="/register/user" className="w-[170px]" />
         </div>
         <div className="flex w-full">
           <FieldDefault id="search" control={control} className="rounded-e-none" />

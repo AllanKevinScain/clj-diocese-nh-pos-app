@@ -1,12 +1,15 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { WorkForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { CompleteRecordInterface } from '@/types';
+import type { CompleteRecordInterface, ReturnHandlerApiType } from '@/types';
 import type { WorkSchemaInfertype } from '@/yup';
 import { workSchema } from '@/yup';
 
@@ -31,7 +34,10 @@ const defaultValues: WorkSchemaInfertype = {
 
 export const RegisterRecordWorkClientPage = (props: RegisterRecordWorkClientPageInterface) => {
   const { courseNumber, session, typeOfRecord } = props;
-  const { registerRecord, isFetching } = useRecords();
+
+  const router = useRouter();
+  const client = useQueryClient();
+  const { registerPoslRecord, registerPosllRecord, registerPoslllRecord } = useRecords();
 
   const methods = useForm<WorkSchemaInfertype>({
     resolver: yupResolver(workSchema),
@@ -39,12 +45,41 @@ export const RegisterRecordWorkClientPage = (props: RegisterRecordWorkClientPage
   });
 
   async function onSubmit(record: WorkSchemaInfertype) {
-    await registerRecord({ typeOfRecord, data: record });
+    let call = {} as ReturnHandlerApiType<CompleteRecordInterface>;
+    if (typeOfRecord === 'POSl') {
+      call = await registerPoslRecord.mutateAsync(record);
+    }
+    if (typeOfRecord === 'POSll') {
+      call = await registerPosllRecord.mutateAsync(record);
+    }
+    if (typeOfRecord === 'POSlll') {
+      await registerPoslllRecord.mutateAsync(record);
+    }
+
+    if (call.ok) {
+      toast.success(call.message);
+      client.refetchQueries({ queryKey: ['listAllRecords'] });
+      if (call.data && session?.user.loginType === 'manager') {
+        return router.push(`/courses/${call.data.courseNumber}/${typeOfRecord?.toLowerCase()}`);
+      } else {
+        return router.push('/courses');
+      }
+    }
+
+    return toast.error(call.message);
   }
 
   return (
     <FormProvider {...methods}>
-      <WorkForm onSubmit={onSubmit} isSending={isFetching} session={session ?? undefined} />
+      <WorkForm
+        onSubmit={onSubmit}
+        isSending={
+          registerPoslRecord.isPending ||
+          registerPosllRecord.isPending ||
+          registerPoslllRecord.isPending
+        }
+        session={session ?? undefined}
+      />
     </FormProvider>
   );
 };

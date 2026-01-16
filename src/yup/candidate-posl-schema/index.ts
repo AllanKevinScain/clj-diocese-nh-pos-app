@@ -23,4 +23,4 @@ export const poslSchemaBase = yup.object({
 export type PoslSchemaBaseInfertype = yup.InferType<typeof poslSchemaBase>;
 
 export const poslSchema = posDefault.concat(poslSchemaBase);
-export type PoslSchemaInfertype = yup.InferType<typeof poslSchema>;
+export type CandidatePoslSchemaInfertype = yup.InferType<typeof poslSchema>;

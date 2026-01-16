@@ -1,9 +1,10 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import type { InferType } from 'yup';
 
 import { Container, Empty, Heading, ListItem, Loading } from '@/components';
-import { useCourses, useCreateQuery } from '@/hooks';
+import { useCourses } from '@/hooks';
 import type { courseSchema } from '@/yup';
 
 type CourseSchemaInferType = InferType<typeof courseSchema>;
@@ -11,7 +12,7 @@ type CourseSchemaInferType = InferType<typeof courseSchema>;
 export default function SetupBackgroundTablePage() {
   const { listCourses } = useCourses();
 
-  const { data, isLoading } = useCreateQuery<CourseSchemaInferType[]>({
+  const { data, isLoading } = useQuery<CourseSchemaInferType[]>({
     queryKey: ['cursos'],
     queryFn: listCourses,
   });

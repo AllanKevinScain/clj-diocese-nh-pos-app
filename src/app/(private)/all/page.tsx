@@ -1,17 +1,18 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
 
 import { Button, Container, FieldDefault, Loading } from '@/components';
-import { useCreateQuery, useDevice, useListRecords } from '@/hooks';
+import { useDevice, useRecords } from '@/hooks';
 import type { FilterRecordsType } from '@/types';
 import type { SearchFilterInfertype } from '@/yup';
 
 import { FilterMobileList, FilterTable } from './components';
 
 export default function DownloadExcelArchives() {
-  const { listAllRecords } = useListRecords();
+  const { listAllRecords } = useRecords();
   const isMobile = useDevice({ breakpoint: 768 });
 
   const methods = useForm<SearchFilterInfertype>({
@@ -22,7 +23,7 @@ export default function DownloadExcelArchives() {
 
   const search = useWatch({ control: methods.control, name: 'search' });
 
-  const { data, refetch, isLoading, isFetching } = useCreateQuery<FilterRecordsType>({
+  const { data, refetch, isLoading, isFetching } = useQuery<FilterRecordsType>({
     queryKey: ['filterAllrecords', search],
     queryFn: () => listAllRecords(methods.getValues()),
   });

@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import type { InferType } from 'yup';
 
+import type { ReturnHandlerApiType } from '@/types';
 import type { backgroundTableSchema } from '@/yup';
 
 type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
@@ -34,11 +35,8 @@ export async function POST(request: NextRequest) {
     body: JSON.stringify(restBody),
   });
 
-  const data = await res.json();
-
-  if (res.status !== 200) return NextResponse.json({ ok: false, data });
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<BackgroundTableSchemaInferType>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }
 
 export async function PUT(request: NextRequest) {
@@ -57,9 +55,6 @@ export async function PUT(request: NextRequest) {
     body: JSON.stringify(restBody),
   });
 
-  const data = await res.json();
-
-  if (res.status !== 200) return NextResponse.json({ ok: false, data });
-
-  return NextResponse.json({ ok: true, data });
+  const data = (await res.json()) as ReturnHandlerApiType<BackgroundTableSchemaInferType>;
+  return NextResponse.json({ ok: res.status !== 200 ? false : true, ...data });
 }

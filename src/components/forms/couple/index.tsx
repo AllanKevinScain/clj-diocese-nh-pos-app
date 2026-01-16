@@ -1,7 +1,7 @@
 'use client';
 
 import type { Session } from 'next-auth';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';

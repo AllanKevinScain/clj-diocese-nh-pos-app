@@ -1,36 +1,55 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import type { Session } from 'next-auth';
 import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { EditRecordBottomBar } from '@/components';
 import { PoslForm } from '@/components/forms';
 import { useRecords } from '@/hooks';
-import type { CompleteRecordInterface } from '@/types';
-import type { PoslSchemaInfertype } from '@/yup';
+import type { CompleteRecordInterface, ReturnHandlerApiType } from '@/types';
+import type { CandidatePoslSchemaInfertype } from '@/yup';
 import { poslSchema } from '@/yup';
 
 interface EditRecordPoslClientPageInterface {
   record: CompleteRecordInterface;
+  session: Session | null;
 }
 
 export const EditRecordPoslClientPage = (props: EditRecordPoslClientPageInterface) => {
-  const { record } = props;
-  const { editRecord, isFetching } = useRecords();
+  const { record, session } = props;
 
-  const methods = useForm<PoslSchemaInfertype>({
+  const router = useRouter();
+  const client = useQueryClient();
+  const { editPoslRecord } = useRecords();
+
+  const methods = useForm<CandidatePoslSchemaInfertype>({
     resolver: yupResolver(poslSchema),
     defaultValues: record,
   });
 
-  async function onSubmit(record: PoslSchemaInfertype) {
-    await editRecord({ typeOfRecord: 'POSl', data: record });
+  async function onSubmit(record: CandidatePoslSchemaInfertype) {
+    await editPoslRecord.mutateAsync(record, {
+      onSuccess: (data: ReturnHandlerApiType<CandidatePoslSchemaInfertype>) => {
+        toast.success(data.message);
+        client.refetchQueries({ queryKey: ['listAllRecords'] });
+        if (data.data && session?.user.loginType === 'manager') {
+          router.push(`/courses/${data.data.courseNumber}/posl`);
+        } else {
+          router.push('/courses');
+        }
+      },
+      onError: (e) => toast.error(e.message),
+    });
   }
 
   return (
     <>
       <FormProvider {...methods}>
-        <PoslForm onSubmit={onSubmit} isSending={isFetching} />
+        <PoslForm onSubmit={onSubmit} isSending={editPoslRecord.isPending} />
       </FormProvider>
       <EditRecordBottomBar id={record.id} />
     </>

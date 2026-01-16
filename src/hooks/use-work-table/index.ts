@@ -1,40 +1,22 @@
 'use client';
 
-import type { InferType } from 'yup';
+import { useMutation } from '@tanstack/react-query';
 
-import type { backgroundTableSchema, exportWorkTableSchema } from '@/yup';
-
-type BackgroundTableSchemaInferType = InferType<typeof backgroundTableSchema>;
-type ExportWorkTableSchemaInferType = InferType<typeof exportWorkTableSchema>;
+import { getWorkTableByCourseId, registerWorkTable, updateWorkTable } from './crud';
 
 export function useWorkTable() {
-  async function registerWorkTable(props: BackgroundTableSchemaInferType) {
-    const req = await fetch('/api/work-table', {
-      method: 'POST',
-      body: JSON.stringify(props),
-    });
-    const res = await req.json();
-    return res;
-  }
-  async function updateWorkTable(props: BackgroundTableSchemaInferType) {
-    const req = await fetch('/api/work-table', {
-      method: 'PUT',
-      body: JSON.stringify(props),
-    });
-    const res = await req.json();
-    return res;
-  }
-  async function getWorkTableByCourseId(props: ExportWorkTableSchemaInferType) {
-    const req = await fetch(`/api/work-table/archive-data/${props.id}`, {
-      method: 'GET',
-    });
-    const res = await req.json();
-    return res;
-  }
+  const mutationRegisterWorkTable = useMutation({
+    mutationFn: registerWorkTable,
+    mutationKey: ['registerWorkTable'],
+  });
+  const mutationUpdateWorkTable = useMutation({
+    mutationFn: updateWorkTable,
+    mutationKey: ['updateWorkTable'],
+  });
 
   return {
-    registerWorkTable,
-    updateWorkTable,
+    registerWorkTable: mutationRegisterWorkTable,
+    updateWorkTable: mutationUpdateWorkTable,
     getWorkTableByCourseId,
   };
 }

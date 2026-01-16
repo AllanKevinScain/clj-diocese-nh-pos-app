@@ -1,7 +1,6 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import React from 'react';
 import type { Control, FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';

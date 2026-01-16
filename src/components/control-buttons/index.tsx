@@ -1,7 +1,6 @@
 'use client';
 
 import { isEmpty } from 'lodash';
-import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { Button } from '../button';
@@ -11,6 +10,7 @@ export type ActionButtonTypes = {
   icon: React.JSX.Element;
   url?: string;
   click?: () => void;
+  isLoading?: boolean;
 };
 
 interface ControlButtonsInterface {
@@ -40,12 +40,19 @@ export const ControlButtons = (props: ControlButtonsInterface) => {
         return (
           <div key={action.label} className="w-full">
             {!isEmpty(action.url) && (
-              <Button isLink href={action.url} className="h-[70px] w-full rounded-none">
+              <Button
+                isLink
+                href={action.url}
+                isLoading={action.isLoading}
+                className="h-[70px] w-full rounded-none">
                 {content}
               </Button>
             )}
             {isEmpty(action.url) && (
-              <Button onClick={action.click} className="h-[70px] w-full rounded-none">
+              <Button
+                onClick={action.click}
+                isLoading={action.isLoading}
+                className="h-[70px] w-full rounded-none">
                 {content}
               </Button>
             )}

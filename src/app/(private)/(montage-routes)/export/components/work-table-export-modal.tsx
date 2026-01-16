@@ -9,9 +9,9 @@ import type * as yup from 'yup';
 
 import { Button, DefaultDialog, Heading, SelectDefault } from '@/components';
 import { generateCourseMontage } from '@/helpers';
-import type { CourseInferType } from '@/hooks';
-import { useCourses, useListRecords, useWorkTable } from '@/hooks';
+import { useCourses, useRecords, useWorkTable } from '@/hooks';
 import type { WorkTableWithRecords } from '@/types';
+import type { CourseInferType } from '@/yup';
 import { exportWorkTableSchema } from '@/yup';
 
 type ReportExportWithFilterSchemaSchemaInfertype = yup.InferType<typeof exportWorkTableSchema>;
@@ -23,7 +23,7 @@ interface WorkTableModalExportInterface {
 
 export const WorkTableModalExport = (props: WorkTableModalExportInterface) => {
   const { isOpen, handleModal } = props;
-  const { listRecordByCourseId } = useListRecords();
+  const { listRecordByCourseId } = useRecords();
   const { getWorkTableByCourseId } = useWorkTable();
   const { listCourses } = useCourses();
 

@@ -1,10 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 
 import { Container } from '@/components';
-import { useListRecords } from '@/hooks';
+import { useRecords } from '@/hooks';
 import type { CompleteRecordInterface, FilterRecordsType } from '@/types';
 
 import { ListRecords } from '../components';
@@ -18,7 +17,7 @@ interface CourseClientPageInterface extends CutCompleteRecordType {
 
 export const CoursePoslllClientPage = (props: CourseClientPageInterface) => {
   const { courseNumber, courseId, typeOfRecord } = props;
-  const { listAllRecords } = useListRecords();
+  const { listAllRecords } = useRecords();
 
   const { data, isLoading, isFetching } = useQuery<FilterRecordsType>({
     queryKey: ['listAllRecords', courseNumber, typeOfRecord],

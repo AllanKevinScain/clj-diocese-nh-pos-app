@@ -2,48 +2,31 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import type { InferType } from 'yup';
 
 import { Button, Container, Divider, FieldDefault, Heading, Text } from '@/components';
+import { useAuth } from '@/hooks';
+import type { LoginSchemaInferType } from '@/yup';
 import { loginSchema } from '@/yup';
-
-type LoginSchemaInferType = InferType<typeof loginSchema>;
-
-const defaultValues = {
-  email: 'padrejosefrancisco@gmail.com',
-  //   email: 'teste@gmail.com',
-  password: 'teste123!',
-};
 
 export function ClientPage() {
   const navigate = useRouter();
-  const {
-    control,
-    handleSubmit,
-    formState: { isLoading },
-  } = useForm<LoginSchemaInferType>({
+  const { login } = useAuth();
+
+  const { control, handleSubmit } = useForm<LoginSchemaInferType>({
     resolver: yupResolver(loginSchema),
-    defaultValues,
+    defaultValues: { email: '', password: '' },
   });
 
   async function onSubmit(values: LoginSchemaInferType) {
-    const { email, password } = values;
-    const res = await signIn('credentials', {
-      email: email.toLowerCase().trim(),
-      password: password.trim(),
-      redirect: false,
+    await login.mutateAsync(values, {
+      onSuccess: () => {
+        toast.success('Login efetuado com sucesso!');
+        navigate.push('/courses');
+      },
+      onError: (e) => toast.error(e.message),
     });
-
-    if (!res?.ok) {
-      toast.error(res?.error || 'Usuário não cadastrado!');
-    } else {
-      toast.success('Login efetuado com sucesso!');
-      navigate.push('/courses');
-    }
   }
 
   return (
@@ -60,7 +43,7 @@ export function ClientPage() {
 
           <FieldDefault id="password" control={control} label="Digite sua senha" type="password" />
 
-          <Button type="submit" className="w-full" isLoading={isLoading}>
+          <Button type="submit" className="w-full" isLoading={login.isPending}>
             Entrar
           </Button>
         </form>

@@ -28,3 +28,4 @@ export const filterSchema = reportExportWithFilterSchema.pick(['search']);
 export type SearchFilterInfertype = yup.InferType<typeof filterSchema>;
 
 export const exportWorkTableSchema = reportExportWithFilterSchema.pick(['id']);
+export type ExportWorkTableSchemaInferType = yup.InferType<typeof exportWorkTableSchema>;

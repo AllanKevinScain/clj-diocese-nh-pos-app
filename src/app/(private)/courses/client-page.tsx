@@ -1,12 +1,13 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
 import { useMemo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
 
 import { Button, Container, FieldDefault, Heading, ListItem, Loading, Text } from '@/components';
-import { useCourses, useCreateQuery } from '@/hooks';
+import { useCourses } from '@/hooks';
 import type { LoginType } from '@/types';
 import type { CourseInferType } from '@/yup';
 
@@ -20,15 +21,11 @@ export function CoursesClientPage(props: CoursesClientPageInterface) {
   const { loginType } = props;
   const { listCourses } = useCourses();
 
-  const { control } = useForm({
-    defaultValues: {
-      search: '',
-    },
-  });
+  const { control } = useForm({ defaultValues: { search: '' } });
 
   const search = useWatch({ control, name: 'search' });
 
-  const { data, isLoading, refetch } = useCreateQuery<CourseInferType[]>({
+  const { data, isLoading, refetch } = useQuery<CourseInferType[]>({
     queryKey: ['cursos'],
     queryFn: listCourses,
   });

@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import type { FieldValues } from 'react-hook-form';
 
 import { SelectDefault, type SelectDefaultInterface } from '@/components';
-import { useListRecords, usePoslll } from '@/hooks';
+import { usePoslll, useRecords } from '@/hooks';
 import type { CompleteRecordInterface, FunctionType } from '@/types';
 import type { PoslllSchemaInferType } from '@/yup';
 
@@ -22,7 +22,7 @@ export const SelectRequiredFunctions = <T extends FieldValues>(
   const { courseId } = useParams<{ courseId: string }>();
 
   const { listPoslll } = usePoslll();
-  const { listRecordByCourseId } = useListRecords();
+  const { listRecordByCourseId } = useRecords();
 
   const options = useQueries({
     queries: [

@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import type { ButtonHTMLAttributes } from 'react';
-import { FiLoader } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 
 import { LinkButton } from './link';
+import { LoadingButton } from './loading';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'solid' | 'outline' | 'ghost';
@@ -49,6 +49,8 @@ export function Button(props: ButtonProps) {
         'disabled:opacity-50',
         'flex items-center justify-center gap-[6px]',
         'cursor-pointer',
+        'relative',
+        'overflow-hidden',
         variant === 'solid' &&
           twMerge(
             'bg-neutral-700 text-white',
@@ -73,8 +75,8 @@ export function Button(props: ButtonProps) {
         className,
         isLoading && 'pointer-events-none flex-row items-center justify-center',
       )}>
-      {isLoading && <FiLoader className="h-5 w-5 animate-spin" />}
       {children}
+      {isLoading && <LoadingButton />}
     </button>
   );
 }
