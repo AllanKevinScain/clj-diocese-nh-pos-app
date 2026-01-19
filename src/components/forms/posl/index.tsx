@@ -20,14 +20,7 @@ import {
 import { formatMobilePhone } from '@/helpers';
 import type { CandidatePoslSchemaInfertype } from '@/yup';
 
-type PoslSchemaFieldType = keyof CandidatePoslSchemaInfertype;
-
-export interface ClearFieldParamsInteface {
-  field: PoslSchemaFieldType;
-  value: string | boolean;
-}
-
-export interface PoslFormInterface {
+interface PoslFormInterface {
   onSubmit: (_: CandidatePoslSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;

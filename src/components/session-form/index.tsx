@@ -1,6 +1,6 @@
 import { Heading } from '../heading';
 
-export interface SessionFormInterface {
+interface SessionFormInterface {
   title: string;
   children: React.ReactNode;
 }

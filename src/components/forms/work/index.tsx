@@ -20,7 +20,7 @@ import {
 import { formatMobilePhone } from '@/helpers';
 import type { WorkSchemaInfertype } from '@/yup';
 
-export interface WorkFormInterface {
+interface WorkFormInterface {
   onSubmit: (_: WorkSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;

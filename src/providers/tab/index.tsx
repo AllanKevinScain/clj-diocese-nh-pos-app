@@ -2,8 +2,6 @@
 
 import { createContext, useState } from 'react';
 
-export type DarkModeType = 'dark' | null;
-
 interface TabContextInterface {
   changeTab: (tab: number) => void;
   activeTab: number;

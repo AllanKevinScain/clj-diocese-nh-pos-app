@@ -11,7 +11,7 @@ import type { SelectInputOptionType } from '@/types';
 
 import { Text } from '../text';
 
-export interface SelectDefaultComponenttInterface {
+interface SelectDefaultComponenttInterface {
   value: string;
   onChange: (_?: string) => void;
   options: SelectInputOptionType[];

@@ -28,13 +28,3 @@ export async function changeStatusPoslll(poslllId: string) {
   identifyStatusError(res);
   return res;
 }
-export async function getPoslllById(
-  id: string,
-): Promise<{ ok: boolean; data: PoslllSchemaInferType }> {
-  const req = await fetch(`/api/poslll/${id}`, {
-    method: 'GET',
-  });
-  const res = await req.json();
-  identifyStatusError(res);
-  return res;
-}

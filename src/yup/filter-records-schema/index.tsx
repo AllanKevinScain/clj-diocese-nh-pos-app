@@ -14,7 +14,7 @@ const CutRecordDefault = posDefault.pick([
   'typeOfRecord',
 ]);
 
-export const reportExportWithFilterSchema = CutRecordDefault.shape({
+const reportExportWithFilterSchema = CutRecordDefault.shape({
   courseNumber: yup
     .string()
     .nullable()
@@ -22,7 +22,6 @@ export const reportExportWithFilterSchema = CutRecordDefault.shape({
   search: yup.string().nullable(),
   instagram: yup.string().nullable(),
 });
-export type ReportExportWithFilterInfertype = yup.InferType<typeof reportExportWithFilterSchema>;
 
 export const filterSchema = reportExportWithFilterSchema.pick(['search']);
 export type SearchFilterInfertype = yup.InferType<typeof filterSchema>;

@@ -18,7 +18,7 @@ import {
 import { formatMobilePhone } from '@/helpers';
 import type { CandidatePoslllSchemaInfertype } from '@/yup';
 
-export interface PoslllFormInterface {
+interface PoslllFormInterface {
   onSubmit: (_: CandidatePoslllSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;

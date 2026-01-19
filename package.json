@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix": "eslint --fix ./src"
+    "fix": "eslint --fix ./src",
+    "knip": "npx knip"
   },
   "dependencies": {
-    "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -26,14 +26,12 @@
     "next-auth": "^4.24.11",
     "prettier": "^3.5.3",
     "react": "^19.1.1",
-    "react-currency-mask": "^1.3.3",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.55.0",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-imask": "^7.6.1",
     "tailwind-merge": "^3.2.0",
-    "use-mask-input": "^3.4.2",
     "yup": "^1.6.1"
   },
   "devDependencies": {
@@ -49,6 +47,7 @@
     "eslint": "^9",
     "eslint-config-next": "^15.5.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "knip": "^5.82.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "typescript": "^5"

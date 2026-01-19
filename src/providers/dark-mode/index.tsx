@@ -6,13 +6,13 @@ import { twMerge } from 'tailwind-merge';
 
 import { Loading } from '@/components';
 
-export type DarkModeType = 'dark' | null;
+type DarkModeType = 'dark' | null;
 
 interface DarkModeContextInterface {
   toggleTheme: () => void;
 }
 
-export const DarkModeContext = createContext<DarkModeContextInterface>({
+const DarkModeContext = createContext<DarkModeContextInterface>({
   toggleTheme: () => null,
 });
 
