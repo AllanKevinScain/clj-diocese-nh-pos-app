@@ -7,7 +7,6 @@ export * from './divider';
 export * from './edit-record-bottom-bar';
 export * from './empty';
 export * from './field-default';
-export * from './field-set-checkbox';
 export * from './field-set-consent-checkbox';
 export * from './field-set-radio';
 export * from './field-text-area';

@@ -7,7 +7,6 @@ const candidatePoslllSchemaBase = yup.object({
     recordId: yup.string().optional(),
   }),
 });
-export type CandidatePoslllSchemaBaseInfertype = yup.InferType<typeof candidatePoslllSchemaBase>;
 
 export const candidatePoslllSchema = posDefault.concat(candidatePoslllSchemaBase);
 export type CandidatePoslllSchemaInfertype = yup.InferType<typeof candidatePoslllSchema>;

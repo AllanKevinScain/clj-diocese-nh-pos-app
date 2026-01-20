@@ -19,7 +19,7 @@ import {
 import { formatMobilePhone } from '@/helpers';
 import type { CoupleSchemaInfertype } from '@/yup';
 
-export interface CoupleFormInterface {
+interface CoupleFormInterface {
   onSubmit: (_: CoupleSchemaInfertype) => void;
   isDisabled?: boolean;
   isSending?: boolean;

@@ -1,10 +1,3 @@
-import type { CompleteRecordInterface, RecordType } from '@/types';
-
-export interface UseRecordsInterface {
-  typeOfRecord?: RecordType;
-  data: CompleteRecordInterface;
-}
-
 export interface CallRecordInterface {
   method: 'POST' | 'PUT';
   api:
@@ -18,8 +11,4 @@ export interface CallRecordInterface {
     | '/api/records/poslll/work'
     | '/api/records/poslll/couple';
   data: unknown;
-}
-export interface CallRecordReturnInterface {
-  ok?: boolean;
-  data: { message: string; data?: CompleteRecordInterface };
 }

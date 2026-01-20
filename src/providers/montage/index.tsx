@@ -9,7 +9,7 @@ import type { CompleteRecordInterface, SelectInputOptionType } from '@/types';
 type RecordsType = SelectInputOptionType &
   Pick<CompleteRecordInterface, 'isWork' | 'isCoupleWork' | 'typeOfRecord'>;
 
-export interface MontageContextInterface {
+interface MontageContextInterface {
   isLoadingRecords: boolean;
   records?: RecordsType[];
 }

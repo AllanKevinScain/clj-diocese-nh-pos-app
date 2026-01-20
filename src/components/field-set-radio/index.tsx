@@ -5,7 +5,7 @@ import type { Control, FieldValues, Path, PathValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
-export interface FieldSetRadioInterface<T extends FieldValues> {
+interface FieldSetRadioInterface<T extends FieldValues> {
   id: Path<T>;
   control: Control<T> | undefined;
   label: string;
